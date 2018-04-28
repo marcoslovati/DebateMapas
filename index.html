@@ -1,0 +1,101 @@
+<html>
+    <head>
+		<meta charset="utf-8">
+		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>        
+        <link href="css/site.css" rel="stylesheet">
+        <script src="js/site.js"></script>
+    </head>
+
+    <div class="container">
+    	<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<div class="panel panel-login">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-6">
+								<a href="#" class="active" id="login-form-link">Login</a>
+							</div>
+							<div class="col-xs-6">
+								<a href="#" id="register-form-link">Cadastro</a>
+							</div>
+						</div>
+						<hr>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-lg-12">
+								<form id="login-form" action="http://localhost:3000/v1/auth" method="post" role="form" style="display: block;">
+									<div class="form-group">
+										<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Login" value="">
+									</div>
+									<div class="form-group">
+										<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Senha">
+									</div>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-sm-6 col-sm-offset-3">
+												<input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Entrar">
+											</div>
+										</div>
+									</div>
+								</form>
+								<form id="register-form" action="http://localhost:3000/v1/users" method="post"  role="form" style="display: none;">
+									<div class="form-group">
+										<input type="text" name="name" id="name" tabindex="1" class="form-control" placeholder="Nome" value="">
+									</div>
+									<div class="form-group">
+										<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Login" value="">
+									</div>
+									<div class="form-group">
+										<input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="E-mail" value="">
+									</div>
+									<div class="form-group">
+										<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Senha">
+									</div>
+									<div class="form-group">
+										<input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirmação de Senha">
+									</div>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-sm-6 col-sm-offset-3">
+												<input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Registrar-se">
+											</div>
+										</div>
+									</div>
+                                </form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+</html>
+
+<script>
+$(function() {
+    $("#register-form").submit(function(event){
+		event.preventDefault(); //prevent default action
+
+		var successFunc = function(){
+			$('#login-form-link').click();
+		};
+
+		ajaxFormRequest($(this), successFunc);
+	});
+
+	    $("#login-form").submit(function(event){
+		event.preventDefault(); //prevent default action
+
+		var successFunc = function(response, textStatus, request){
+			var token = request.getResponseHeader('x-access-token');
+			localStorage.setItem("token", token);
+			window.location = "./paginas/master.html";
+		};
+
+		ajaxFormRequest($(this), successFunc);
+	});
+});
+</script>
