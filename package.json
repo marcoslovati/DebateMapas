@@ -1,0 +1,8 @@
+{
+  "name": "debatemapas",
+  "version": "1.0.0",
+  "description": "debatemapas",
+  "main": "server.js",  
+  "dependencies": {
+  }
+}
