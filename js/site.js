@@ -27,17 +27,22 @@ function objectifyForm(formArray) {//serialize data function
 	return indexed_array;
 }
 
-function ajaxFormRequest(form, successCallback){		
+function submitForm(form, successCallback, headers){
 	var post_url = form.attr("action"); //get form action url
 	var request_method = form.attr("method"); //get form GET/POST method
 	var form_data = objectifyForm(form); //Encode form elements for submission
-   
+
+	ajaxRequest(post_url, request_method, form_data, successCallback, headers);
+}
+
+function ajaxRequest(action, method, data, successCallback, headers){   
 		$.ajax({
-			url : post_url,
-			type: request_method,
-			data : JSON.stringify(form_data),
+			url : action,
+			type: method,
+			data : JSON.stringify(data),
 			contentType: "application/json",
 			dataType: "json",
+			headers: headers
 		}).success(function(response, textStatus, request){ //
 			successCallback(response, textStatus, request);
 		});

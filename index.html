@@ -28,10 +28,10 @@
 							<div class="col-lg-12">
 								<form id="login-form" action="http://localhost:3000/v1/auth" method="post" role="form" style="display: block;">
 									<div class="form-group">
-										<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Login" value="">
+										<input type="text" name="username" id="login-username" tabindex="1" class="form-control" placeholder="Login" value="">
 									</div>
 									<div class="form-group">
-										<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Senha">
+										<input type="password" name="password" id="login-password" tabindex="2" class="form-control" placeholder="Senha">
 									</div>
 									<div class="form-group">
 										<div class="row">
@@ -46,13 +46,13 @@
 										<input type="text" name="name" id="name" tabindex="1" class="form-control" placeholder="Nome" value="">
 									</div>
 									<div class="form-group">
-										<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Login" value="">
+										<input type="text" name="username" id="register-username" tabindex="1" class="form-control" placeholder="Login" value="">
 									</div>
 									<div class="form-group">
 										<input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="E-mail" value="">
 									</div>
 									<div class="form-group">
-										<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Senha">
+										<input type="password" name="password" id="register-password" tabindex="2" class="form-control" placeholder="Senha">
 									</div>
 									<div class="form-group">
 										<input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirmação de Senha">
@@ -83,7 +83,7 @@ $(function() {
 			$('#login-form-link').click();
 		};
 
-		ajaxFormRequest($(this), successFunc);
+		submitForm($(this), successFunc);
 	});
 
 	    $("#login-form").submit(function(event){
@@ -95,7 +95,7 @@ $(function() {
 			window.location = "./paginas/master.html";
 		};
 
-		ajaxFormRequest($(this), successFunc);
+		submitForm($(this), successFunc);
 	});
 });
 </script>
