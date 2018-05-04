@@ -16,6 +16,35 @@ $(function() {
 	});
 });
 
+function salvarMapa(){
+	var titulo = $("#titulo").val();
+	var conteudo = myDiagram.model.toJson();
+	var token = localStorage.getItem("token");
+	var headers = {
+		"x-access-token": token
+	};
+
+	var dadosMap = {
+		"title": titulo
+	};
+
+	var sucessoMapContent = function (){
+		carregarPagina("paginas/home.html");
+	};
+
+	var dadosMapContent = {
+		"content": conteudo
+	};
+
+	var sucessoMap = function (response){
+		var mapId = response.map._id;
+
+		ajaxRequest("http://localhost:3000/v1/maps/" + mapId + "/content", "post", dadosMapContent, sucessoMapContent, headers);
+	};
+
+	ajaxRequest("http://localhost:3000/v1/maps", "post", dadosMap, sucessoMap, headers);
+}
+
 function objectifyForm(formArray) {//serialize data function
 	var unindexed_array = formArray.serializeArray();
 	var indexed_array = {};

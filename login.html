@@ -92,7 +92,7 @@ $(function() {
 		var successFunc = function(response, textStatus, request){
 			var token = request.getResponseHeader('x-access-token');
 			localStorage.setItem("token", token);
-			window.location = "./paginas/master.html";
+			window.location = "app.html";
 		};
 
 		submitForm($(this), successFunc);
