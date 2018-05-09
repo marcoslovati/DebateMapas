@@ -5,7 +5,7 @@
 <div class="form-group" style="padding-top: 20px;">
     <div class="row">
         <div class="col-sm-12 text-right">
-            <button id="SaveButton" class="btn btn-primary" onclick="salvarMapa()" tabindex="2" disabled>Salvar</button>
+            <button id="button-salvar" class="btn btn-primary" tabindex="2" disabled>Salvar</button>
         </div>
     </div>
 </div>
@@ -163,4 +163,10 @@
             new go.Binding("text").makeTwoWay())
         )
         );
+
+    $("button-salvar").click(function(){
+        var titulo = $("#titulo").val();
+        var conteudo = myDiagram.model.toJson();
+        salvarMapa(titulo, conteudo);
+    });
 </script>

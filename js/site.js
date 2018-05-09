@@ -16,9 +16,7 @@ $(function() {
 	});
 });
 
-function salvarMapa(){
-	var titulo = $("#titulo").val();
-	var conteudo = myDiagram.model.toJson();
+function salvarMapa(titulo, conteudo){
 	var token = localStorage.getItem("token");
 	var headers = {
 		"x-access-token": token
@@ -43,6 +41,19 @@ function salvarMapa(){
 	};
 
 	ajaxRequest("http://localhost:3000/v1/maps", "post", dadosMap, sucessoMap, headers);
+}
+
+function buscarMapasPorData(data){
+	var token = localStorage.getItem("token");
+	var headers = {
+		"x-access-token": token
+	};
+
+	var sucessoCarregaLista = function (mapas){
+		return mapas;
+	};
+
+	ajaxRequest("http://localhost:3000/v1/maps/date/" + data, "get", {}, sucessoCarregaLista, headers);
 }
 
 function objectifyForm(formArray) {//serialize data function
