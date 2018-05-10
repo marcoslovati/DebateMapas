@@ -11,18 +11,70 @@
         <div id="lista-mapas"></div>
     </div>
 </div>
+<div class="form-group">
+    <button id="button-salvar">Salvar</button>
+</div>
 
 <script>
     $("#button-filtro").click(function(){
-        var mapas = buscarMapasPorData($('#filtro-data').val());
-        
-        mapas.forEach(function(item){
-            var titulo = item.title;
-            var autor = item.author;
+        var sucessoCarregaLista = function (mapas){            
+            mapas.forEach(function(item){
+                if(item.versions.length > 0){
+                    var id = item._id;
+                    var titulo = item.title;
+                    var autor = item.author.username;
+                    var versions = item.versions;
 
-            var itemMapa = "<div class='form-check'><input class='form-check-input' type='checkbox' value='' id='defaultCheck1'>" +
-                "<label class='form-check-label' for='defaultCheck1'>Autor: " + autor + "Título: " + titulo + "</label></div>";
-            $('#lista-mapas').append(itemMapa);
-        });        
+                    var itemMapa = "<div class='form-check'>" +
+                        "<label id=" + id + " class='form-check-label'>Autor: " + autor + " Título: " + titulo + " Versões: </label></div>";
+                    $('#lista-mapas').append(itemMapa);
+
+                    versions.forEach(function(item2) {
+                        var idVersao = item2._id;
+                        var data = new Date(item2.created);
+                        var dataFormatada = data.getDate().toString().padStart(2,'0') + '/' + (data.getMonth() + 1).toString().padStart(2,'0') + '/' + data.getFullYear() + ' ' +
+                            data.getHours().toString().padStart(2,'0') + ':' + data.getMinutes().toString().padStart(2,'0');
+
+                        var itemVersao = "<input style='margin-left:5px' class='form-check-input versao' type='checkbox' value='' id=" + idVersao + ">" + dataFormatada;
+                        $('#'+id).append(itemVersao);
+                    });
+                }           
+            });
+             
+        };
+
+        var mapas = buscarMapasPorData($('#filtro-data').val(), sucessoCarregaLista);      
+    });
+
+    $("#button-salvar").click(function(){
+        var sucessoDebateUnities = function(){
+            carregarPagina("paginas/home.html");
+        }
+
+        var sucessoDebate = function (resposta){
+            var debateUnities = [];
+            console.log(resposta);
+
+            $('input[type=checkbox].versao:checked').each(function(){                
+                var versao = $(this).attr('id');                
+                var debateUnity = {
+                    "debate": {
+                        "_id":resposta.debate._id,
+                        "name": resposta.debate.name
+                    },
+                    "initialMapContent":{
+                        "_id": versao
+                    }
+                };
+
+                debateUnities.push(debateUnity);
+            });
+
+            salvarDebateUnities(debateUnities, sucessoDebateUnities);            
+        };
+        
+        var nome = $("#nome").val();
+
+        salvarDebate(nome, sucessoDebate);        
     });
 </script>

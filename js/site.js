@@ -1,5 +1,4 @@
 $(function() {
-
     $('#login-form-link').click(function(e) {
 		$("#login-form").delay(100).fadeIn(100);
  		$("#register-form").fadeOut(100);
@@ -15,6 +14,28 @@ $(function() {
 		e.preventDefault();
 	});
 });
+
+function salvarDebate(nome, sucessoDebate){
+	var token = localStorage.getItem("token");
+	var headers = {
+		"x-access-token": token
+	};
+
+	var debate = {
+		name: nome
+	};
+
+	ajaxRequest("http://localhost:3000/v1/debates", "post", debate, sucessoDebate, headers);
+}
+
+function salvarDebateUnities(debateUnities, sucessoDebateUnities){
+	var token = localStorage.getItem("token");
+	var headers = {
+		"x-access-token": token
+	};
+
+	ajaxRequest("http://localhost:3000/v1/debateUnities", "post", debateUnities, sucessoDebateUnities, headers);
+}
 
 function salvarMapa(titulo, conteudo){
 	var token = localStorage.getItem("token");
@@ -43,17 +64,13 @@ function salvarMapa(titulo, conteudo){
 	ajaxRequest("http://localhost:3000/v1/maps", "post", dadosMap, sucessoMap, headers);
 }
 
-function buscarMapasPorData(data){
+function buscarMapasPorData(data, sucessoCarregaLista){
 	var token = localStorage.getItem("token");
 	var headers = {
 		"x-access-token": token
 	};
 
-	var sucessoCarregaLista = function (mapas){
-		return mapas;
-	};
-
-	ajaxRequest("http://localhost:3000/v1/maps/date/" + data, "get", {}, sucessoCarregaLista, headers);
+	ajaxRequest("http://localhost:3000/v1/maps/date/" + data, "get", undefined, sucessoCarregaLista, headers);
 }
 
 function objectifyForm(formArray) {//serialize data function
