@@ -37,6 +37,15 @@ function salvarDebateUnities(debateUnities, sucessoDebateUnities){
 	ajaxRequest("http://localhost:3000/v1/debateUnities", "post", debateUnities, sucessoDebateUnities, headers);
 }
 
+function buscarDebates(sucessoDebates){
+	var token = localStorage.getItem("token");
+	var headers = {
+		"x-access-token": token
+	};
+
+	ajaxRequest("http://localhost:3000/v1/debates/creator", "get", undefined, sucessoDebates, headers);
+}
+
 function salvarMapa(titulo, conteudo){
 	var token = localStorage.getItem("token");
 	var headers = {
