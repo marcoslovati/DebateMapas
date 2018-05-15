@@ -1,5 +1,5 @@
 <h2>Lista de debates</h2>
-<p>Lista de debates criadas pelo seu usuário</p>            
+<p>Lista de debates criados pelo seu usuário</p>            
 <table id="table-debates" class="table">
   <thead>
     <tr>
@@ -15,8 +15,11 @@
 <script>
     var sucessoDebates = function(debates){
         debates.forEach(function(item) {
-            var itemDebate = "<tr><td>" + item.name + "</td><td>" + item.created + "</td>" + 
-                "<td><button class='btn btn-deafult'>Editar</button>" +
+            var data = new Date(item.created);
+            var dataFormatada = data.getDate().toString().padStart(2,'0') + "/" + (data.getMonth() + 1).toString().padStart(2,'0') + "/" + data.getFullYear() + " " +
+            data.getHours().toString().padStart(2,'0') + ":" + data.getMinutes().toString().padStart(2,'0');
+            var itemDebate = "<tr><td>" + item.name + "</td><td>" + dataFormatada + "</td>" + 
+                "<td><button class='btn btn-deafult btn-list'>Editar</button>" +
                 "<button class='btn btn-primary'>Definir questionadores</button>" + 
                 "</td></tr>";
             $("#table-debates>tbody").append(itemDebate);  

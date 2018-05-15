@@ -26,24 +26,9 @@
             "undoManager.isEnabled": true
         });
 
-    // function desHabilitaSalvar(desabilita){
-    //     console.log("titulo");
-    //     console.log($("#titulo").val());
-    //     console.log("mapa");
-    //     console.log(myDiagram.isModified);
-    //     if(desabilita)
-    //         $("#SaveButton").prop("disabled",desabilita);
-    //     else
-    //         $("#SaveButton").removeProp("disabled");
-    // }
-
-    // $("#titulo").keyup(function(){
-    //     desHabilitaSalvar($("#titulo").val() === "");
-    // });
-
     // when the document is modified, add a "*" to the title and enable the "Save" button
     myDiagram.addDiagramListener("Modified", function(e) {
-        var button = document.getElementById("SaveButton");
+        var button = document.getElementById("button-salvar");
         if (button) button.disabled = !myDiagram.isModified;
         var idx = document.title.indexOf("*");
         if (myDiagram.isModified) {
@@ -164,7 +149,7 @@
         )
         );
 
-    $("button-salvar").click(function(){
+    $("#button-salvar").click(function(){
         var titulo = $("#titulo").val();
         var conteudo = myDiagram.model.toJson();
         salvarMapa(titulo, conteudo);
