@@ -15,14 +15,10 @@ $(function() {
 	});
 });
 
-function salvarDebate(nome, sucessoDebate){
+function salvarDebate(debate, sucessoDebate){
 	var token = localStorage.getItem("token");
 	var headers = {
 		"x-access-token": token
-	};
-
-	var debate = {
-		name: nome
 	};
 
 	ajaxRequest("http://localhost:3000/v1/debates", "post", debate, sucessoDebate, headers);
@@ -80,6 +76,15 @@ function buscarMapasPorData(data, sucessoCarregaLista){
 	};
 
 	ajaxRequest("http://localhost:3000/v1/maps/date/" + data, "get", undefined, sucessoCarregaLista, headers);
+}
+
+function buscarMapasPorAutor(sucessoCarregaLista){
+	var token = localStorage.getItem("token");
+	var headers = {
+		"x-access-token": token
+	};
+
+	ajaxRequest("http://localhost:3000/v1/maps/author", "get", undefined, sucessoCarregaLista, headers);
 }
 
 function objectifyForm(formArray) {//serialize data function
