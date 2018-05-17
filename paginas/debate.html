@@ -23,7 +23,8 @@
 
 <script>
     $("#button-filtro").click(function(){
-        var sucessoCarregaLista = function (mapas){            
+        var sucessoCarregaLista = function (mapas){
+            $('#lista-mapas').empty();            
             mapas.forEach(function(item){
                 if(item.versions.length > 0){
                     var id = item._id;
@@ -93,7 +94,8 @@
     });
 
     function listarMeusMapas(){
-        var sucessoCarregaLista = function (mapas){            
+        var sucessoCarregaLista = function (mapas){
+            $('#lista-meus-mapas').empty();
             mapas.forEach(function(item){
                 if(item.versions.length > 0){
                     var id = item._id;

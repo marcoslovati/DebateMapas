@@ -24,6 +24,15 @@ function salvarDebate(debate, sucessoDebate){
 	ajaxRequest("http://localhost:3000/v1/debates", "post", debate, sucessoDebate, headers);
 }
 
+function processarDebate(idDebate){
+	var token = localStorage.getItem("token");
+	var headers = {
+		"x-access-token": token
+	};
+
+	ajaxRequest("http://localhost:3000/v1/debateUnities/process/debate/" + idDebate, "post", undefined, function(){}, headers);
+}
+
 function salvarDebateUnities(debateUnities, sucessoDebateUnities){
 	var token = localStorage.getItem("token");
 	var headers = {
