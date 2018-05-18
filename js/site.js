@@ -30,7 +30,7 @@ function processarDebate(idDebate){
 		"x-access-token": token
 	};
 
-	ajaxRequest("http://localhost:3000/v1/debateUnities/process/debate/" + idDebate, "post", undefined, function(){}, headers);
+	ajaxRequest("http://localhost:3000/v1/debates/process/debate/" + idDebate, "post", undefined, function(){}, headers);
 }
 
 function salvarDebateUnities(debateUnities, sucessoDebateUnities){
