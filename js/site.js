@@ -15,48 +15,32 @@ $(function() {
 	});
 });
 
-function salvarDebate(debate, sucessoDebate){
-	var token = localStorage.getItem("token");
-	var headers = {
-		"x-access-token": token
-	};
+var token = localStorage.getItem("token");
+var headers = {
+	"x-access-token": token
+};
 
+function salvarDebate(debate, sucessoDebate){
 	ajaxRequest("http://localhost:3000/v1/debates", "post", debate, sucessoDebate, headers);
 }
 
 function processarDebate(idDebate){
-	var token = localStorage.getItem("token");
-	var headers = {
-		"x-access-token": token
-	};
-
 	ajaxRequest("http://localhost:3000/v1/debates/process/debate/" + idDebate, "post", undefined, function(){}, headers);
 }
 
 function salvarDebateUnities(debateUnities, sucessoDebateUnities){
-	var token = localStorage.getItem("token");
-	var headers = {
-		"x-access-token": token
-	};
-
 	ajaxRequest("http://localhost:3000/v1/debateUnities", "post", debateUnities, sucessoDebateUnities, headers);
 }
 
 function buscarDebates(sucessoDebates){
-	var token = localStorage.getItem("token");
-	var headers = {
-		"x-access-token": token
-	};
-
 	ajaxRequest("http://localhost:3000/v1/debates/creator", "get", undefined, sucessoDebates, headers);
 }
 
-function salvarMapa(titulo, conteudo){
-	var token = localStorage.getItem("token");
-	var headers = {
-		"x-access-token": token
-	};
+function buscarDebatesPerguntar(sucessoDebates){
+	ajaxRequest("http://localhost:3000/v1/debates/questioner", "get", undefined, sucessoDebates, headers);
+}
 
+function salvarMapa(titulo, conteudo){
 	var dadosMap = {
 		"title": titulo
 	};
@@ -79,20 +63,10 @@ function salvarMapa(titulo, conteudo){
 }
 
 function buscarMapasPorData(data, sucessoCarregaLista){
-	var token = localStorage.getItem("token");
-	var headers = {
-		"x-access-token": token
-	};
-
 	ajaxRequest("http://localhost:3000/v1/maps/date/" + data, "get", undefined, sucessoCarregaLista, headers);
 }
 
 function buscarMapasPorAutor(sucessoCarregaLista){
-	var token = localStorage.getItem("token");
-	var headers = {
-		"x-access-token": token
-	};
-
 	ajaxRequest("http://localhost:3000/v1/maps/author", "get", undefined, sucessoCarregaLista, headers);
 }
 

@@ -1,0 +1,102 @@
+<div id="myDiagramDiv" style="width: 80%; height: 60%; border: 1px black solid"></div>
+
+<div>
+    <div class="form-group">
+        <input type="text" name="pergunta1" id="pergunta1" tabindex="1" class="form-control" placeholder="1ª Pergunta" value="">
+    </div>
+    <div class="form-group">
+        <input type="text" name="pergunta2" id="pergunta2" tabindex="2" class="form-control" placeholder="2ª Pergunta" value="">
+    </div>
+</div>
+<script>
+    var Go = go.GraphObject.make;  // for conciseness in defining templates
+
+    myDiagram =
+        Go(go.Diagram, "myDiagramDiv",  // must name or refer to the DIV HTML element
+        {
+            // start everything in the middle of the viewport
+            initialContentAlignment: go.Spot.Center,
+            // have mouse wheel events zoom in and out instead of scroll up and down
+            "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom,
+            // support double-click in background creating a new node
+            "clickCreatingTool.archetypeNodeData": { text: "conceito" },
+            // enable undo & redo
+            "undoManager.isEnabled": true
+        });
+
+    // define the Node template
+    myDiagram.nodeTemplate =
+        Go(go.Node, "Auto",
+        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+        // define the node's outer shape, which will surround the TextBlock
+        Go(go.Shape, "RoundedRectangle",
+            {
+            parameter1: 20,  // the corner has a large radius
+            fill: Go(go.Brush, "Linear", { 0: "rgb(254, 201, 0)", 1: "rgb(254, 162, 0)" }),
+            stroke: null,
+            portId: "",  // this Shape is the Node's port, not the whole Node
+            fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
+            toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true,
+            cursor: "pointer"
+            }),
+        Go(go.TextBlock,
+            {
+            font: "bold 11pt helvetica, bold arial, sans-serif",
+            editable: true  // editing the text automatically updates the model data
+            },
+            new go.Binding("text").makeTwoWay())
+        );
+
+    // unlike the normal selection Adornment, this one includes a Button
+    myDiagram.nodeTemplate.selectionAdornmentTemplate =
+        Go(go.Adornment, "Spot",
+        Go(go.Panel, "Auto",
+            Go(go.Shape, { fill: null, stroke: "blue", strokeWidth: 2 }),
+            Go(go.Placeholder)  // a Placeholder sizes itself to the selected Node
+        ),
+        // the button to create a "next" node, at the top-right corner
+        Go("Button",
+            {
+            alignment: go.Spot.TopRight,
+            },
+            Go(go.Shape, "PlusLine", { width: 6, height: 6 })
+        ) // end button
+        ); // end Adornment
+
+    // replace the default Link template in the linkTemplateMap
+    myDiagram.linkTemplate =
+        Go(go.Link,  // the whole link panel
+        {
+            curve: go.Link.Bezier, adjusting: go.Link.Stretch,
+            reshapable: true, relinkableFrom: true, relinkableTo: true,
+            toShortLength: 3
+        },
+        new go.Binding("points").makeTwoWay(),
+        new go.Binding("curviness"),
+        Go(go.Shape,  // the link shape
+            { strokeWidth: 1.5 }),
+        Go(go.Shape,  // the arrowhead
+            { toArrow: "standard", stroke: null }),
+        Go(go.Panel, "Auto",
+            Go(go.Shape,  // the label background, which becomes transparent around the edges
+            {
+                fill: Go(go.Brush, "Radial",
+                        { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
+                stroke: null
+            }),
+            Go(go.TextBlock, "relação",  // the label text
+            {
+                textAlign: "center",
+                font: "9pt helvetica, arial, sans-serif",
+                margin: 4,
+                editable: true  // enable in-place editing
+            },
+            // editing the text automatically updates the model data
+            new go.Binding("text").makeTwoWay())
+        )
+    );
+</script>
+
+<script>
+
+</script>
