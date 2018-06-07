@@ -1,0 +1,37 @@
+<h2>Lista de debates a questionar</h2>
+<p>Lista de debates nos quais você ainda não perguntou</p>            
+<table id="table-debates" class="table">
+  <thead>
+    <tr>
+      <th>Debate</th>
+      <th>Questionador 1</th>
+      <th>Questionador 2</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+
+<script>
+    function perguntarDebateUnity(debateUnityId, mapContentId){
+        sessionStorage.setItem("debateUnityId", debateUnityId);
+        sessionStorage.setItem("mapContentId", mapContentId);
+
+        carregarPagina("paginas/perguntas.html");
+    }    
+
+    var sucessoDebateUnities = function(debateUnities){
+        debateUnities.forEach(function(item) {
+            var itemDebate = "<tr><td>" + item.debate.name + "</td>" +
+                "<td>" + item.questioner1.username + "</td>" + 
+                "<td>" + item.questioner2.username + "</td>" + 
+                "<td><button onclick='perguntarDebateUnity(\"" + item._id + "\", \"" + item.initialMapContent._id + "\" )' class='btn btn-deafult btn-list'>Perguntar</button></td></tr>";
+
+            $("#table-debates>tbody").append(itemDebate); 
+        });
+
+    };
+
+    buscarDebatesPerguntar(sucessoDebateUnities);
+</script>

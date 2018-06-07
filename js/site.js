@@ -20,6 +20,10 @@ var headers = {
 	"x-access-token": token
 };
 
+function carregarPagina(pagina){
+    $("#corpo").load(pagina);
+  }
+
 function salvarDebate(debate, sucessoDebate){
 	ajaxRequest("http://localhost:3000/v1/debates", "post", debate, sucessoDebate, headers);
 }
@@ -36,8 +40,12 @@ function buscarDebates(sucessoDebates){
 	ajaxRequest("http://localhost:3000/v1/debates/creator", "get", undefined, sucessoDebates, headers);
 }
 
-function buscarDebatesPerguntar(sucessoDebates){
-	ajaxRequest("http://localhost:3000/v1/debates/questioner", "get", undefined, sucessoDebates, headers);
+function buscarDebatesPerguntar(sucessoDebateUnities){
+	ajaxRequest("http://localhost:3000/v1/debateUnities/questioner", "get", undefined, sucessoDebateUnities, headers);
+}
+
+function buscarMapContent(mapContentId, sucessoMapContent){
+	ajaxRequest("http://localhost:3000/v1/mapContents/" + mapContentId, "get", undefined, sucessoMapContent, headers);
 }
 
 function salvarMapa(titulo, conteudo){

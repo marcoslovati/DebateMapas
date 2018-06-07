@@ -25,7 +25,7 @@
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <li><a href="#" onclick="carregarPagina('paginas/mapa.html')">Criar mapa</a></li>
-              <li><a href="#" onclick="carregarPagina('paginas/perguntas.html')">Perguntar</a></li>             
+              <li><a href="#" onclick="carregarPagina('paginas/listaDebatesPerguntar.html')">Perguntar</a></li>             
               <li class="dropdown-debate">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Debates <span class="caret"></span></a>
                 <ul class="dropdown-menu">
@@ -67,9 +67,5 @@
 </html>
 
 <script>
-  function carregarPagina(pagina){
-    $("#corpo").load(pagina);
-  }
-
   carregarPagina("paginas/home.html");
 </script>
