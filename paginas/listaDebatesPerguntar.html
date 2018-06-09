@@ -14,19 +14,22 @@
 </table>
 
 <script>
-    function perguntarDebateUnity(debateUnityId, mapContentId){
-        sessionStorage.setItem("debateUnityId", debateUnityId);
-        sessionStorage.setItem("mapContentId", mapContentId);
+    function perguntarDebateUnity(indice){
+        var debateUnity = debateUnities[indice];
+        sessionStorage.setItem("debateUnity", debateUnity);
 
         carregarPagina("paginas/perguntas.html");
-    }    
+    }
+    
+    var debateUnities = [];
 
-    var sucessoDebateUnities = function(debateUnities){
-        debateUnities.forEach(function(item) {
+    var sucessoDebateUnities = function(du){
+        debateUnities = du;
+        du.forEach(function(item, i) {
             var itemDebate = "<tr><td>" + item.debate.name + "</td>" +
                 "<td>" + item.questioner1.username + "</td>" + 
                 "<td>" + item.questioner2.username + "</td>" + 
-                "<td><button onclick='perguntarDebateUnity(\"" + item._id + "\", \"" + item.initialMapContent._id + "\" )' class='btn btn-deafult btn-list'>Perguntar</button></td></tr>";
+                "<td><button onclick='perguntarDebateUnity(" + i + ")' class='btn btn-deafult btn-list'>Perguntar</button></td></tr>";
 
             $("#table-debates>tbody").append(itemDebate); 
         });

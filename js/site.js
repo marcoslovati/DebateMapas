@@ -36,6 +36,10 @@ function salvarDebateUnities(debateUnities, sucessoDebateUnities){
 	ajaxRequest("http://localhost:3000/v1/debateUnities", "post", debateUnities, sucessoDebateUnities, headers);
 }
 
+function atualizarDebateUnity(debateUnityQuestions, sucessoDebateUnity){
+	ajaxRequest("http://localhost:3000/v1/debateUnities/questions", "post", debateUnityQuestions, sucessoDebateUnity, headers);
+}
+
 function buscarDebates(sucessoDebates){
 	ajaxRequest("http://localhost:3000/v1/debates/creator", "get", undefined, sucessoDebates, headers);
 }

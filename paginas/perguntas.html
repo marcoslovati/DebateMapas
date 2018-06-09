@@ -8,10 +8,8 @@
         <div class="form-group">
             <input type="text" name="pergunta2" id="pergunta2" tabindex="2" class="form-control" placeholder="2ª Pergunta" value="">
         </div>
-        <div class="row">
-            <div class="col-sm-12 text-right">
-                <button id="button-salvar" class="btn btn-primary" tabindex="2" disabled>Salvar</button>
-            </div>
+        <div class="form-group">
+            <button id="button-salvar">Salvar</button>
         </div>
     </form>
 </div>
@@ -96,22 +94,25 @@
         )
     );
 
-    $("#save-form").submit(function(event){
-		event.preventDefault(); //prevent default action
+    $("#button-salvar").click(function(){
+        var dados = {
+            debateUnity: debateUnity,
+            question1: $('#pergunta1').val(),
+            question2: $('#pergunta2').val()
+        };
 
-		var successFunc = function(){
-			$('#login-form-link').click();
-		};
+        var sucessoDebateUnity = function(){
+            carregarPagina("paginas/listaDebatesPerguntar.html");
+        }       
 
-		submitForm($(this), successFunc);
-	});
+        atualizarDebateUnity(dados, sucessoDebateUnity);            
+    });
 
-    var debateUnityId = sessionStorage.getItem("debateUnityId");
-    var mapContentId = sessionStorage.getItem("mapContentId");
+    var debateUnity = sessionStorage.getItem("debateUnity");
 
     var sucessoMapContent = function(mapContent){
         myDiagram.model = go.Model.fromJson(mapContent.content);
     };
 
-    buscarMapContent(mapContentId, sucessoMapContent);
+    buscarMapContent(debateUnity.initialMapContent._id, sucessoMapContent);
 </script>
