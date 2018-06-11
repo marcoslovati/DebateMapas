@@ -16,7 +16,7 @@
 <script>
     function perguntarDebateUnity(indice){
         var debateUnity = debateUnities[indice];
-        sessionStorage.setItem("debateUnity", debateUnity);
+        sessionStorage.setItem("debateUnity", JSON.stringify(debateUnity));
 
         carregarPagina("paginas/perguntas.html");
     }

@@ -1,17 +1,15 @@
 <div id="myDiagramDiv" style="width: 80%; height: 60%; border: 1px black solid"></div>
 
 <div style="margin-top: 20px">
-    <form id="save-form" action="http://localhost:3000/v1/users" method="post"  role="form" style="display: none;">
-        <div class="form-group">
-            <input type="text" name="pergunta1" id="pergunta1" tabindex="1" class="form-control" placeholder="1ª Pergunta" value="">
-        </div>
-        <div class="form-group">
-            <input type="text" name="pergunta2" id="pergunta2" tabindex="2" class="form-control" placeholder="2ª Pergunta" value="">
-        </div>
-        <div class="form-group">
-            <button id="button-salvar">Salvar</button>
-        </div>
-    </form>
+    <div class="form-group">
+        <input type="text" name="pergunta1" id="pergunta1" tabindex="1" class="form-control" placeholder="1ª Pergunta" value="">
+    </div>
+    <div class="form-group">
+        <input type="text" name="pergunta2" id="pergunta2" tabindex="2" class="form-control" placeholder="2ª Pergunta" value="">
+    </div>
+    <div class="form-group text-right">
+        <button class="btn btn-primary" id="button-salvar">Salvar</button>
+    </div>
 </div>
 
 <script>
@@ -104,11 +102,12 @@
         var sucessoDebateUnity = function(){
             carregarPagina("paginas/listaDebatesPerguntar.html");
         }       
-
+        console.log(dados);
         atualizarDebateUnity(dados, sucessoDebateUnity);            
     });
 
-    var debateUnity = sessionStorage.getItem("debateUnity");
+    console.log(sessionStorage.getItem("debateUnity"));
+    var debateUnity = JSON.parse(sessionStorage.getItem("debateUnity"));
 
     var sucessoMapContent = function(mapContent){
         myDiagram.model = go.Model.fromJson(mapContent.content);
