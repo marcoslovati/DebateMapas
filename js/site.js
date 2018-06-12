@@ -48,6 +48,10 @@ function buscarDebatesPerguntar(sucessoDebateUnities){
 	ajaxRequest("http://localhost:3000/v1/debateUnities/questioner", "get", undefined, sucessoDebateUnities, headers);
 }
 
+function buscarDebatesResponder(sucessoDebateUnities){
+	ajaxRequest("http://localhost:3000/v1/debateUnities/author", "get", undefined, sucessoDebateUnities, headers);
+}
+
 function buscarMapContent(mapContentId, sucessoMapContent){
 	ajaxRequest("http://localhost:3000/v1/mapContents/" + mapContentId, "get", undefined, sucessoMapContent, headers);
 }

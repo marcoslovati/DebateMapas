@@ -1,10 +1,9 @@
-<h2>Lista de debates a questionar</h2>
+<h2>Lista de debates a responder</h2>
 <!-- <p>Lista de debates nos quais você ainda não perguntou</p>             -->
 <table id="table-debates" class="table">
   <thead>
     <tr>
       <th>Debate</th>
-      <th>Autor do Mapa</th>
       <th>Questionador 1</th>
       <th>Questionador 2</th>
       <th></th>
@@ -15,11 +14,11 @@
 </table>
 
 <script>
-    function perguntarDebateUnity(indice){
+    function responderDebateUnity(indice){
         var debateUnity = debateUnities[indice];
         sessionStorage.setItem("debateUnity", JSON.stringify(debateUnity));
 
-        carregarPagina("paginas/perguntas.html");
+        carregarPagina("paginas/resposta.html");
     }
     
     var debateUnities = [];
@@ -28,15 +27,14 @@
         debateUnities = du;
         du.forEach(function(item, i) {
             var itemDebate = "<tr><td>" + item.debate.name + "</td>" +
-                "<td>" + item.mapsAuthor.username + "</td>" +
                 "<td>" + item.questioner1.username + "</td>" + 
                 "<td>" + item.questioner2.username + "</td>" + 
-                "<td><button onclick='perguntarDebateUnity(" + i + ")' class='btn btn-deafult btn-list'>Perguntar</button></td></tr>";
+                "<td><button onclick='responderDebateUnity(" + i + ")' class='btn btn-deafult btn-list'>Responder</button></td></tr>";
 
             $("#table-debates>tbody").append(itemDebate); 
         });
 
     };
 
-    buscarDebatesPerguntar(sucessoDebateUnities);
+    buscarDebatesResponder(sucessoDebateUnities);
 </script>
