@@ -8,7 +8,7 @@
     </div>
 </div>
 <div>
-        <h4 id="questionador2"></h4>
+    <h4 id="questionador2"></h4>
     <div class="form-group">
         <input type="text" readonly id="pergunta3" tabindex="1" class="form-control">
     </div>
@@ -164,21 +164,27 @@
         )
         );    
 
+    var mapId;
+    var debateUnity = JSON.parse(sessionStorage.getItem("debateUnity"));
+
     $("#button-salvar").click(function(){
         var conteudo = myDiagram.model.toJson();
-        salvarMapa(conteudo);
-    });
 
-    var debateUnity = JSON.parse(sessionStorage.getItem("debateUnity"));
-    $("#questionador1").html(debateUnity.questioner1.usename);
+        salvarMapaFinal(mapId, conteudo, debateUnity);
+    });
+    
+    $("#questionador1").html(debateUnity.questioner1.username);
     $("#pergunta1").val(debateUnity.question1);
     $("#pergunta2").val(debateUnity.question2);
-    $("#questionador2").html(debateUnity.questioner2.usename);
+
+    $("#questionador2").html(debateUnity.questioner2.username);
     $("#pergunta3").val(debateUnity.question3);
     $("#pergunta4").val(debateUnity.question4);    
 
+    
     var sucessoMapContent = function(mapContent){
         myDiagram.model = go.Model.fromJson(mapContent.content);
+        mapId = mapContent.map._id;
     };
 
     buscarMapContent(debateUnity.initialMapContent._id, sucessoMapContent);

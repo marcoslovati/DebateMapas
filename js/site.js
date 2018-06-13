@@ -72,10 +72,37 @@ function salvarMapa(titulo, conteudo){
 	var sucessoMap = function (response){
 		var mapId = response.map._id;
 
-		ajaxRequest("http://localhost:3000/v1/maps/" + mapId + "/content", "post", dadosMapContent, sucessoMapContent, headers);
+		salvarConteudoMapa(mapId, dadosMapContent);
 	};
 
 	ajaxRequest("http://localhost:3000/v1/maps", "post", dadosMap, sucessoMap, headers);
+}
+
+function salvarMapaFinal(mapId, conteudo, debateUnity){
+	var sucessoMapContent = function(response){
+		var mapContentId = response._id;
+
+		debateUnity.finalMapContent = {
+			_id: mapContentId
+		};
+
+		var sucessoDebateUnities = function(){
+			carregarPagina("paginas/listaDebatesResponder.html");
+		};
+
+		ajaxRequest("http://localhost:3000/v1/debateUnities", "put", debateUnity, sucessoDebateUnities, headers);
+	};
+
+	var dadosMapContent = {
+		"content": conteudo
+	};
+
+	salvarConteudoMapa(mapId, dadosMapContent,sucessoMapContent);
+}
+
+function salvarConteudoMapa(mapId, dadosMapContent,sucessoMapContent){
+	console.log(dadosMapContent);
+	ajaxRequest("http://localhost:3000/v1/maps/" + mapId + "/content", "post", dadosMapContent, sucessoMapContent, headers);
 }
 
 function buscarMapasPorData(data, sucessoCarregaLista){
