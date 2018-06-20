@@ -28,8 +28,12 @@ function salvarDebate(debate, sucessoDebate){
 	ajaxRequest("http://localhost:3000/v1/debates", "post", debate, sucessoDebate, headers);
 }
 
-function processarDebate(idDebate){
-	ajaxRequest("http://localhost:3000/v1/debates/process/debate/" + idDebate, "post", undefined, function(){}, headers);
+function processarDebateInicial(idDebate){
+	ajaxRequest("http://localhost:3000/v1/debates/processInitial/debate/" + idDebate, "post", undefined, function(){}, headers);
+}
+
+function processarDebateFinal(idDebate){
+	ajaxRequest("http://localhost:3000/v1/debates/processFinal/debate/" + idDebate, "post", undefined, function(){}, headers);
 }
 
 function salvarDebateUnities(debateUnities, sucessoDebateUnities){
