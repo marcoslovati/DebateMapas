@@ -40,6 +40,8 @@
 											</div>
 										</div>
 									</div>
+									<div id="erro" style="color: red">
+									</div>
 								</form>
 								<form id="register-form" action="http://localhost:3000/v1/users" method="post"  role="form" style="display: none;">
 									<div class="form-group">
@@ -76,6 +78,8 @@
 
 <script>
 $(function() {
+	var erro = sessionStorage.getItem("erroLogin");
+
     $("#register-form").submit(function(event){
 		event.preventDefault(); //prevent default action
 

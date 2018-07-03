@@ -143,8 +143,17 @@ function ajaxRequest(action, method, data, successCallback, headers){
 			data : JSON.stringify(data),
 			contentType: "application/json",
 			dataType: "json",
-			headers: headers
-		}).success(function(response, textStatus, request){ //
-			successCallback(response, textStatus, request);
+			headers: headers,
+			success:function(response, textStatus, request){
+				successCallback(response, textStatus, request);
+			},
+			error: function(response){
+				var objResp = JSON.parse(response.responseText);
+
+				if(objResp.errorCode === "auth-2"){
+					sessionStorage.setItem("erroLogin", "");
+					window.location = "login.html";
+				}
+			}
 		});
 }
