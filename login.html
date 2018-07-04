@@ -79,6 +79,7 @@
 <script>
 $(function() {
 	var erro = sessionStorage.getItem("erroLogin");
+	$("#erro").html(erro);
 
     $("#register-form").submit(function(event){
 		event.preventDefault(); //prevent default action
@@ -90,16 +91,26 @@ $(function() {
 		submitForm($(this), successFunc);
 	});
 
-	    $("#login-form").submit(function(event){
+	$("#login-form").submit(function(event){
 		event.preventDefault(); //prevent default action
 
 		var successFunc = function(response, textStatus, request){
 			var token = request.getResponseHeader('x-access-token');
 			localStorage.setItem("token", token);
 			window.location = "app.html";
+			sessionStorage.removeItem("erroLogin");
 		};
 
-		submitForm($(this), successFunc);
+		var errorFunc = function (response){
+			var objResp = JSON.parse(response.responseText);
+
+			if(objResp.errorCode === "auth-2"){
+				sessionStorage.setItem("erroLogin", "Falha no login. Tente novamente informando usuário e senha corretos");
+				location.reload();
+			}
+		};
+
+		submitForm($(this), successFunc, undefined, errorFunc);
 	});
 });
 </script>
