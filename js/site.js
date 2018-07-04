@@ -82,6 +82,21 @@ function salvarMapa(titulo, conteudo){
 	ajaxRequest("http://localhost:3000/v1/maps", "post", dadosMap, sucessoMap, headers);
 }
 
+function salvarGrupo(nome, descricao, publico, admin){
+	var dadosGrupo = {
+		"name": nome,
+		"description": description,
+		"public": publico,
+		"admin": admin
+	};
+
+	var sucessoGrupo = function (){
+		carregarPagina("paginas/home.html");
+	};
+
+	ajaxRequest("http://localhost:3000/v1/groups", "post", dadosGrupo, sucessoGrupo, headers);
+}
+
 function salvarMapaFinal(mapId, conteudo, debateUnity){
 	var sucessoMapContent = function(response){
 		var mapContentId = response._id;
@@ -117,6 +132,10 @@ function buscarMapasPorAutor(sucessoCarregaLista){
 	ajaxRequest("http://localhost:3000/v1/maps/author", "get", undefined, sucessoCarregaLista, headers);
 }
 
+function buscarUsuariosPorNome(nome, sucessoCarregaLista){
+	ajaxRequest("http://localhost:3000/v1/users/name/" + nome, "get", undefined, sucessoCarregaLista, headers);
+}
+
 function objectifyForm(formArray) {//serialize data function
 	var unindexed_array = formArray.serializeArray();
 	var indexed_array = {};
@@ -128,15 +147,15 @@ function objectifyForm(formArray) {//serialize data function
 	return indexed_array;
 }
 
-function submitForm(form, successCallback, headers){
+function submitForm(form, successCallback, headers, errorCallback){
 	var post_url = form.attr("action"); //get form action url
 	var request_method = form.attr("method"); //get form GET/POST method
 	var form_data = objectifyForm(form); //Encode form elements for submission
 
-	ajaxRequest(post_url, request_method, form_data, successCallback, headers);
+	ajaxRequest(post_url, request_method, form_data, successCallback, headers, errorCallback);
 }
 
-function ajaxRequest(action, method, data, successCallback, headers){   
+function ajaxRequest(action, method, data, successCallback, headers, errorCallback){   
 		$.ajax({
 			url : action,
 			type: method,
@@ -148,12 +167,12 @@ function ajaxRequest(action, method, data, successCallback, headers){
 				successCallback(response, textStatus, request);
 			},
 			error: function(response){
-				var objResp = JSON.parse(response.responseText);
-
-				if(objResp.errorCode === "auth-2"){
-					sessionStorage.setItem("erroLogin", "");
+				if(response.status === 401){
 					window.location = "login.html";
 				}
+				else if(errorCallback){
+					errorCallback(response);
+				}				
 			}
 		});
 }
