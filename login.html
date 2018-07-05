@@ -96,6 +96,8 @@ $(function() {
 
 		var successFunc = function(response, textStatus, request){
 			var token = request.getResponseHeader('x-access-token');
+			localStorage.setItem("userId", response._id);
+			localStorage.setItem("userName", response.name);
 			localStorage.setItem("token", token);
 			window.location = "app.html";
 			sessionStorage.removeItem("erroLogin");
