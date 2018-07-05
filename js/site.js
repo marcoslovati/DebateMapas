@@ -60,6 +60,10 @@ function buscarMapContent(mapContentId, sucessoMapContent){
 	ajaxRequest("http://localhost:3000/v1/mapContents/" + mapContentId, "get", undefined, sucessoMapContent, headers);
 }
 
+function buscarGruposPorAdmin(adminId, sucessoGrupos){
+	ajaxRequest("http://localhost:3000/v1/groups/admin/" + adminId, "get", undefined, sucessoGrupos, headers);
+};
+
 function salvarMapa(titulo, conteudo){
 	var dadosMap = {
 		"title": titulo
@@ -85,7 +89,7 @@ function salvarMapa(titulo, conteudo){
 function salvarGrupo(nome, descricao, publico, admin){
 	var dadosGrupo = {
 		"name": nome,
-		"description": description,
+		"description": descricao,
 		"public": publico,
 		"admin": admin
 	};
@@ -95,6 +99,14 @@ function salvarGrupo(nome, descricao, publico, admin){
 	};
 
 	ajaxRequest("http://localhost:3000/v1/groups", "post", dadosGrupo, sucessoGrupo, headers);
+}
+
+function salvarUsuariosGrupo(idGrupo, listaIdsUsuarios){
+	var sucessoGrupo = function (){
+		carregarPagina("paginas/home.html");
+	};
+
+	ajaxRequest("http://localhost:3000/v1/groups/" + idGrupo + "/include", "put", listaIdsUsuarios, sucessoGrupo, headers);
 }
 
 function salvarMapaFinal(mapId, conteudo, debateUnity){
@@ -124,8 +136,8 @@ function salvarConteudoMapa(mapId, dadosMapContent,sucessoMapContent){
 	ajaxRequest("http://localhost:3000/v1/maps/" + mapId + "/content", "post", dadosMapContent, sucessoMapContent, headers);
 }
 
-function buscarMapasPorData(data, sucessoCarregaLista){
-	ajaxRequest("http://localhost:3000/v1/maps/date/" + data, "get", undefined, sucessoCarregaLista, headers);
+function buscarMapasPorGrupoEData(data, idsUsuarios, sucessoCarregaLista){
+	ajaxRequest("http://localhost:3000/v1/maps/date/" + data, "post", idsUsuarios, sucessoCarregaLista, headers);
 }
 
 function buscarMapasPorAutor(sucessoCarregaLista){
@@ -134,6 +146,10 @@ function buscarMapasPorAutor(sucessoCarregaLista){
 
 function buscarUsuariosPorNome(nome, sucessoCarregaLista){
 	ajaxRequest("http://localhost:3000/v1/users/name/" + nome, "get", undefined, sucessoCarregaLista, headers);
+}
+
+function buscarUsuarios(sucessoCarregaLista){
+	ajaxRequest("http://localhost:3000/v1/users", "get", undefined, sucessoCarregaLista, headers);
 }
 
 function objectifyForm(formArray) {//serialize data function

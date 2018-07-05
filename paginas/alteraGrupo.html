@@ -1,0 +1,66 @@
+<div class="form-group">
+    <select name="grupo" id="grupo" tabindex="1" class="form-control">        
+    </select>
+</div>
+<!-- <div class="form-group">
+    <input type="text" name="filtro-usuarios" id="filtro-usuarios" tabindex="4" class="form-control" placeholder="Filtro usuarios" value="">
+    <button id="button-filtro">Buscar usuários</button>
+</div> -->
+<div class="panel panel-default">
+    <div class="panel-heading">Selecione os usuários do grupo</div>
+    <div class="panel-body">
+        <div id="lista-usuarios"></div>
+    </div>
+</div>
+<div class="form-group">
+    <button id="button-salvar">Salvar</button>
+</div>
+
+<script>
+    var usuarios = [];
+
+    // $("#button-filtro").click(function(){
+    //     var filtroAdm = $("#filtro-usuarios").val();
+    //     if(filtroAdm){
+    var sucessoCarregaLista = function (usuarios){
+        $('#lista-usuarios').empty();            
+        usuarios.forEach(function(item){
+            var id = item._id;
+            var nome = item.name;
+            var login = item.username;
+
+            var itemUsuario = "<div class='form-check'>" +
+                "<label class='form-check-label'><input id=" + id + " type='checkbox' /> Nome: " + nome + " Login: " + login + "</label></div>";
+            $('#lista-usuarios').append(itemUsuario);         
+        });             
+    };
+
+    buscarUsuarios(sucessoCarregaLista);
+        // }    
+    // });
+
+    $("#button-salvar").click(function(){       
+        var grupoId = $("#grupo").val();
+        var itensUsuarios = $('input[type=checkbox]:checked');
+        var listaIdsUsuarios = [];
+
+        $.each(itensUsuarios, function(i, value){            
+            listaIdsUsuarios.push(value.id);
+        });
+
+        if(itensUsuarios.length > 0)
+            salvarUsuariosGrupo(grupoId, listaIdsUsuarios);    
+    });
+
+    var userId = localStorage.getItem("userId");
+
+    var sucessoGrupos = function(grupos){
+        $("#grupo").empty();
+        grupos.forEach(element => {
+            var item = '<option value="'+ element._id +'">' + element.name + '</option>';
+            $("#grupo").append(item);
+        });
+    };
+
+    buscarGruposPorAdmin(userId, sucessoGrupos);
+</script>
