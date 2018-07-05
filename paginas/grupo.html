@@ -35,7 +35,7 @@
                     var login = item.username;
 
                     var itemUsuario = "<div class='form-check'>" +
-                        "<label id=" + id + " class='form-check-label'><input type='radio' name='admin' /> Nome: " + nome + " Login: " + login + "</label></div>";
+                        "<label class='form-check-label'><input id=" + id + " type='radio' name='admin' /> Nome: " + nome + " Login: " + login + "</label></div>";
                     $('#lista-usuarios').append(itemUsuario);         
                 });             
             };
@@ -47,18 +47,19 @@
     $("#button-salvar").click(function(){       
         var nome = $("#nome").val();
         var descricao = $("#descricao").val();
-        var publico = $("#publico").attr('checked') !== undefined;
-        var adminId = $('input[type=radio].versao:checked').attr('id');
-        var admin = {};
+        var publico = $("#publico").is(':checked');
+        var adminId = $('input[type=radio]:checked').attr('id');
+        var admin = null;
+        console.log(usuarios);
+        console.log(adminId);
 
-        usuarios.forEach(element => {
+        usuarios.forEach(element => {            
             if(element._id === adminId){
                 admin = element;
-                break;
             }
         });
 
-        if(admin != null)
+        if(admin)
             salvarGrupo(nome, descricao, publico, admin);    
     });
 </script>
