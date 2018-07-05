@@ -8,6 +8,10 @@
     </div>
 </div>
 <div class="form-group">
+    <select name="grupo" id="grupo" tabindex="1" class="form-control">        
+    </select>
+</div>
+<div class="form-group">
     <input type="date" name="filtro-data" id="filtro-data" tabindex="1" class="form-control" placeholder="Data" value="">
     <button id="button-filtro">Buscar Mapas</button>
 </div>
@@ -22,6 +26,9 @@
 </div>
 
 <script>
+    var grupos = [];
+    var idsUsuarios = [];
+
     $("#button-filtro").click(function(){
         var sucessoCarregaLista = function (mapas){
             $('#lista-mapas').empty();            
@@ -46,11 +53,21 @@
                         $('#'+id).append(itemVersao);
                     });
                 }           
-            });
-             
+            });             
         };
 
-        buscarMapasPorData($('#filtro-data').val(), sucessoCarregaLista);      
+
+
+        var grupoId = $("#grupo").val();
+        grupos.forEach(element => {
+            if(grupoId === element._id){
+                element.users.forEach(user => {
+                    idsUsuarios.push(user._id);
+                });               
+            }
+        });
+
+        buscarMapasPorGrupoEData($('#filtro-data').val(), idsUsuarios, sucessoCarregaLista);      
     });
 
     $("#button-salvar").click(function(){
@@ -121,6 +138,19 @@
 
         buscarMapasPorAutor(sucessoCarregaLista);
     }
+
+    var userId = localStorage.getItem("userId");
+    
+    var sucessoGrupos = function(grps){
+        grupos = grps;
+        $("#grupo").empty();
+        grps.forEach(element => {
+            var item = '<option value="'+ element._id +'">' + element.name + '</option>';
+            $("#grupo").append(item);
+        });
+    };
+
+    buscarGruposPorAdmin(userId, sucessoGrupos);
 
     listarMeusMapas();
 </script>
