@@ -64,26 +64,12 @@ function buscarGruposPorAdmin(adminId, sucessoGrupos){
 	ajaxRequest("http://localhost:3000/v1/groups/admin/" + adminId, "get", undefined, sucessoGrupos, headers);
 };
 
-function salvarMapa(titulo, conteudo){
+function salvarMapa(titulo, sucessoMapa){
 	var dadosMap = {
 		"title": titulo
 	};
 
-	var sucessoMapContent = function (){
-		carregarPagina("paginas/home.html");
-	};
-
-	var dadosMapContent = {
-		"content": conteudo
-	};
-
-	var sucessoMap = function (response){
-		var mapId = response.map._id;
-
-		salvarConteudoMapa(mapId, dadosMapContent);
-	};
-
-	ajaxRequest("http://localhost:3000/v1/maps", "post", dadosMap, sucessoMap, headers);
+	ajaxRequest("http://localhost:3000/v1/maps", "post", dadosMap, sucessoMapa, headers);
 }
 
 function salvarGrupo(nome, descricao, publico, admin){
@@ -150,6 +136,10 @@ function buscarUsuariosPorNome(nome, sucessoCarregaLista){
 
 function buscarUsuarios(sucessoCarregaLista){
 	ajaxRequest("http://localhost:3000/v1/users", "get", undefined, sucessoCarregaLista, headers);
+}
+
+function verificaUsuarioGrupoAdmin(userId, sucesso){
+	ajaxRequest("http://localhost:3000/v1/users/" + userId + "/isOfAdministratorsGroup", "get", undefined, sucesso, headers);
 }
 
 function objectifyForm(formArray) {//serialize data function

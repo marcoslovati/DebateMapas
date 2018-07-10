@@ -150,8 +150,29 @@
         );
 
     $("#button-salvar").click(function(){
-        var titulo = $("#titulo").val();
-        var conteudo = myDiagram.model.toJson();
-        salvarMapa(titulo, conteudo);
+        var idMapa = sessionStorage.getItem("idMapa");
+
+        var sucessoMapContent = function (){
+            
+        }
+
+        var dadosMapContent = {
+		    "content": myDiagram.model.toJson()
+	    };
+
+        if(!idMapa){
+            var sucessoMapa = function (response){
+                idMapa = response.map._id;
+                sessionStorage.setItem("idMapa", idMapa);
+
+                salvarConteudoMapa(idMapa, dadosMapContent, sucessoMapContent);
+            };
+
+            var titulo = $("#titulo").val();
+            salvarMapa(titulo, sucessoMapa);
+        }
+        else{
+            salvarConteudoMapa(idMapa, dadosMapContent, sucessoMapContent);
+        }        
     });
 </script>

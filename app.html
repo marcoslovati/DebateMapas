@@ -24,47 +24,26 @@
           </div>
           <div id="navbar" class="navbar-collapse collapse">              
             <ul class="nav navbar-nav">
-              <li class="dropdown-gerenciar">
+              <li id="item-gerenciar" class="dropdown-gerenciar">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Gerenciar <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="#" onclick="carregarPagina('paginas/grupo.html')">Criar grupo</a></li>
-                    <li><a href="#" onclick="carregarPagina('paginas/alteraGrupo.html')">Configurar grupo</a></li>
+                    <li id="item-criar-grupo"><a href="#" onclick="carregarPagina('paginas/grupo.html')">Criar grupo</a></li>
+                    <li id="item-config-grupo"><a href="#" onclick="carregarPagina('paginas/alteraGrupo.html')">Configurar grupo</a></li>
                 </ul>
               </li>            
               <li><a href="#" onclick="carregarPagina('paginas/mapa.html')">Criar mapa</a></li>
               <li><a href="#" onclick="carregarPagina('paginas/listaDebatesPerguntar.html')">Perguntar</a></li>             
               <li><a href="#" onclick="carregarPagina('paginas/listaDebatesResponder.html')">Responder</a></li>
-              <li class="dropdown-debate">
+              <li id="item-debates" class="dropdown-debate">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Debates <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <li><a href="#" onclick="carregarPagina('paginas/debate.html')">Criar debate</a></li>
-                  <li><a href="#" onclick="carregarPagina('paginas/listaDebates.html')">Listar debates</a></li>
-                  <li><a href="#">Something else here</a></li>
-                  <li role="separator" class="divider"></li>
-                  <li class="dropdown-header">Nav header</li>
-                  <li><a href="#">Separated link</a></li>
-                  <li><a href="#">One more separated link</a></li>
+                  <li><a href="#" onclick="carregarPagina('paginas/listaDebates.html')">Listar debates</a></li>                  
                 </ul>
               </li>
               <li><a href="#contact">Contact</a></li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
-                  <li role="separator" class="divider"></li>
-                  <li class="dropdown-header">Nav header</li>
-                  <li><a href="#">Separated link</a></li>
-                  <li><a href="#">One more separated link</a></li>
-                </ul>
-              </li>
+              <li class="text-right"><a id="item-sair" href="#">Sair</a></li>
             </ul>
-            <!-- <ul class="nav navbar-nav navbar-right">
-              <li><a href="../navbar/">Default</a></li>
-              <li><a href="../navbar-static-top/">Static top</a></li>
-              <li class="active"><a href="./">Fixed top <span class="sr-only">(current)</span></a></li>
-            </ul> -->
           </div><!--/.nav-collapse -->
         </div>
       </nav>
@@ -75,5 +54,30 @@
 </html>
 
 <script>
+  var userId = localStorage.getItem("userId");
+
+  $("#item-sair").click(function(){
+    localStorage.clear();
+    window.location = "login.html";
+  });
+
+  var sucessoGrupoAdmin = function(resp){
+    if(!resp){
+      $("#item-criar-grupo").remove();
+      
+      var sucessoAdminOfGroup = function(grupos){
+        if(!grupos.length > 0){
+            $("#item-gerenciar").remove();
+            $("#item-debates").remove();
+        }
+      };
+
+      buscarGruposPorAdmin(userId, sucessoAdminOfGroup);
+
+    };    
+  }
+
+  verificaUsuarioGrupoAdmin(userId, sucessoGrupoAdmin);
+
   carregarPagina("paginas/home.html");
 </script>
