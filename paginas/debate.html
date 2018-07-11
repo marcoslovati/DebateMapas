@@ -4,7 +4,18 @@
 <div class="panel panel-default">
     <div class="panel-heading">Selecione o seu mapa de referência para o debate</div>
     <div class="panel-body">
-        <div id="lista-meus-mapas"></div>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Versões</th>
+                    </tr>
+                </thead>
+                <tbody id="lista-meus-mapas">
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <div class="form-group">
@@ -15,22 +26,32 @@
         <div class="panel-heading">Selecione os mapas que deseja incluir no debate</div>
         <div class="panel-body">
             <div class="form-inline">
-                <div class="col-md-1">
-                    <label>Filtro:</label>
-                </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label for="grupo">Grupo:</label>
-                    <select style="display: inline;" name="grupo" id="grupo" tabindex="1" class="form-control">        
+                    <select style="width: 70%" name="grupo" id="grupo" tabindex="1" class="form-control">        
                     </select>
                 </div>
                 <div class="col-md-3">
+                    <label for="filtro-data">Data:</label>
                     <input type="date" name="filtro-data" id="filtro-data" tabindex="1" class="form-control" placeholder="Data" value="">
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <button id="button-filtro" class="btn btn-default">Buscar Mapas</button>
                 </div>
             </div>                
-            <div id="lista-mapas"></div>
+            <div style="margin-top:60px">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Autor</th>
+                                <th>Título</th>
+                                <th>Versões</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-mapas">
+                        </tbody>
+                    </table>
+            </div>
         </div>
     </div>
 </div>
@@ -52,8 +73,7 @@
                     var autor = item.author.username;
                     var versions = item.versions;
 
-                    var itemMapa = "<div class='form-check'>" +
-                        "<label id=" + id + " class='form-check-label'>Autor: " + autor + " Título: " + titulo + " Versões: </label></div>";
+                    var itemMapa = "<tr><td>" + autor + "</td><td>" + titulo + "</td><td id=" + id + "></td></tr>";
                     $('#lista-mapas').append(itemMapa);
 
                     versions.forEach(function(item2) {
@@ -62,7 +82,7 @@
                         var dataFormatada = data.getDate().toString().padStart(2,'0') + '/' + (data.getMonth() + 1).toString().padStart(2,'0') + '/' + data.getFullYear() + ' ' +
                             data.getHours().toString().padStart(2,'0') + ':' + data.getMinutes().toString().padStart(2,'0');
 
-                        var itemVersao = "<input style='margin-left:5px' class='form-check-input versao' type='checkbox' value='' id=" + idVersao + ">" + dataFormatada;
+                        var itemVersao = "<label class='label-normal'><input style='margin-left:5px' class='form-check-input versao' type='checkbox' value='' id=" + idVersao + ">" + dataFormatada + "</label>";
                         $('#'+id).append(itemVersao);
                     });
                 }           
@@ -132,8 +152,7 @@
                     var titulo = item.title;
                     var versions = item.versions;
 
-                    var itemMapa = "<div class='form-check'>" +
-                        "<label id=" + id + " class='form-check-label'>Título: " + titulo + " Versões: </label></div>";
+                    var itemMapa = "<tr><td>" + titulo + "</td><td id=" + id + "></td></tr>";
                     $('#lista-meus-mapas').append(itemMapa);
 
                     versions.forEach(function(item2) {
@@ -142,7 +161,7 @@
                         var dataFormatada = data.getDate().toString().padStart(2,'0') + '/' + (data.getMonth() + 1).toString().padStart(2,'0') + '/' + data.getFullYear() + ' ' +
                             data.getHours().toString().padStart(2,'0') + ':' + data.getMinutes().toString().padStart(2,'0');
 
-                        var itemVersao = "<input style='margin-left:5px' class='form-radio-input versao' type='radio' name='radio-versao' value='' id=" + idVersao + ">" + dataFormatada;
+                        var itemVersao = "<label class='label-normal'><input style='margin-left:5px' class='form-radio-input versao' type='radio' name='radio-versao' value='' id=" + idVersao + ">" + dataFormatada + "</label>";
                         $('#'+id).append(itemVersao);
                     });
                 }           
@@ -167,3 +186,9 @@
 
     listarMeusMapas();
 </script>
+
+<style>
+    .label-normal{
+        font-weight: normal;
+    }
+</style>

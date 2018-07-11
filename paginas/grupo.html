@@ -1,24 +1,31 @@
 <div class="form-group">
-    <input type="text" name="nome" id="nome" tabindex="1" class="form-control" placeholder="Nome do grupo" value="">
+    <div class="col-md-3">
+        <input type="text" name="nome" id="nome" tabindex="1" class="form-control" placeholder="Nome do grupo" value="">
+    </div>
+    <div class="col-md-5">
+        <input type="text" name="descricao" id="descricao" tabindex="2" class="form-control" placeholder="Descrição" value="">
+    </div>
+    <div class="col-md-4">
+            
+    </div>
 </div>
-<div class="form-group">
-    <input type="text" name="descricao" id="descricao" tabindex="2" class="form-control" placeholder="Descrição" value="">
-</div>
-<div class="form-group">
-    <label><input type="checkbox" name="publico" id="publico" tabindex="3"> Público</label>
-</div>
-<div class="form-group">
-    <input type="text" name="filtro-admin" id="filtro-admin" tabindex="4" class="form-control" placeholder="Filtro administrador" value="">
-    <button id="button-filtro">Buscar usuários</button>
-</div>
-<div class="panel panel-default">
-    <div class="panel-heading">Selecione o administrador do grupo</div>
-    <div class="panel-body">
-        <div id="lista-usuarios"></div>
+<div style="margin-top: 60px" class="form-group">
+    <div class="panel panel-default">
+        <div class="panel-heading">Selecione o administrador do grupo</div>
+        <div class="panel-body">
+            <div class="form-inline">
+                <label for="filtro-admin">Login:</label>
+                <input type="text" name="filtro-admin" id="filtro-admin" tabindex="4" class="form-control" placeholder="Filtro administrador" value="">
+                <button id="button-filtro" class="btn btn-default">Buscar usuário</button>
+            </div>
+            <div class="form-group">
+                <div style="margin-top: 30px" id="lista-usuarios"></div>
+            </div>
+        </div>
     </div>
 </div>
 <div class="form-group">
-    <button id="button-salvar">Salvar</button>
+    <button id="button-salvar" class="btn btn-primary">Salvar</button>
 </div>
 
 <script>
@@ -35,7 +42,7 @@
                     var login = item.username;
 
                     var itemUsuario = "<div class='form-check'>" +
-                        "<label class='form-check-label'><input id=" + id + " type='radio' name='admin' /> Nome: " + nome + " Login: " + login + "</label></div>";
+                        "<label class='form-check-label'><input id=" + id + " type='radio' name='admin' /> Login: <span style='font-weight:normal'>" + login + " </span>Nome: <span style='font-weight:normal'>" + nome + "</span></label></div>";
                     $('#lista-usuarios').append(itemUsuario);         
                 });             
             };
@@ -47,7 +54,7 @@
     $("#button-salvar").click(function(){       
         var nome = $("#nome").val();
         var descricao = $("#descricao").val();
-        var publico = $("#publico").is(':checked');
+        var publico = false;
         var adminId = $('input[type=radio]:checked').attr('id');
         var admin = null;
         console.log(usuarios);

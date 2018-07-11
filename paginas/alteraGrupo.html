@@ -30,7 +30,7 @@
             var login = item.username;
 
             var itemUsuario = "<div class='form-check'>" +
-                "<label class='form-check-label'><input id=" + id + " type='checkbox' /> Nome: " + nome + " Login: " + login + "</label></div>";
+                    "<label class='form-check-label'><input id=" + id + " type='radio' name='admin' /> Login: <span style='font-weight:normal'>" + login + " </span>Nome: <span style='font-weight:normal'>" + nome + "</span></label></div>";
             $('#lista-usuarios').append(itemUsuario);         
         });             
     };
