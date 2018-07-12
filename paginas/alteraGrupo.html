@@ -1,27 +1,40 @@
 <div class="form-group">
-    <select name="grupo" id="grupo" tabindex="1" class="form-control">        
-    </select>
+    <div style="width: 50%">
+        <select name="grupo" id="grupo" tabindex="1" class="form-control">        
+        </select>
+    </div>
 </div>
 <!-- <div class="form-group">
     <input type="text" name="filtro-usuarios" id="filtro-usuarios" tabindex="4" class="form-control" placeholder="Filtro usuarios" value="">
     <button id="button-filtro">Buscar usuários</button>
 </div> -->
-<div class="panel panel-default">
-    <div class="panel-heading">Selecione os usuários do grupo</div>
-    <div class="panel-body">
-        <div id="lista-usuarios"></div>
+<div class="form-group">
+    <div style="width: 50%">
+        <div class="panel panel-default">
+            <div class="panel-heading">Selecione os usuários do grupo</div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Login</th>
+                            <th>Nome</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-usuarios">
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 <div class="form-group">
-    <button id="button-salvar">Salvar</button>
+    <button id="button-salvar" class="btn btn-primary">Salvar</button>
 </div>
 
 <script>
     var usuarios = [];
 
-    // $("#button-filtro").click(function(){
-    //     var filtroAdm = $("#filtro-usuarios").val();
-    //     if(filtroAdm){
     var sucessoCarregaLista = function (usuarios){
         $('#lista-usuarios').empty();            
         usuarios.forEach(function(item){
@@ -29,15 +42,12 @@
             var nome = item.name;
             var login = item.username;
 
-            var itemUsuario = "<div class='form-check'>" +
-                    "<label class='form-check-label'><input id=" + id + " type='radio' name='admin' /> Login: <span style='font-weight:normal'>" + login + " </span>Nome: <span style='font-weight:normal'>" + nome + "</span></label></div>";
+            var itemUsuario = "<tr><td><input id=" + id + " type='checkbox'/></td><td>" + login + "</td><td>" + nome + "</td></tr>";            
             $('#lista-usuarios').append(itemUsuario);         
         });             
     };
 
     buscarUsuarios(sucessoCarregaLista);
-        // }    
-    // });
 
     $("#button-salvar").click(function(){       
         var grupoId = $("#grupo").val();
