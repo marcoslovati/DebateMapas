@@ -1,0 +1,63 @@
+<div class="form-group">
+    <div style="width: 50%">
+        <select name="debate" id="debate" tabindex="1" class="form-control">        
+        </select>
+    </div>
+</div>
+<div class="form-group">
+    <div class="panel panel-default">
+        <div class="panel-heading">Resultados dos processamentos</div>
+        <div class="panel-body">
+            <table class="table" id="table-unidades-dabate">
+                <thead>
+                    <tr>
+                        <th>Autor</th>
+                        <th>Distância inicial</th>
+                        <th>Distância final</th>
+                        <th>Aproximação</th>
+                    </tr>
+                </thead>
+                <tbody id="lista-unidades-debate">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    var sucessoDebates = function (debates){
+        $("#debate").empty();
+        debates.forEach(element => {
+            var item = '<option value="'+ element._id +'">' + element.name + '</option>';
+            $("#debate").append(item);
+        });
+
+        if(debates.length > 0)
+            $("#debate").change();
+    };
+
+    $("#debate").change(function(){
+        var sucessoDebateUnities = function(debateUnities){
+            $("#table-unidades-dabate>tbody").empty();
+            debateUnities.forEach(function(item, i) {
+                if(item.initialDistance){
+                    var distanciaFinal = item.finalDistance ? item.finalDistance : "";
+                    var aproximacao = item.finalDistance ? (item.initialDistance - item.finalDistance).toFixed(3) : "";
+
+                    var itemDebate = "<tr><td>" + item.mapsAuthor.username + "</td>" +
+                        "<td>" + item.initialDistance.toFixed(3) + "</td>" + 
+                        "<td>" + distanciaFinal + "</td>" + 
+                        "<td>" + aproximacao + "</td></tr>";
+
+                    $("#table-unidades-dabate>tbody").append(itemDebate);
+                }
+            });
+        };
+
+        var idDebate = $("#debate").val();
+
+        buscarUnidadesDebate(idDebate, sucessoDebateUnities);
+    });
+    
+    buscarDebates(sucessoDebates);
+</script>

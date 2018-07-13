@@ -13,55 +13,54 @@ $(function() {
 		$(this).addClass('active');
 		e.preventDefault();
 	});
-});
-
-var token = localStorage.getItem("token");
-var headers = {
-	"x-access-token": token
-};
+});	
 
 function carregarPagina(pagina){
     $("#corpo").load(pagina);
   }
 
 function salvarDebate(debate, sucessoDebate){
-	ajaxRequest("http://localhost:3000/v1/debates", "post", debate, sucessoDebate, headers);
+	ajaxRequest("http://localhost:3000/v1/debates", "post", debate, sucessoDebate, {"x-access-token": localStorage.getItem("token")});
 }
 
 function processarDebateInicial(idDebate){
-	ajaxRequest("http://localhost:3000/v1/debates/processInitial/debate/" + idDebate, "post", undefined, function(){}, headers);
+	ajaxRequest("http://localhost:3000/v1/debates/processInitial/debate/" + idDebate, "post", undefined, function(){}, {"x-access-token": localStorage.getItem("token")});
 }
 
 function processarDebateFinal(idDebate){
-	ajaxRequest("http://localhost:3000/v1/debates/processFinal/debate/" + idDebate, "post", undefined, function(){}, headers);
+	ajaxRequest("http://localhost:3000/v1/debates/processFinal/debate/" + idDebate, "post", undefined, function(){}, {"x-access-token": localStorage.getItem("token")});
 }
 
 function salvarDebateUnities(debateUnities, sucessoDebateUnities){
-	ajaxRequest("http://localhost:3000/v1/debateUnities", "post", debateUnities, sucessoDebateUnities, headers);
+	ajaxRequest("http://localhost:3000/v1/debateUnities", "post", debateUnities, sucessoDebateUnities, {"x-access-token": localStorage.getItem("token")});
 }
 
 function atualizarDebateUnity(debateUnityQuestions, sucessoDebateUnity){
-	ajaxRequest("http://localhost:3000/v1/debateUnities/questions", "post", debateUnityQuestions, sucessoDebateUnity, headers);
+	ajaxRequest("http://localhost:3000/v1/debateUnities/questions", "post", debateUnityQuestions, sucessoDebateUnity, {"x-access-token": localStorage.getItem("token")});
 }
 
 function buscarDebates(sucessoDebates){
-	ajaxRequest("http://localhost:3000/v1/debates/creator", "get", undefined, sucessoDebates, headers);
+	ajaxRequest("http://localhost:3000/v1/debates/creator", "get", undefined, sucessoDebates, {"x-access-token": localStorage.getItem("token")});
 }
 
 function buscarDebatesPerguntar(sucessoDebateUnities){
-	ajaxRequest("http://localhost:3000/v1/debateUnities/questioner", "get", undefined, sucessoDebateUnities, headers);
+	ajaxRequest("http://localhost:3000/v1/debateUnities/questioner", "get", undefined, sucessoDebateUnities, {"x-access-token": localStorage.getItem("token")});
 }
 
 function buscarDebatesResponder(sucessoDebateUnities){
-	ajaxRequest("http://localhost:3000/v1/debateUnities/author", "get", undefined, sucessoDebateUnities, headers);
+	ajaxRequest("http://localhost:3000/v1/debateUnities/author", "get", undefined, sucessoDebateUnities, {"x-access-token": localStorage.getItem("token")});
+}
+
+function buscarUnidadesDebate(idDebate, sucessoDebateUnities){
+	ajaxRequest("http://localhost:3000/v1/debateUnities/debate/" + idDebate, "get", undefined, sucessoDebateUnities, {"x-access-token": localStorage.getItem("token")});
 }
 
 function buscarMapContent(mapContentId, sucessoMapContent){
-	ajaxRequest("http://localhost:3000/v1/mapContents/" + mapContentId, "get", undefined, sucessoMapContent, headers);
+	ajaxRequest("http://localhost:3000/v1/mapContents/" + mapContentId, "get", undefined, sucessoMapContent, {"x-access-token": localStorage.getItem("token")});
 }
 
 function buscarGruposPorAdmin(adminId, sucessoGrupos){
-	ajaxRequest("http://localhost:3000/v1/groups/admin/" + adminId, "get", undefined, sucessoGrupos, headers);
+	ajaxRequest("http://localhost:3000/v1/groups/admin/" + adminId, "get", undefined, sucessoGrupos, {"x-access-token": localStorage.getItem("token")});
 };
 
 function salvarMapa(titulo, sucessoMapa){
@@ -69,7 +68,7 @@ function salvarMapa(titulo, sucessoMapa){
 		"title": titulo
 	};
 
-	ajaxRequest("http://localhost:3000/v1/maps", "post", dadosMap, sucessoMapa, headers);
+	ajaxRequest("http://localhost:3000/v1/maps", "post", dadosMap, sucessoMapa, {"x-access-token": localStorage.getItem("token")});
 }
 
 function salvarGrupo(nome, descricao, publico, admin){
@@ -84,7 +83,7 @@ function salvarGrupo(nome, descricao, publico, admin){
 		carregarPagina("paginas/home.html");
 	};
 
-	ajaxRequest("http://localhost:3000/v1/groups", "post", dadosGrupo, sucessoGrupo, headers);
+	ajaxRequest("http://localhost:3000/v1/groups", "post", dadosGrupo, sucessoGrupo, {"x-access-token": localStorage.getItem("token")});
 }
 
 function salvarUsuariosGrupo(idGrupo, listaIdsUsuarios){
@@ -92,7 +91,7 @@ function salvarUsuariosGrupo(idGrupo, listaIdsUsuarios){
 		carregarPagina("paginas/home.html");
 	};
 
-	ajaxRequest("http://localhost:3000/v1/groups/" + idGrupo + "/include", "put", listaIdsUsuarios, sucessoGrupo, headers);
+	ajaxRequest("http://localhost:3000/v1/groups/" + idGrupo + "/include", "put", listaIdsUsuarios, sucessoGrupo, {"x-access-token": localStorage.getItem("token")});
 }
 
 function salvarMapaFinal(mapId, conteudo, debateUnity){
@@ -107,7 +106,7 @@ function salvarMapaFinal(mapId, conteudo, debateUnity){
 			carregarPagina("paginas/listaDebatesResponder.html");
 		};
 
-		ajaxRequest("http://localhost:3000/v1/debateUnities", "put", debateUnity, sucessoDebateUnities, headers);
+		ajaxRequest("http://localhost:3000/v1/debateUnities", "put", debateUnity, sucessoDebateUnities, {"x-access-token": localStorage.getItem("token")});
 	};
 
 	var dadosMapContent = {
@@ -119,27 +118,27 @@ function salvarMapaFinal(mapId, conteudo, debateUnity){
 
 function salvarConteudoMapa(mapId, dadosMapContent,sucessoMapContent){
 	console.log(dadosMapContent);
-	ajaxRequest("http://localhost:3000/v1/maps/" + mapId + "/content", "post", dadosMapContent, sucessoMapContent, headers);
+	ajaxRequest("http://localhost:3000/v1/maps/" + mapId + "/content", "post", dadosMapContent, sucessoMapContent, {"x-access-token": localStorage.getItem("token")});
 }
 
 function buscarMapasPorGrupoEData(data, idsUsuarios, sucessoCarregaLista){
-	ajaxRequest("http://localhost:3000/v1/maps/date/" + data, "post", idsUsuarios, sucessoCarregaLista, headers);
+	ajaxRequest("http://localhost:3000/v1/maps/date/" + data, "post", idsUsuarios, sucessoCarregaLista, {"x-access-token": localStorage.getItem("token")});
 }
 
 function buscarMapasPorAutor(sucessoCarregaLista){
-	ajaxRequest("http://localhost:3000/v1/maps/author", "get", undefined, sucessoCarregaLista, headers);
+	ajaxRequest("http://localhost:3000/v1/maps/author", "get", undefined, sucessoCarregaLista, {"x-access-token": localStorage.getItem("token")});
 }
 
 function buscarUsuariosPorNome(nome, sucessoCarregaLista){
-	ajaxRequest("http://localhost:3000/v1/users/name/" + nome, "get", undefined, sucessoCarregaLista, headers);
+	ajaxRequest("http://localhost:3000/v1/users/name/" + nome, "get", undefined, sucessoCarregaLista, {"x-access-token": localStorage.getItem("token")});
 }
 
 function buscarUsuarios(sucessoCarregaLista){
-	ajaxRequest("http://localhost:3000/v1/users", "get", undefined, sucessoCarregaLista, headers);
+	ajaxRequest("http://localhost:3000/v1/users", "get", undefined, sucessoCarregaLista, {"x-access-token": localStorage.getItem("token")});
 }
 
 function verificaUsuarioGrupoAdmin(userId, sucesso){
-	ajaxRequest("http://localhost:3000/v1/users/" + userId + "/isOfAdministratorsGroup", "get", undefined, sucesso, headers);
+	ajaxRequest("http://localhost:3000/v1/users/" + userId + "/isOfAdministratorsGroup", "get", undefined, sucesso, {"x-access-token": localStorage.getItem("token")});
 }
 
 function objectifyForm(formArray) {//serialize data function

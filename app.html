@@ -33,19 +33,19 @@
               </li>            
               <li><a href="#" onclick="carregarPagina('paginas/mapa.html')">Criar mapa</a></li>
               <li><a href="#" onclick="carregarPagina('paginas/listaDebatesPerguntar.html')">Perguntar</a></li>             
-              <li><a href="#" onclick="carregarPagina('paginas/listaDebatesResponder.html')">Responder</a></li>
+              <li><a href="#" onclick="carregarPagina('paginas/listaDebatesResponder.html')">Responder</a></li>              
               <li id="item-debates" class="dropdown-debate">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Debates <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <li><a href="#" onclick="carregarPagina('paginas/debate.html')">Criar debate</a></li>
-                  <li><a href="#" onclick="carregarPagina('paginas/listaDebates.html')">Listar debates</a></li>                  
+                  <li><a href="#" onclick="carregarPagina('paginas/listaDebates.html')">Listar debates</a></li>
+                  <li><a href="#" onclick="carregarPagina('paginas/resultado.html')">Resultado</a></li>               
                 </ul>
               </li>
-              <li><a href="#contact">Contact</a></li>
-              <li class="text-right"><a id="item-sair" href="#">Sair</a></li>
             </ul>
+            <span style="float:right" id="saudacao" class="navbar-text"></span>
           </div><!--/.nav-collapse -->
-        </div>
+        </div>        
       </nav>
   
       <div id="corpo" class="container">  
@@ -55,8 +55,11 @@
 
 <script>
   var userId = localStorage.getItem("userId");
+  var userName = localStorage.getItem("userName");
 
-  $("#item-sair").click(function(){
+  $("#saudacao").html("Olá, " + userName + " <a id='item-sair' href='#'>Sair</a>");
+
+  $(document).on('click',"#item-sair",function(){
     localStorage.clear();
     window.location = "login.html";
   });
@@ -72,8 +75,12 @@
         }
       };
 
-      buscarGruposPorAdmin(userId, sucessoAdminOfGroup);
-
+      if(userId){
+        buscarGruposPorAdmin(userId, sucessoAdminOfGroup);        
+      }
+      else
+        window.location = 'login.html';
+        
     };    
   }
 
