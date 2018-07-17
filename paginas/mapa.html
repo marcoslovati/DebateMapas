@@ -153,7 +153,7 @@
         var idMapa = sessionStorage.getItem("idMapa");
 
         var sucessoMapContent = function (){
-            
+            exibeMensagem("Mapa salvo com sucesso");
         }
 
         var dadosMapContent = {
@@ -175,4 +175,6 @@
             salvarConteudoMapa(idMapa, dadosMapContent, sucessoMapContent);
         }        
     });
+
+    sessionStorage.removeItem("idMapa");
 </script>

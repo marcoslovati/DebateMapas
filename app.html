@@ -45,15 +45,23 @@
             </ul>
             <span style="float:right" id="saudacao" class="navbar-text"></span>
           </div><!--/.nav-collapse -->
-        </div>        
-      </nav>
-  
+        </div>
+        <div style="color: blue; background-color: silver; display: none; position: relative; text-align: center" id="mensagem"></div>       
+      </nav>      
       <div id="corpo" class="container">  
       </div> <!-- /container --> 
-    </body>
+    </body>    
 </html>
 
 <script>
+  function exibeMensagem(mensagem){
+    $("#mensagem").html(mensagem).css("display", "block");
+
+    setTimeout(function(){ 
+      $("#mensagem").html("").css("display", "none");
+    }, 3000);
+  }
+
   var userId = localStorage.getItem("userId");
   var userName = localStorage.getItem("userName");
 
@@ -61,6 +69,7 @@
 
   $(document).on('click',"#item-sair",function(){
     localStorage.clear();
+    sessionStorage.clear();
     window.location = "login.html";
   });
 
