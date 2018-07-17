@@ -94,6 +94,10 @@ function salvarUsuariosGrupo(idGrupo, listaIdsUsuarios){
 	ajaxRequest("http://localhost:3000/v1/groups/" + idGrupo + "/include", "put", listaIdsUsuarios, sucessoGrupo, {"x-access-token": localStorage.getItem("token")});
 }
 
+function removerUsuariosGrupo(idGrupo, listaIdsUsuarios, sucessoGrupo){
+	ajaxRequest("http://localhost:3000/v1/groups/" + idGrupo + "/remove", "put", listaIdsUsuarios, sucessoGrupo, {"x-access-token": localStorage.getItem("token")});
+}
+
 function salvarMapaFinal(mapId, conteudo, debateUnity){
 	var sucessoMapContent = function(response){
 		var mapContentId = response._id;

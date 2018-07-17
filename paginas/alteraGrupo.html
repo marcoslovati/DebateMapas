@@ -34,6 +34,7 @@
 
 <script>
     var usuarios = [];
+    var grupos = [];
 
     var sucessoCarregaLista = function (usuarios){
         $('#lista-usuarios').empty();            
@@ -44,33 +45,64 @@
 
             var itemUsuario = "<tr><td><input id=" + id + " type='checkbox'/></td><td>" + login + "</td><td>" + nome + "</td></tr>";            
             $('#lista-usuarios').append(itemUsuario);         
-        });             
+        });
+
+        buscarGruposPorAdmin(userId, sucessoGrupos); 
     };
 
-    buscarUsuarios(sucessoCarregaLista);
+    function selecionaItens(){
+        var grupoId = $("#grupo").val();
+        var grupoSel = grupos.find(function(elem, i, arr){
+            return elem._id === grupoId
+        });
+        
+        $("#input[type=checkbox]").prop('checked', false);
+
+        grupoSel.users.forEach(function(elem){
+            $("#" + elem._id).prop('checked', true);
+        });
+    }
+
+    $("#grupo").change(function(){
+        selecionaItens();
+    });    
 
     $("#button-salvar").click(function(){       
         var grupoId = $("#grupo").val();
-        var itensUsuarios = $('input[type=checkbox]:checked');
+        var itensUsuarios = $('input[type=checkbox]');
+        var itensUsuariosSel = $('input[type=checkbox]:checked');
         var listaIdsUsuarios = [];
+        var listaIdsUsuariosSel = [];
 
         $.each(itensUsuarios, function(i, value){            
             listaIdsUsuarios.push(value.id);
         });
 
-        if(itensUsuarios.length > 0)
-            salvarUsuariosGrupo(grupoId, listaIdsUsuarios);    
+        $.each(itensUsuariosSel, function(i, value){            
+            listaIdsUsuariosSel.push(value.id);
+        });
+
+        if(itensUsuariosSel.length > 0){
+            var sucessoRemover = function(){
+                salvarUsuariosGrupo(grupoId, listaIdsUsuariosSel);
+            };
+
+            removerUsuariosGrupo(grupoId, listaIdsUsuarios, sucessoRemover);            
+        }               
     });
 
     var userId = localStorage.getItem("userId");
 
-    var sucessoGrupos = function(grupos){
+    var sucessoGrupos = function(grps){
+        grupos = grps;
         $("#grupo").empty();
         grupos.forEach(element => {
             var item = '<option value="'+ element._id +'">' + element.name + '</option>';
             $("#grupo").append(item);
         });
+
+        selecionaItens();
     };
 
-    buscarGruposPorAdmin(userId, sucessoGrupos);
+    buscarUsuarios(sucessoCarregaLista);   
 </script>
