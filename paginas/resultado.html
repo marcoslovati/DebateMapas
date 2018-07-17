@@ -41,7 +41,7 @@
             $("#table-unidades-dabate>tbody").empty();
             debateUnities.forEach(function(item, i) {
                 if(item.initialDistance){
-                    var distanciaFinal = item.finalDistance ? item.finalDistance : "";
+                    var distanciaFinal = item.finalDistance ? item.finalDistance.toFixed(3) : "";
                     var aproximacao = item.finalDistance ? (item.initialDistance - item.finalDistance).toFixed(3) : "";
 
                     var itemDebate = "<tr><td>" + item.mapsAuthor.username + "</td>" +

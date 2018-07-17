@@ -1,4 +1,4 @@
-<div id="myDiagramDiv" style="width: 80%; height: 60%; border: 1px black solid"></div>
+<div id="myDiagramDiv" style="height: 60%; border: 1px black solid"></div>
 
 <div style="margin-top: 20px">
     <div class="form-group">
@@ -108,6 +108,16 @@
 
     console.log(sessionStorage.getItem("debateUnity"));
     var debateUnity = JSON.parse(sessionStorage.getItem("debateUnity"));
+    var userId = localStorage.getItem("userId");
+
+    if(userId === debateUnity.questioner1._id){
+        $('#pergunta1').val(debateUnity.question1);
+        $('#pergunta2').val(debateUnity.question2);
+    }
+    else if(userId === debateUnity.questioner2._id){
+        $('#pergunta1').val(debateUnity.question3);
+        $('#pergunta2').val(debateUnity.question4);
+    }
 
     var sucessoMapContent = function(mapContent){
         myDiagram.model = go.Model.fromJson(mapContent.content);
