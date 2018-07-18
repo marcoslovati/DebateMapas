@@ -80,7 +80,7 @@ function salvarGrupo(nome, descricao, publico, admin){
 	};
 
 	var sucessoGrupo = function (){
-		carregarPagina("paginas/home.html");
+		exibeMensagem("Grupo salvo com sucesso");
 	};
 
 	ajaxRequest("http://localhost:3000/v1/groups", "post", dadosGrupo, sucessoGrupo, {"x-access-token": localStorage.getItem("token")});
@@ -88,7 +88,7 @@ function salvarGrupo(nome, descricao, publico, admin){
 
 function salvarUsuariosGrupo(idGrupo, listaIdsUsuarios){
 	var sucessoGrupo = function (){
-		carregarPagina("paginas/home.html");
+		exibeMensagem("Grupo configurado com sucesso");
 	};
 
 	ajaxRequest("http://localhost:3000/v1/groups/" + idGrupo + "/include", "put", listaIdsUsuarios, sucessoGrupo, {"x-access-token": localStorage.getItem("token")});
