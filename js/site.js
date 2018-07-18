@@ -23,12 +23,12 @@ function salvarDebate(debate, sucessoDebate){
 	ajaxRequest("http://localhost:3000/v1/debates", "post", debate, sucessoDebate, {"x-access-token": localStorage.getItem("token")});
 }
 
-function processarDebateInicial(idDebate){
-	ajaxRequest("http://localhost:3000/v1/debates/processInitial/debate/" + idDebate, "post", undefined, function(){}, {"x-access-token": localStorage.getItem("token")});
+function processarNiveisDebateInicial(idDebate){
+	ajaxRequest("http://localhost:3000/v1/debates/processLevelsInitial/debate/" + idDebate, "post", undefined, function(){}, {"x-access-token": localStorage.getItem("token")});
 }
 
-function processarDebateFinal(idDebate){
-	ajaxRequest("http://localhost:3000/v1/debates/processFinal/debate/" + idDebate, "post", undefined, function(){}, {"x-access-token": localStorage.getItem("token")});
+function processarNiveisDebateFinal(idDebate){
+	ajaxRequest("http://localhost:3000/v1/debates/processLevelsFinal/debate/" + idDebate, "post", undefined, function(){}, {"x-access-token": localStorage.getItem("token")});
 }
 
 function salvarDebateUnities(debateUnities, sucessoDebateUnities){

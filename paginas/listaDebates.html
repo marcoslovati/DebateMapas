@@ -22,8 +22,8 @@
 
             var itemDebate = "<tr><td>" + item.name + "</td><td>" + dataFormatada + "</td>" + 
                 "<td><button onclick='editarDebate(\"" + id + "\")' class='btn btn-deafult btn-list'>Editar</button>" +
-                "<button onclick='processarDebateInicial(\"" + id + "\")' class='btn btn-primary btn-list'>Definir questionadores</button>" + 
-                "<button onclick='processarDebateFinal(\"" + id + "\")' class='btn btn-primary'>Calcular resultado</button>" + 
+                "<button onclick='processarNiveisDebateInicial(\"" + id + "\")' class='btn btn-primary btn-list'>Definir questionadores</button>" + 
+                "<button onclick='processarNiveisDebateFinal(\"" + id + "\")' class='btn btn-primary'>Calcular resultado</button>" + 
                 "</td></tr>";
 
             $("#table-debates>tbody").append(itemDebate);  
