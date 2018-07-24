@@ -21,9 +21,13 @@
             data.getHours().toString().padStart(2,'0') + ":" + data.getMinutes().toString().padStart(2,'0');
 
             var itemDebate = "<tr><td>" + item.name + "</td><td>" + dataFormatada + "</td>" + 
-                "<td><button onclick='editarDebate(\"" + id + "\")' class='btn btn-deafult btn-list'>Editar</button>" +
-                "<button onclick='processarNiveisDebateInicial(\"" + id + "\")' class='btn btn-primary btn-list'>Definir questionadores</button>" + 
-                "<button onclick='processarNiveisDebateFinal(\"" + id + "\")' class='btn btn-primary'>Calcular resultado</button>" + 
+                // "<td><button onclick='editarDebate(\"" + id + "\")' class='btn btn-deafult btn-list'>Editar</button>" +
+                // "<button onclick='processarNiveisDebateInicial(\"" + id + "\")' class='btn btn-primary btn-list'>Definir questionadores</button>" + 
+                "<td><div style='display:inline; margin-right:5px' class='dropdown'><button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Definir grupos</button>" +
+                "<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton'>" +
+                "<li><a onclick='processarNiveisDebateInicial(\"" + id + "\")' href='#'>Com base no nível</a></li>" +
+                "<li><a onclick='processarClustersDebateInicial(\"" + id + "\")' href='#'>Com base na semelhança</a></li></ul></div>" +
+                "<button onclick='processarDebateFinal(\"" + id + "\")' class='btn btn-primary'>Calcular resultado</button>" + 
                 "</td></tr>";
 
             $("#table-debates>tbody").append(itemDebate);  
