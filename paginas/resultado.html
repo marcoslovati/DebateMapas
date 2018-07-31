@@ -1,30 +1,24 @@
+<h2>Resultado</h2>
 <div class="form-group">
     <div style="width: 50%">
         <select name="debate" id="debate" tabindex="1" class="form-control">        
         </select>
     </div>
 </div>
-<div class="form-group">
-    <div class="panel panel-default">
-        <div class="panel-heading">Resultados dos processamentos</div>
-        <div class="panel-body">
-            <table class="table" id="table-unidades-dabate">
-                <thead>
-                    <tr>
-                        <th>Autor</th>
-                        <th>Questionador 1</th>
-                        <th>Questionador 2</th>
-                        <th>Distância inicial</th>
-                        <th>Distância final</th>
-                        <th>Aproximação</th>
-                    </tr>
-                </thead>
-                <tbody id="lista-unidades-debate">
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+<table class="table" id="table-unidades-dabate">
+    <thead>
+        <tr>
+            <th>Autor</th>
+            <th>Questionador 1</th>
+            <th>Questionador 2</th>
+            <th>Distância inicial</th>
+            <th>Distância final</th>
+            <th>Aproximação</th>
+        </tr>
+    </thead>
+    <tbody id="lista-unidades-debate">
+    </tbody>
+</table>
 
 <script>
     var sucessoDebates = function (debates){

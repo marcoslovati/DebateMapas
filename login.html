@@ -16,7 +16,7 @@
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-xs-6">
-								<a href="#" class="active" id="login-form-link">Login</a>
+								<a href="#" class="active" id="login-form-link">Entrar</a>
 							</div>
 							<div class="col-xs-6">
 								<a href="#" id="register-form-link">Cadastro</a>
@@ -37,11 +37,9 @@
 									<div class="form-group">
 										<div class="row">
 											<div class="col-sm-6 col-sm-offset-3">
-												<input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Entrar">
+												<input type="submit" name="login-submit" id="login-submit" tabindex="3" class="form-control btn btn-login" value="Entrar">
 											</div>
 										</div>
-									</div>
-									<div id="erro" style="color: red">
 									</div>
 								</form>
 								<form id="register-form" action="http://localhost:3000/v1/users" method="post"  role="form" style="display: none;">
@@ -49,21 +47,21 @@
 										<input type="text" name="name" id="name" tabindex="1" class="form-control" placeholder="Nome" value="">
 									</div>
 									<div class="form-group">
-										<input type="text" name="username" id="register-username" tabindex="1" class="form-control" placeholder="Login" value="">
+										<input type="text" name="username" id="register-username" tabindex="2" class="form-control" placeholder="Login" value="">
 									</div>
 									<div class="form-group">
-										<input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="E-mail" value="">
+										<input type="email" name="email" id="email" tabindex="3" class="form-control" placeholder="E-mail" value="">
 									</div>
 									<div class="form-group">
-										<input type="password" name="password" id="register-password" tabindex="2" class="form-control" placeholder="Senha">
+										<input type="password" name="password" id="register-password" tabindex="4" class="form-control" placeholder="Senha">
 									</div>
 									<div class="form-group">
-										<input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirmação de Senha">
+										<input type="password" name="confirm-password" id="confirm-password" tabindex="5" class="form-control" placeholder="Confirmação de Senha">
 									</div>
 									<div class="form-group">
 										<div class="row">
 											<div class="col-sm-6 col-sm-offset-3">
-												<input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Registrar-se">
+												<input type="submit" name="register-submit" id="register-submit" tabindex="6" class="form-control btn btn-register" value="Registrar-se">
 											</div>
 										</div>
 									</div>
@@ -71,6 +69,8 @@
 							</div>
 						</div>
 					</div>
+				</div>
+				<div id="erro" style="color: red; text-align: center">
 				</div>
 			</div>
 		</div>
@@ -89,7 +89,16 @@ $(function() {
 			$('#login-form-link').click();
 		};
 
-		submitForm($(this), successFunc);
+		var errorFunc = function (response){
+			var objResp = JSON.parse(response.responseText);
+
+			if(objResp.errorCode === "users-3"){
+				sessionStorage.setItem("erroLogin", "Falha no registro. Já existe um usuário com o mesmo login no sistema");
+				location.reload();
+			}
+		};
+
+		submitForm($(this), successFunc, undefined, errorFunc);
 	});
 
 	$("#login-form").submit(function(event){
@@ -107,10 +116,12 @@ $(function() {
 		var errorFunc = function (response){
 			var objResp = JSON.parse(response.responseText);
 
-			if(objResp.errorCode === "auth-2"){
+			if(objResp.errorCode === "auth-2")
 				sessionStorage.setItem("erroLogin", "Falha no login. Tente novamente informando usuário e senha corretos");
-				location.reload();
-			}
+			else if(objResp.errorCode === "auth-1")
+				sessionStorage.setItem("erroLogin", "Falha no login. O login informado não foi encontrado no sistema");
+
+			location.reload();
 		};
 
 		submitForm($(this), successFunc, undefined, errorFunc);

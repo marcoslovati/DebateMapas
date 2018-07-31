@@ -188,5 +188,13 @@
         mapId = mapContent.map._id;
     };
 
-    buscarMapContent(debateUnity.initialMapContent._id, sucessoMapContent);
+    var idMapContent;
+    if(debateUnity.finalMapContent){
+        idMapContent = debateUnity.finalMapContent._id;
+    }
+    else{
+        idMapContent = debateUnity.initialMapContent._id;
+    }        
+
+    buscarMapContent(idMapContent, sucessoMapContent);
 </script>

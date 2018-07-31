@@ -5,8 +5,8 @@
     <tr>
       <th>Debate</th>
       <th>Autor do Mapa</th>
-      <th>Questionador 1</th>
-      <th>Questionador 2</th>
+      <!-- <th>Questionador 1</th>
+      <th>Questionador 2</th> -->
       <th></th>
     </tr>
   </thead>
@@ -29,8 +29,8 @@
         du.forEach(function(item, i) {
             var itemDebate = "<tr><td>" + item.debate.name + "</td>" +
                 "<td>" + item.mapsAuthor.username + "</td>" +
-                "<td>" + item.questioner1.username + "</td>" + 
-                "<td>" + item.questioner2.username + "</td>" + 
+                // "<td>" + item.questioner1.username + "</td>" + 
+                // "<td>" + item.questioner2.username + "</td>" + 
                 "<td><button onclick='perguntarDebateUnity(" + i + ")' class='btn btn-deafult btn-list'>Perguntar</button></td></tr>";
 
             $("#table-debates>tbody").append(itemDebate); 

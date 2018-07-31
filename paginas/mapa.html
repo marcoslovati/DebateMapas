@@ -26,16 +26,8 @@
             "undoManager.isEnabled": true
         });
 
-    // when the document is modified, add a "*" to the title and enable the "Save" button
     myDiagram.addDiagramListener("Modified", function(e) {
-        var button = document.getElementById("button-salvar");
-        if (button) button.disabled = !myDiagram.isModified;
-        var idx = document.title.indexOf("*");
-        if (myDiagram.isModified) {
-        if (idx < 0) document.title += "*";
-        } else {
-        if (idx >= 0) document.title = document.title.substr(0, idx);
-        }
+        $("#button-salvar").prop( "disabled", !myDiagram.isModified ); 
     });
 
     // define the Node template
@@ -149,6 +141,10 @@
         )
         );
 
+    $("#titulo").change(function(){
+        $("#button-salvar").prop( "disabled", false ); 
+    });
+
     $("#button-salvar").click(function(){
         var idMapa = sessionStorage.getItem("idMapa");
 
@@ -172,8 +168,10 @@
             salvarMapa(titulo, sucessoMapa);
         }
         else{
-            salvarConteudoMapa(idMapa, dadosMapContent, sucessoMapContent);
-        }        
+            salvarConteudoMapa(idMapa, dadosMapContent, sucessoMapContent);                      
+        } 
+            
+        $("#titulo").prop( "disabled", true ); 
     });
 
     sessionStorage.removeItem("idMapa");
