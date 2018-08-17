@@ -90,11 +90,7 @@ function salvarGrupo(nome, descricao, publico, admin){
 	ajaxRequest("http://localhost:3000/v1/groups", "post", dadosGrupo, sucessoGrupo, {"x-access-token": localStorage.getItem("token")});
 }
 
-function salvarUsuariosGrupo(idGrupo, listaIdsUsuarios){
-	var sucessoGrupo = function (){
-		exibeMensagem("Grupo configurado com sucesso");
-	};
-
+function salvarUsuariosGrupo(idGrupo, listaIdsUsuarios, sucessoGrupo){
 	ajaxRequest("http://localhost:3000/v1/groups/" + idGrupo + "/include", "put", listaIdsUsuarios, sucessoGrupo, {"x-access-token": localStorage.getItem("token")});
 }
 

@@ -50,13 +50,25 @@
         buscarGruposPorAdmin(userId, sucessoGrupos); 
     };
 
-    function selecionaItens(){
+    var sucessoGrupo = function(ret){
         var grupoId = $("#grupo").val();
+        console.log(grupos);
+        var pos = grupos.map(function(e) { return e._id; }).indexOf(grupoId);
+
+        grupos[pos] = ret.group;
+        
+        exibeMensagem("Grupo configurado com sucesso");	
+    }
+
+    function selecionaItens(){
+        console.log($("#grupo").val());
+        var grupoId = $("#grupo").val();
+        console.log(grupos);
         var grupoSel = grupos.find(function(elem, i, arr){
             return elem._id === grupoId
         });
         
-        $("#input[type=checkbox]").prop('checked', false);
+        $("input[type=checkbox]").prop('checked', false);
 
         grupoSel.users.forEach(function(elem){
             $("#" + elem._id).prop('checked', true);
@@ -64,6 +76,7 @@
     }
 
     $("#grupo").change(function(){
+        console.log('chegou');
         selecionaItens();
     });    
 
@@ -84,7 +97,7 @@
 
         if(itensUsuariosSel.length > 0){
             var sucessoRemover = function(){
-                salvarUsuariosGrupo(grupoId, listaIdsUsuariosSel);
+                salvarUsuariosGrupo(grupoId, listaIdsUsuariosSel, sucessoGrupo);
             };
 
             removerUsuariosGrupo(grupoId, listaIdsUsuarios, sucessoRemover);            
