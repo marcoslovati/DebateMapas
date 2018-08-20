@@ -24,15 +24,27 @@ function salvarDebate(debate, sucessoDebate){
 }
 
 function processarNiveisDebateInicial(idDebate){
-	ajaxRequest("http://localhost:3000/v1/debates/processLevelsInitial/debate/" + idDebate, "post", undefined, function(){}, {"x-access-token": localStorage.getItem("token")});
+	var sucessoProcessar = function(){
+		exibeMensagem("Debate processado em níveis com sucesso");	
+	};
+
+	ajaxRequest("http://localhost:3000/v1/debates/processLevelsInitial/debate/" + idDebate, "post", undefined, sucessoProcessar, {"x-access-token": localStorage.getItem("token")});
 }
 
 function processarClustersDebateInicial(idDebate){
-	ajaxRequest("http://localhost:3000/v1/debates/processClustersInitial/debate/" + idDebate, "post", undefined, function(){}, {"x-access-token": localStorage.getItem("token")});
+	var sucessoProcessar = function(){
+		exibeMensagem("Debate processado em clusters com sucesso");
+	};
+
+	ajaxRequest("http://localhost:3000/v1/debates/processClustersInitial/debate/" + idDebate, "post", undefined, sucessoProcessar, {"x-access-token": localStorage.getItem("token")});
 }
 
 function processarDebateFinal(idDebate){
-	ajaxRequest("http://localhost:3000/v1/debates/processFinal/debate/" + idDebate, "post", undefined, function(){}, {"x-access-token": localStorage.getItem("token")});
+	var sucessoProcessar = function(){
+		exibeMensagem("Resultado do debate processado com sucesso");
+	};
+
+	ajaxRequest("http://localhost:3000/v1/debates/processFinal/debate/" + idDebate, "post", undefined, sucessoProcessar, {"x-access-token": localStorage.getItem("token")});
 }
 
 function salvarDebateUnities(debateUnities, sucessoDebateUnities){

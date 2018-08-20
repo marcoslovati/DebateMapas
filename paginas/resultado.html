@@ -41,8 +41,8 @@
                     var aproximacao = item.finalDistance ? (item.initialDistance - item.finalDistance).toFixed(3) : "";
 
                     var itemDebate = "<tr><td>" + item.mapsAuthor.username + "</td>" +
-                        "<td>" + item.questioner1.username + "</td>" +
-                        "<td>" + item.questioner2.username + "</td>" +
+                        "<td>" + (item.questioner1 ? item.questioner1.username : "") + "</td>" +
+                        "<td>" + (item.questioner2 ? item.questioner2.username : "") + "</td>" +
                         "<td>" + item.initialDistance.toFixed(3) + "</td>" +
                         "<td>" + distanciaFinal + "</td>" + 
                         "<td>" + aproximacao + "</td></tr>";
