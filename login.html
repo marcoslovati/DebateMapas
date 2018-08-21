@@ -87,6 +87,9 @@ $(function() {
 
 		var successFunc = function(){
 			$('#login-form-link').click();
+			$("#register-form input[type='text']").val("");
+			$("#register-form input[type='password'").val("");
+			$("#register-form input[type='email'").val("");
 		};
 
 		var errorFunc = function (response){
