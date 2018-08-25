@@ -1,0 +1,89 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>        
+        <link href="css/site.css" rel="stylesheet">
+        <script src="js/site.js"></script>
+        <script src="js/carregaMenu.js"></script>
+        <title>Debate Mapas</title>
+    </head>
+    <body>
+        <div id="menu"></div>
+        <div id="corpo" class="container">
+            <div class="form-group">
+                <div class="col-md-3">
+                    <input type="text" name="nome" id="nome" tabindex="1" class="form-control" placeholder="Nome do grupo" value="">
+                </div>
+                <div class="col-md-5">
+                    <input type="text" name="descricao" id="descricao" tabindex="2" class="form-control" placeholder="Descrição" value="">
+                </div>
+                <div class="col-md-4">
+                        
+                </div>
+            </div>
+            <div style="margin-top: 60px" class="form-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Selecione o administrador do grupo</div>
+                    <div class="panel-body">
+                        <div class="form-inline">
+                            <label for="filtro-admin">Login:</label>
+                            <input type="text" name="filtro-admin" id="filtro-admin" tabindex="4" class="form-control" placeholder="Filtro administrador" value="">
+                            <button id="button-filtro" class="btn btn-default">Buscar usuário</button>
+                        </div>
+                        <div class="form-group">
+                            <div style="margin-top: 30px" id="lista-usuarios"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button id="button-salvar" class="btn btn-primary">Salvar</button>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script>
+    var usuarios = [];
+    $("#button-filtro").click(function(){
+        var filtroAdm = $("#filtro-admin").val();
+        if(filtroAdm){
+            var sucessoCarregaLista = function (usrs){
+                usuarios = usrs;
+                $('#lista-usuarios').empty();            
+                usuarios.forEach(function(item){
+                    var id = item._id;
+                    var nome = item.name;
+                    var login = item.username;
+
+                    var itemUsuario = "<div class='form-check'>" +
+                        "<label class='form-check-label'><input id=" + id + " type='radio' name='admin' /> Login: <span style='font-weight:normal'>" + login + " </span>Nome: <span style='font-weight:normal'>" + nome + "</span></label></div>";
+                    $('#lista-usuarios').append(itemUsuario);         
+                });             
+            };
+
+            buscarUsuariosPorNome($('#filtro-admin').val(), sucessoCarregaLista);
+        }    
+    });
+
+    $("#button-salvar").click(function(){       
+        var nome = $("#nome").val();
+        var descricao = $("#descricao").val();
+        var publico = false;
+        var adminId = $('input[type=radio]:checked').attr('id');
+        var admin = null;
+        console.log(usuarios);
+        console.log(adminId);
+
+        usuarios.forEach(element => {            
+            if(element._id === adminId){
+                admin = element;
+            }
+        });
+
+        if(admin)
+            salvarGrupo(nome, descricao, publico, admin);    
+    });
+</script>

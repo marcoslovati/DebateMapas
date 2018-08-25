@@ -1,24 +1,50 @@
-<h2>Lista de debates</h2>
-<p>Lista de debates criados pelo seu usuário</p>            
-<table id="table-debates" class="table">
-  <thead>
-    <tr>
-      <th>Nome</th>
-      <th>Data</th>
-      <th>Ações</th>
-    </tr>
-  </thead>
-  <tbody>
-  </tbody>
-</table>
-
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>        
+        <link href="css/site.css" rel="stylesheet">
+        <script src="js/site.js"></script>
+        <script src="js/carregaMenu.js"></script>
+        <title>Debate Mapas</title>
+    </head>
+    <body>
+        <div id="menu"></div>
+        <div id="corpo" class="container">
+            <h2>Lista de debates</h2>
+            <p>Lista de debates criados pelo seu usuário</p>            
+            <table id="table-debates" class="table">
+            <thead>
+                <tr>
+                <th>Nome</th>
+                <th>Data</th>
+                <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            </table>
+        </div>
+    </body>
+</html>
 <script>
+    function liberarDebateResponder(id){
+        var sucessoDebate = function(){
+            $("#liberaRespostas-" + id).prop("disabled",true);
+        }
+
+        alterarDebateParaRespostas(id, sucessoDebate);
+    }
+
     var sucessoDebates = function(debates){
         debates.forEach(function(item) {
             var id = item._id;
             var data = new Date(item.created);
             var dataFormatada = data.getDate().toString().padStart(2,'0') + "/" + (data.getMonth() + 1).toString().padStart(2,'0') + "/" + data.getFullYear() + " " +
             data.getHours().toString().padStart(2,'0') + ":" + data.getMinutes().toString().padStart(2,'0');
+
+            var botaoRespostas = item.phase === "P" ? "<button id='liberaRespostas-" + id +"' style='margin-right:5px' onclick='liberarDebateResponder(\"" + id + "\")' class='btn btn-primary'>Liberar para respostas</button>" : "";
 
             var itemDebate = "<tr><td>" + item.name + "</td><td>" + dataFormatada + "</td>" + 
                 // "<td><button onclick='editarDebate(\"" + id + "\")' class='btn btn-deafult btn-list'>Editar</button>" +
@@ -27,6 +53,7 @@
                 "<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton'>" +
                 "<li><a onclick='processarNiveisDebateInicial(\"" + id + "\")' href='#'>Com base no nível</a></li>" +
                 "<li><a onclick='processarClustersDebateInicial(\"" + id + "\")' href='#'>Com base na semelhança</a></li></ul></div>" +
+                botaoRespostas +
                 "<button onclick='processarDebateFinal(\"" + id + "\")' class='btn btn-primary'>Calcular resultado</button>" + 
                 "</td></tr>";
 

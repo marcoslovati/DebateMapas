@@ -1,15 +1,47 @@
-<div class="form-group">
-    <input type="text" name="titulo" id="titulo" tabindex="1" class="form-control" placeholder="Título do mapa" value="">
-</div>
-<div id="myDiagramDiv" style="width: 100%; height: 80%; border: 1px black solid"></div>
-<div class="form-group" style="padding-top: 20px;">
-    <div class="row">
-        <div class="col-sm-12 text-right">
-            <button id="button-salvar" class="btn btn-primary" tabindex="2" disabled>Salvar</button>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>        
+        <link href="css/site.css" rel="stylesheet">
+        <script src="js/site.js"></script>
+        <script src="js/gojs/go.js"></script>
+        <script src="js/carregaMenu.js"></script>
+        <title>Debate Mapas</title>
+    </head>
+    <body>
+        <div id="menu"></div>
+        <div id="corpo" class="container">
+            <div>
+                <h4 id="questionador1"></h4>
+                <div class="form-group">
+                    <input type="text" readonly id="pergunta1" tabindex="1" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="text" readonly id="pergunta2" tabindex="2" class="form-control">
+                </div>
+            </div>
+            <div>
+                <h4 id="questionador2"></h4>
+                <div class="form-group">
+                    <input type="text" readonly id="pergunta3" tabindex="1" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="text" readonly id="pergunta4" tabindex="2" class="form-control">
+                </div>
+            </div>
+            <div id="myDiagramDiv" style="width: 100%; height: 60%; border: 1px black solid"></div>
+            <div class="form-group" style="padding-top: 20px;">
+                <div class="row">
+                    <div class="col-sm-12 text-right">
+                        <button id="button-salvar" class="btn btn-primary" tabindex="2" disabled>Salvar</button>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-
+    </body>
+</html>
 <script>
     var Go = go.GraphObject.make;  // for conciseness in defining templates
 
@@ -26,8 +58,16 @@
             "undoManager.isEnabled": true
         });
 
+    // when the document is modified, add a "*" to the title and enable the "Save" button
     myDiagram.addDiagramListener("Modified", function(e) {
-        $("#button-salvar").prop( "disabled", !myDiagram.isModified ); 
+        var button = document.getElementById("button-salvar");
+        if (button) button.disabled = !myDiagram.isModified;
+        var idx = document.title.indexOf("*");
+        if (myDiagram.isModified) {
+        if (idx < 0) document.title += "*";
+        } else {
+        if (idx >= 0) document.title = document.title.substr(0, idx);
+        }
     });
 
     // define the Node template
@@ -139,40 +179,39 @@
             // editing the text automatically updates the model data
             new go.Binding("text").makeTwoWay())
         )
-        );
+        );    
 
-    $("#titulo").change(function(){
-        $("#button-salvar").prop( "disabled", false ); 
-    });
+    var mapId;
+    var debateUnity = JSON.parse(sessionStorage.getItem("debateUnity"));
 
     $("#button-salvar").click(function(){
-        var idMapa = sessionStorage.getItem("idMapa");
+        var conteudo = myDiagram.model.toJson();
 
-        var sucessoMapContent = function (){
-            exibeMensagem("Mapa salvo com sucesso");
-        }
-
-        var dadosMapContent = {
-		    "content": myDiagram.model.toJson()
-	    };
-
-        if(!idMapa){
-            var sucessoMapa = function (response){
-                idMapa = response.map._id;
-                sessionStorage.setItem("idMapa", idMapa);
-
-                salvarConteudoMapa(idMapa, dadosMapContent, sucessoMapContent);
-            };
-
-            var titulo = $("#titulo").val();
-            salvarMapa(titulo, sucessoMapa);
-        }
-        else{
-            salvarConteudoMapa(idMapa, dadosMapContent, sucessoMapContent);                      
-        } 
-            
-        $("#titulo").prop( "disabled", true ); 
+        salvarMapaFinal(mapId, conteudo, debateUnity);
+        exibeMensagem("Mapa salvo com sucesso");
     });
+    
+    $("#questionador1").html(debateUnity.questioner1.username);
+    $("#pergunta1").val(debateUnity.question1);
+    $("#pergunta2").val(debateUnity.question2);
 
-    sessionStorage.removeItem("idMapa");
+    $("#questionador2").html(debateUnity.questioner2.username);
+    $("#pergunta3").val(debateUnity.question3);
+    $("#pergunta4").val(debateUnity.question4);    
+
+    
+    var sucessoMapContent = function(mapContent){
+        myDiagram.model = go.Model.fromJson(mapContent.content);
+        mapId = mapContent.map._id;
+    };
+
+    var idMapContent;
+    if(debateUnity.finalMapContent){
+        idMapContent = debateUnity.finalMapContent._id;
+    }
+    else{
+        idMapContent = debateUnity.initialMapContent._id;
+    }        
+
+    buscarMapContent(idMapContent, sucessoMapContent);
 </script>

@@ -1,17 +1,34 @@
-<div id="myDiagramDiv" style="height: 60%; border: 1px black solid"></div>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>        
+        <link href="css/site.css" rel="stylesheet">
+        <script src="js/site.js"></script>
+        <script src="js/gojs/go.js"></script>
+        <script src="js/carregaMenu.js"></script>
+        <title>Debate Mapas</title>
+    </head>
+    <body>
+        <div id="menu"></div>
+        <div id="corpo" class="container">
+            <div id="myDiagramDiv" style="height: 60%; border: 1px black solid"></div>
 
-<div style="margin-top: 20px">
-    <div class="form-group">
-        <input type="text" name="pergunta1" id="pergunta1" tabindex="1" class="form-control" placeholder="1ª Pergunta" value="">
-    </div>
-    <div class="form-group">
-        <input type="text" name="pergunta2" id="pergunta2" tabindex="2" class="form-control" placeholder="2ª Pergunta" value="">
-    </div>
-    <div class="form-group text-right">
-        <button class="btn btn-primary" id="button-salvar">Salvar</button>
-    </div>
-</div>
-
+            <div style="margin-top: 20px">
+                <div class="form-group">
+                    <input type="text" name="pergunta1" id="pergunta1" tabindex="1" class="form-control" placeholder="1ª Pergunta" value="" readonly>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="pergunta2" id="pergunta2" tabindex="2" class="form-control" placeholder="2ª Pergunta" value="" readonly>
+                </div>
+                <div class="form-group text-right">
+                    <button class="btn btn-primary" id="button-salvar">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
 <script>
     var Go = go.GraphObject.make;  // for conciseness in defining templates
 
@@ -117,6 +134,11 @@
     else if(userId === debateUnity.questioner2._id){
         $('#pergunta1').val(debateUnity.question3);
         $('#pergunta2').val(debateUnity.question4);
+    }
+
+    if(debateUnity.debate.phase === "P"){
+        $('#pergunta1').prop('readonly', false);
+        $('#pergunta2').prop('readonly', false);
     }
 
     var sucessoMapContent = function(mapContent){

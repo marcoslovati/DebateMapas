@@ -1,23 +1,10 @@
-$(function() {
-    $('#login-form-link').click(function(e) {
-		$("#login-form").delay(100).fadeIn(100);
- 		$("#register-form").fadeOut(100);
-		$('#register-form-link').removeClass('active');
-		$(this).addClass('active');
-		e.preventDefault();
-	});
-	$('#register-form-link').click(function(e) {
-		$("#register-form").delay(100).fadeIn(100);
- 		$("#login-form").fadeOut(100);
-		$('#login-form-link').removeClass('active');
-		$(this).addClass('active');
-		e.preventDefault();
-	});
-});	
+function exibeMensagem(mensagem){
+	$("#mensagem").html(mensagem).css("display", "block");
 
-function carregarPagina(pagina){
-    $("#corpo").load(pagina);
-  }
+	setTimeout(function(){ 
+		$("#mensagem").html("").css("display", "none");
+	}, 3000);
+}
 
 function salvarDebate(debate, sucessoDebate){
 	ajaxRequest("http://localhost:3000/v1/debates", "post", debate, sucessoDebate, {"x-access-token": localStorage.getItem("token")});
@@ -49,6 +36,10 @@ function processarDebateFinal(idDebate){
 
 function salvarDebateUnities(debateUnities, sucessoDebateUnities){
 	ajaxRequest("http://localhost:3000/v1/debateUnities", "post", debateUnities, sucessoDebateUnities, {"x-access-token": localStorage.getItem("token")});
+}
+
+function alterarDebateParaRespostas(idDebate, sucessoDebate){
+	ajaxRequest("http://localhost:3000/v1/debates/updatePhaseToAnswer/" + idDebate, "put", undefined, sucessoDebate, {"x-access-token": localStorage.getItem("token")});
 }
 
 function atualizarDebateUnity(debateUnityQuestions, sucessoDebateUnity){
@@ -119,7 +110,7 @@ function salvarMapaFinal(mapId, conteudo, debateUnity){
 		};
 
 		var sucessoDebateUnities = function(){
-			carregarPagina("paginas/listaDebatesResponder.html");
+			window.location = "listaDebatesResponder.html";
 		};
 
 		ajaxRequest("http://localhost:3000/v1/debateUnities", "put", debateUnity, sucessoDebateUnities, {"x-access-token": localStorage.getItem("token")});

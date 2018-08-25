@@ -1,63 +1,80 @@
-<div class="form-group">
-    <input type="text" name="nome" id="nome" tabindex="1" class="form-control" placeholder="Assunto do debate" value="">
-</div>
-<div class="panel panel-default">
-    <div class="panel-heading">Selecione o seu mapa de referência para o debate</div>
-    <div class="panel-body">
-        <div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Título</th>
-                        <th>Versões</th>
-                    </tr>
-                </thead>
-                <tbody id="lista-meus-mapas">
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-<div class="form-group">
-  
-</div>
-<div class="form-group">
-    <div class="panel panel-default">
-        <div class="panel-heading">Selecione os mapas que deseja incluir no debate</div>
-        <div class="panel-body">
-            <div class="form-inline">
-                <div class="col-md-3">
-                    <label for="grupo">Grupo:</label>
-                    <select style="width: 70%" name="grupo" id="grupo" tabindex="1" class="form-control">        
-                    </select>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>        
+        <link href="css/site.css" rel="stylesheet">
+        <script src="js/site.js"></script>
+        <script src="js/carregaMenu.js"></script>
+        <title>Debate Mapas</title>
+    </head>
+    <body>
+        <div id="menu"></div>
+        <div id="corpo" class="container">
+            <div class="form-group">
+                <input type="text" name="nome" id="nome" tabindex="1" class="form-control" placeholder="Assunto do debate" value="">
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Selecione o seu mapa de referência para o debate</div>
+                <div class="panel-body">
+                    <div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Título</th>
+                                    <th>Versões</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-meus-mapas">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <label for="filtro-data">Data:</label>
-                    <input type="date" name="filtro-data" id="filtro-data" tabindex="1" class="form-control" placeholder="Data" value="">
+            </div>
+            <div class="form-group">
+            
+            </div>
+            <div class="form-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Selecione os mapas que deseja incluir no debate</div>
+                    <div class="panel-body">
+                        <div class="form-inline">
+                            <div class="col-md-3">
+                                <label for="grupo">Grupo:</label>
+                                <select style="width: 70%" name="grupo" id="grupo" tabindex="1" class="form-control">        
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="filtro-data">Data:</label>
+                                <input type="date" name="filtro-data" id="filtro-data" tabindex="1" class="form-control" placeholder="Data" value="">
+                            </div>
+                            <div class="col-md-6">
+                                <button id="button-filtro" class="btn btn-default">Buscar Mapas</button>
+                            </div>
+                        </div>                
+                        <div style="margin-top:60px">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Autor</th>
+                                            <th>Título</th>
+                                            <th>Versões</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="lista-mapas">
+                                    </tbody>
+                                </table>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <button id="button-filtro" class="btn btn-default">Buscar Mapas</button>
-                </div>
-            </div>                
-            <div style="margin-top:60px">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Autor</th>
-                                <th>Título</th>
-                                <th>Versões</th>
-                            </tr>
-                        </thead>
-                        <tbody id="lista-mapas">
-                        </tbody>
-                    </table>
+            </div>
+            <div class="form-group">
+                <button id="button-salvar" class="btn btn-primary">Salvar</button>
             </div>
         </div>
-    </div>
-</div>
-<div class="form-group">
-    <button id="button-salvar" class="btn btn-primary">Salvar</button>
-</div>
+    </body>
+</html>
 
 <script>
     var grupos = [];
@@ -117,7 +134,8 @@
                 var debateUnity = {
                     "debate": {
                         "_id":resposta.debate._id,
-                        "name": resposta.debate.name
+                        "name": resposta.debate.name,
+                        "phase": "P"
                     },
                     "initialMapContent":{
                         "_id": versao
