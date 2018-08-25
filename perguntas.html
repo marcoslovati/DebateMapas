@@ -8,11 +8,14 @@
         <script src="js/site.js"></script>
         <script src="js/gojs/go.js"></script>
         <script src="js/carregaMenu.js"></script>
-        <title>Debate Mapas</title>
+        <title>Debate Mapas - Perguntas</title>
     </head>
     <body>
         <div id="menu"></div>
         <div id="corpo" class="container">
+            <div>
+                <h4 id="autor"></h4>
+            </div>
             <div id="myDiagramDiv" style="height: 60%; border: 1px black solid"></div>
 
             <div style="margin-top: 20px">
@@ -119,7 +122,7 @@
         var sucessoDebateUnity = function(){
             exibeMensagem("Perguntas salvas com sucesso");
         }       
-        console.log(dados);
+        // console.log(dados);
         atualizarDebateUnity(dados, sucessoDebateUnity);            
     });
 
@@ -135,6 +138,8 @@
         $('#pergunta1').val(debateUnity.question3);
         $('#pergunta2').val(debateUnity.question4);
     }
+
+    $("#autor").html("Autor do mapa: " + debateUnity.mapsAuthor.username);
 
     if(debateUnity.debate.phase === "P"){
         $('#pergunta1').prop('readonly', false);

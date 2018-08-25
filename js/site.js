@@ -10,19 +10,11 @@ function salvarDebate(debate, sucessoDebate){
 	ajaxRequest("http://localhost:3000/v1/debates", "post", debate, sucessoDebate, {"x-access-token": localStorage.getItem("token")});
 }
 
-function processarNiveisDebateInicial(idDebate){
-	var sucessoProcessar = function(){
-		exibeMensagem("Debate processado em níveis com sucesso");	
-	};
-
+function processarNiveisDebateInicial(idDebate, sucessoProcessar){
 	ajaxRequest("http://localhost:3000/v1/debates/processLevelsInitial/debate/" + idDebate, "post", undefined, sucessoProcessar, {"x-access-token": localStorage.getItem("token")});
 }
 
-function processarClustersDebateInicial(idDebate){
-	var sucessoProcessar = function(){
-		exibeMensagem("Debate processado em clusters com sucesso");
-	};
-
+function processarClustersDebateInicial(idDebate, sucessoProcessar){
 	ajaxRequest("http://localhost:3000/v1/debates/processClustersInitial/debate/" + idDebate, "post", undefined, sucessoProcessar, {"x-access-token": localStorage.getItem("token")});
 }
 

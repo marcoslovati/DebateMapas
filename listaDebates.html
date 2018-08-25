@@ -7,7 +7,7 @@
         <link href="css/site.css" rel="stylesheet">
         <script src="js/site.js"></script>
         <script src="js/carregaMenu.js"></script>
-        <title>Debate Mapas</title>
+        <title>Debate Mapas - Lista de debates</title>
     </head>
     <body>
         <div id="menu"></div>
@@ -37,7 +37,18 @@
         alterarDebateParaRespostas(id, sucessoDebate);
     }
 
+    var sucessoProcessarClusters = function(){
+        exibeMensagem("Debate processado em clusters com sucesso");
+        buscarDebates(sucessoDebates);
+    };
+    
+    var sucessoProcessarNiveis = function(){
+        exibeMensagem("Debate processado em níveis com sucesso");
+        buscarDebates(sucessoDebates);
+	};
+
     var sucessoDebates = function(debates){
+        $("#table-debates>tbody").empty(); 
         debates.forEach(function(item) {
             var id = item._id;
             var data = new Date(item.created);
@@ -51,8 +62,8 @@
                 // "<button onclick='processarNiveisDebateInicial(\"" + id + "\")' class='btn btn-primary btn-list'>Definir questionadores</button>" + 
                 "<td><div style='display:inline; margin-right:5px' class='dropdown'><button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Definir grupos</button>" +
                 "<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton'>" +
-                "<li><a onclick='processarNiveisDebateInicial(\"" + id + "\")' href='#'>Com base no nível</a></li>" +
-                "<li><a onclick='processarClustersDebateInicial(\"" + id + "\")' href='#'>Com base na semelhança</a></li></ul></div>" +
+                "<li><a onclick='processarNiveisDebateInicial(\"" + id + "\", sucessoProcessarNiveis)' href='#'>Com base no nível</a></li>" +
+                "<li><a onclick='processarClustersDebateInicial(\"" + id + "\", sucessoProcessarClusters)' href='#'>Com base na semelhança</a></li></ul></div>" +
                 botaoRespostas +
                 "<button onclick='processarDebateFinal(\"" + id + "\")' class='btn btn-primary'>Calcular resultado</button>" + 
                 "</td></tr>";
