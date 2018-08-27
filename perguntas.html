@@ -26,7 +26,8 @@
                     <input type="text" name="pergunta2" id="pergunta2" tabindex="2" class="form-control" placeholder="2ª Pergunta" value="" readonly>
                 </div>
                 <div class="form-group text-right">
-                    <button class="btn btn-primary" id="button-salvar">Salvar</button>
+                    <button class="btn btn-default" id="button-voltar">Voltar</button>
+                    <button style="margin-left: 5px; display: none" class="btn btn-primary" id="button-salvar">Salvar</button>
                 </div>
             </div>
         </div>
@@ -126,6 +127,10 @@
         atualizarDebateUnity(dados, sucessoDebateUnity);            
     });
 
+    $("#button-voltar").click(function(){
+        window.location = "listaDebatesPerguntar.html";
+    });
+
     console.log(sessionStorage.getItem("debateUnity"));
     var debateUnity = JSON.parse(sessionStorage.getItem("debateUnity"));
     var userId = localStorage.getItem("userId");
@@ -144,6 +149,7 @@
     if(debateUnity.debate.phase === "P"){
         $('#pergunta1').prop('readonly', false);
         $('#pergunta2').prop('readonly', false);
+        $('#button-salvar').css('display', 'inline');
     }
 
     var sucessoMapContent = function(mapContent){

@@ -31,7 +31,8 @@
 <script>
     function liberarDebateResponder(id){
         var sucessoDebate = function(){
-            $("#liberaRespostas-" + id).prop("disabled",true);
+            exibeMensagem("Debate liberado para respostas com sucesso");
+            buscarDebates(sucessoDebates);
         }
 
         alterarDebateParaRespostas(id, sucessoDebate);
@@ -55,17 +56,22 @@
             var dataFormatada = data.getDate().toString().padStart(2,'0') + "/" + (data.getMonth() + 1).toString().padStart(2,'0') + "/" + data.getFullYear() + " " +
             data.getHours().toString().padStart(2,'0') + ":" + data.getMinutes().toString().padStart(2,'0');
 
+            var botaoInicial = (!item.phase || item.phase === "P") ? ("<div style='display:inline; margin-right:5px' class='dropdown'><button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Definir grupos</button>" +
+                "<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton'>" +
+                "<li><a onclick='processarNiveisDebateInicial(\"" + id + "\", sucessoProcessarNiveis)' href='#'>Com base no nível</a></li>" +
+                "<li><a onclick='processarClustersDebateInicial(\"" + id + "\", sucessoProcessarClusters)' href='#'>Com base na semelhança</a></li></ul></div>") : "";
+
             var botaoRespostas = item.phase === "P" ? "<button id='liberaRespostas-" + id +"' style='margin-right:5px' onclick='liberarDebateResponder(\"" + id + "\")' class='btn btn-primary'>Liberar para respostas</button>" : "";
+
+            var botaoResultado = item.phase === "R" ? "<button onclick='processarDebateFinal(\"" + id + "\")' class='btn btn-primary'>Calcular resultado</button>" : "";
 
             var itemDebate = "<tr><td>" + item.name + "</td><td>" + dataFormatada + "</td>" + 
                 // "<td><button onclick='editarDebate(\"" + id + "\")' class='btn btn-deafult btn-list'>Editar</button>" +
                 // "<button onclick='processarNiveisDebateInicial(\"" + id + "\")' class='btn btn-primary btn-list'>Definir questionadores</button>" + 
-                "<td><div style='display:inline; margin-right:5px' class='dropdown'><button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Definir grupos</button>" +
-                "<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton'>" +
-                "<li><a onclick='processarNiveisDebateInicial(\"" + id + "\", sucessoProcessarNiveis)' href='#'>Com base no nível</a></li>" +
-                "<li><a onclick='processarClustersDebateInicial(\"" + id + "\", sucessoProcessarClusters)' href='#'>Com base na semelhança</a></li></ul></div>" +
+                "<td>" +
+                botaoInicial +
                 botaoRespostas +
-                "<button onclick='processarDebateFinal(\"" + id + "\")' class='btn btn-primary'>Calcular resultado</button>" + 
+                botaoResultado + 
                 "</td></tr>";
 
             $("#table-debates>tbody").append(itemDebate);  

@@ -42,14 +42,14 @@
     var sucessoDebateUnities = function(du){
         debateUnities = du;
         du.forEach(function(item, i) {
-            if(item.debate.phase == "R"){
+            // if(item.debate.phase == "R"){
                 var itemDebate = "<tr><td>" + item.debate.name + "</td>" +
                     "<td>" + item.questioner1.username + "</td>" + 
                     "<td>" + item.questioner2.username + "</td>" + 
                     "<td><button onclick='responderDebateUnity(" + i + ")' class='btn btn-deafult btn-list'>Responder</button></td></tr>";
 
                 $("#table-debates>tbody").append(itemDebate); 
-            }
+            // }
         });
 
     };
