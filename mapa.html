@@ -44,9 +44,9 @@
             "undoManager.isEnabled": true
         });
 
-    myDiagram.addDiagramListener("Modified", function(e) {
-        $("#button-salvar").prop( "disabled", !myDiagram.isModified ); 
-    });
+    // myDiagram.addDiagramListener("Modified", function(e) {
+    //     $("#button-salvar").prop( "disabled", !myDiagram.model.isModified );
+    // });
 
     // define the Node template
     myDiagram.nodeTemplate =
@@ -160,7 +160,8 @@
         );
 
     $("#titulo").change(function(){
-        $("#button-salvar").prop( "disabled", false ); 
+        var titulo = $("#titulo").val();
+        $("#button-salvar").prop( "disabled", titulo === "" );
     });
 
     $("#button-salvar").click(function(){
