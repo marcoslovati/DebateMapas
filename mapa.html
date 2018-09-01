@@ -32,29 +32,25 @@
     var Go = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
-        Go(go.Diagram, "myDiagramDiv",  // must name or refer to the DIV HTML element
+      Go(go.Diagram, "myDiagramDiv",  // must name or refer to the DIV HTML element
         {
-            // start everything in the middle of the viewport
-            initialContentAlignment: go.Spot.Center,
-            // have mouse wheel events zoom in and out instead of scroll up and down
-            "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom,
-            // support double-click in background creating a new node
-            "clickCreatingTool.archetypeNodeData": { text: "conceito" },
-            // enable undo & redo
-            "undoManager.isEnabled": true
+          // start everything in the middle of the viewport
+          initialContentAlignment: go.Spot.Center,
+          // have mouse wheel events zoom in and out instead of scroll up and down
+          "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom,
+          // support double-click in background creating a new node
+          "clickCreatingTool.archetypeNodeData": { text: "conceito" },
+          // enable undo & redo
+          "undoManager.isEnabled": true
         });
-
-    // myDiagram.addDiagramListener("Modified", function(e) {
-    //     $("#button-salvar").prop( "disabled", !myDiagram.model.isModified );
-    // });
 
     // define the Node template
     myDiagram.nodeTemplate =
-        Go(go.Node, "Auto",
+      Go(go.Node, "Auto",
         new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
         // define the node's outer shape, which will surround the TextBlock
         Go(go.Shape, "RoundedRectangle",
-            {
+          {
             parameter1: 20,  // the corner has a large radius
             fill: Go(go.Brush, "Linear", { 0: "rgb(254, 201, 0)", 1: "rgb(254, 162, 0)" }),
             stroke: null,
@@ -62,102 +58,102 @@
             fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
             toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true,
             cursor: "pointer"
-            }),
+          }),
         Go(go.TextBlock,
-            {
+          {
             font: "bold 11pt helvetica, bold arial, sans-serif",
             editable: true  // editing the text automatically updates the model data
-            },
-            new go.Binding("text").makeTwoWay())
-        );
+          },
+          new go.Binding("text").makeTwoWay())
+      );
 
     // unlike the normal selection Adornment, this one includes a Button
     myDiagram.nodeTemplate.selectionAdornmentTemplate =
-        Go(go.Adornment, "Spot",
+      Go(go.Adornment, "Spot",
         Go(go.Panel, "Auto",
-            Go(go.Shape, { fill: null, stroke: "blue", strokeWidth: 2 }),
-            Go(go.Placeholder)  // a Placeholder sizes itself to the selected Node
+          Go(go.Shape, { fill: null, stroke: "blue", strokeWidth: 2 }),
+          Go(go.Placeholder)  // a Placeholder sizes itself to the selected Node
         ),
         // the button to create a "next" node, at the top-right corner
         Go("Button",
-            {
+          {
             alignment: go.Spot.TopRight,
             click: addNodeAndLink  // this function is defined below
-            },
-            Go(go.Shape, "PlusLine", { width: 6, height: 6 })
+          },
+          Go(go.Shape, "PlusLine", { width: 6, height: 6 })
         ) // end button
-        ); // end Adornment
+      ); // end Adornment
 
     // clicking the button inserts a new node to the right of the selected node,
     // and adds a link to that new node
     function addNodeAndLink(e, obj) {
-        var adornment = obj.part;
-        var diagram = e.diagram;
-        diagram.startTransaction("Add State");
+      var adornment = obj.part;
+      var diagram = e.diagram;
+      diagram.startTransaction("Add State");
 
-        // get the node data for which the user clicked the button
-        var fromNode = adornment.adornedPart;
-        var fromData = fromNode.data;
-        // create a new "State" data object, positioned off to the right of the adorned Node
-        var toData = { text: "conceito" };
-        var p = fromNode.location.copy();
-        p.x += 200;
-        toData.loc = go.Point.stringify(p);  // the "loc" property is a string, not a Point object
-        // add the new node data to the model
-        var model = diagram.model;
-        model.addNodeData(toData);
+      // get the node data for which the user clicked the button
+      var fromNode = adornment.adornedPart;
+      var fromData = fromNode.data;
+      // create a new "State" data object, positioned off to the right of the adorned Node
+      var toData = { text: "conceito" };
+      var p = fromNode.location.copy();
+      p.x += 200;
+      toData.loc = go.Point.stringify(p);  // the "loc" property is a string, not a Point object
+      // add the new node data to the model
+      var model = diagram.model;
+      model.addNodeData(toData);
 
-        // create a link data from the old node data to the new node data
-        var linkdata = {
+      // create a link data from the old node data to the new node data
+      var linkdata = {
         from: model.getKeyForNodeData(fromData),  // or just: fromData.id
         to: model.getKeyForNodeData(toData),
         text: "relação"
-        };
-        // and add the link data to the model
-        model.addLinkData(linkdata);
+      };
+      // and add the link data to the model
+      model.addLinkData(linkdata);
 
-        // select the new Node
-        var newnode = diagram.findNodeForData(toData);
-        diagram.select(newnode);
+      // select the new Node
+      var newnode = diagram.findNodeForData(toData);
+      diagram.select(newnode);
 
-        diagram.commitTransaction("Add State");
+      diagram.commitTransaction("Add State");
 
-        // if the new node is off-screen, scroll the diagram to show the new node
-        diagram.scrollToRect(newnode.actualBounds);
+      // if the new node is off-screen, scroll the diagram to show the new node
+      diagram.scrollToRect(newnode.actualBounds);
     }
 
     // replace the default Link template in the linkTemplateMap
     myDiagram.linkTemplate =
-        Go(go.Link,  // the whole link panel
+      Go(go.Link,  // the whole link panel
         {
-            curve: go.Link.Bezier, adjusting: go.Link.Stretch,
-            reshapable: true, relinkableFrom: true, relinkableTo: true,
-            toShortLength: 3
+          curve: go.Link.Bezier, adjusting: go.Link.Stretch,
+          reshapable: true, relinkableFrom: true, relinkableTo: true,
+          toShortLength: 3
         },
         new go.Binding("points").makeTwoWay(),
         new go.Binding("curviness"),
         Go(go.Shape,  // the link shape
-            { strokeWidth: 1.5 }),
+          { strokeWidth: 1.5 }),
         Go(go.Shape,  // the arrowhead
-            { toArrow: "standard", stroke: null }),
+          { toArrow: "standard", stroke: null }),
         Go(go.Panel, "Auto",
-            Go(go.Shape,  // the label background, which becomes transparent around the edges
+          Go(go.Shape,  // the label background, which becomes transparent around the edges
             {
-                fill: Go(go.Brush, "Radial",
-                        { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
-                stroke: null
+              fill: Go(go.Brush, "Radial",
+                      { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
+              stroke: null
             }),
-            Go(go.TextBlock, "relação",  // the label text
+          Go(go.TextBlock, "relação",  // the label text
             {
-                textAlign: "center",
-                font: "9pt helvetica, arial, sans-serif",
-                margin: 4,
-                editable: true  // enable in-place editing
+              textAlign: "center",
+              font: "9pt helvetica, arial, sans-serif",
+              margin: 4,
+              editable: true  // enable in-place editing
             },
             // editing the text automatically updates the model data
             new go.Binding("text").makeTwoWay())
         )
-        );
+      );
 
     $("#titulo").change(function(){
         var titulo = $("#titulo").val();
