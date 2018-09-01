@@ -52,7 +52,7 @@
         var sucessoDebateUnities = function(debateUnities){
             $("#table-unidades-dabate>tbody").empty();
             debateUnities.forEach(function(item, i) {
-                if(item.initialDistance){
+                if(item.initialDistance || item.initialDistance === 0){
                     var distanciaFinal = item.finalDistance ? item.finalDistance.toFixed(3) : "";
                     var aproximacao = item.finalDistance ? (item.initialDistance - item.finalDistance).toFixed(3) : "";
 
