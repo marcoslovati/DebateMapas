@@ -55,6 +55,14 @@ function getFile(filePath,res,page404,mimeType){
  
 //a helper function to handle HTTP requests
 function requestHandler(req, res) {
+
+	if(req.url === "/"){
+		res.writeHead(301,
+			{Location: 'http://localhost:4200/login.html'}
+		  );
+		res.end();
+	}
+
     console.log(req.url);
 	var
 	fileName = path.basename(req.url) || 'login.html',
