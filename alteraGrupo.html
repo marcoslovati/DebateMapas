@@ -77,20 +77,21 @@
     function selecionaItens(){
         console.log($("#grupo").val());
         var grupoId = $("#grupo").val();
-        console.log(grupos);
-        var grupoSel = grupos.find(function(elem, i, arr){
-            return elem._id === grupoId
-        });
-        
-        $("input[type=checkbox]").prop('checked', false);
+        // console.log(grupos);
+        if(grupos && grupos.length > 0){
+            var grupoSel = grupos.find(function(elem, i, arr){
+                return elem._id === grupoId
+            });
+            
+            $("input[type=checkbox]").prop('checked', false);
 
-        grupoSel.users.forEach(function(elem){
-            $("#" + elem._id).prop('checked', true);
-        });
+            grupoSel.users.forEach(function(elem){
+                $("#" + elem._id).prop('checked', true);
+            });
+        }
     }
 
     $("#grupo").change(function(){
-        console.log('chegou');
         selecionaItens();
     });    
 
