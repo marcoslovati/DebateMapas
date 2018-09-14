@@ -48,8 +48,13 @@
             $("#debate").change();
     };
 
+    function ordenaPorDistancia(a, b){
+        return a.initialDistance - b.initialDistance;
+    }
+
     $("#debate").change(function(){
         var sucessoDebateUnities = function(debateUnities){
+            debateUnities.sort(ordenaPorDistancia);
             $("#table-unidades-dabate>tbody").empty();
             debateUnities.forEach(function(item, i) {
                 if(item.initialDistance || item.initialDistance === 0){
