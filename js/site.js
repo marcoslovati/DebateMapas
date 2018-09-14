@@ -126,6 +126,10 @@ function buscarMapasPorAutor(sucessoCarregaLista){
 	ajaxRequest(apiRoot + "/v1/maps/author", "get", undefined, sucessoCarregaLista, {"x-access-token": localStorage.getItem("token")});
 }
 
+function buscarMapaPorId(idMapa, sucessoCarregaMapa){
+	ajaxRequest(apiRoot + "/v1/maps/" + idMapa, "get", undefined, sucessoCarregaMapa, {"x-access-token": localStorage.getItem("token")});
+}
+
 function buscarUsuariosPorNome(nome, sucessoCarregaLista){
 	ajaxRequest(apiRoot + "/v1/users/name/" + nome, "get", undefined, sucessoCarregaLista, {"x-access-token": localStorage.getItem("token")});
 }
