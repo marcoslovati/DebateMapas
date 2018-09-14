@@ -155,43 +155,65 @@
         )
       );
 
-    $("#titulo").change(function(){
+      myDiagram.addModelChangedListener(function(evt) {
+        if (evt.isTransactionFinished){
+          var content = myDiagram.model.toJson();
+          sessionStorage.setItem("tempMapContent", content);
+
+          desHabilitaSalvar();
+        }
+      });
+
+    var mapId = null;
+
+    function desHabilitaSalvar(){
+        var content = myDiagram.model.toJson();
+        var objContent = JSON.parse(content);
+
         var titulo = $("#titulo").val();
-        $("#button-salvar").prop( "disabled", titulo === "" );
+        $("#button-salvar").prop( "disabled", (titulo === "" || objContent.nodeDataArray.length === 0) );
+    }
+
+    var tempMapContent = sessionStorage.getItem("tempMapContent");
+
+    $("#titulo").change(function(){
+      desHabilitaSalvar();
     });
 
-    $("#button-salvar").click(function(){
-        var idMapa = sessionStorage.getItem("idMapa");
+    if(tempMapContent)
+      myDiagram.model = go.Model.fromJson(tempMapContent);
 
+    $("#button-salvar").click(function(){
         var sucessoMapContent = function (){
             exibeMensagem("Mapa salvo com sucesso");
+            sessionStorage.removeItem("tempMapContent");
         }
 
         var dadosMapContent = {
 		    "content": myDiagram.model.toJson()
 	    };
 
-        if(!idMapa){
+        if(!mapId){
             var sucessoMapa = function (response){
-                idMapa = response.map._id;
-                sessionStorage.setItem("idMapa", idMapa);
+                mapId = response.map._id;
+                // sessionStorage.setItem("mapId", mapId);
 
-                salvarConteudoMapa(idMapa, dadosMapContent, sucessoMapContent);
+                salvarConteudoMapa(mapId, dadosMapContent, sucessoMapContent);
             };
 
             var titulo = $("#titulo").val();
             salvarMapa(titulo, sucessoMapa);
         }
         else{
-            salvarConteudoMapa(idMapa, dadosMapContent, sucessoMapContent);                      
+            salvarConteudoMapa(mapId, dadosMapContent, sucessoMapContent);                      
         } 
             
         $("#titulo").prop( "disabled", true ); 
+        $("#button-salvar").prop( "disabled", true);
     });
 
     $("#button-voltar").click(function(){
         window.location = "home.html";
     });
 
-    sessionStorage.removeItem("idMapa");
 </script>
