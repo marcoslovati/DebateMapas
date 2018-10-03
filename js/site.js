@@ -12,6 +12,10 @@ function salvarDebate(debate, sucessoDebate){
 	ajaxRequest(apiRoot + "/v1/debates", "post", debate, sucessoDebate, {"x-access-token": localStorage.getItem("token")});
 }
 
+function desAtivarDebate(idDebate, sucessoDebate){
+	ajaxRequest(apiRoot + "/v1/debates/changeStatus/" + idDebate, "put", undefined, sucessoDebate, {"x-access-token": localStorage.getItem("token")});
+}
+
 function processarNiveisDebateInicial(idDebate, sucessoProcessar){
 	ajaxRequest(apiRoot + "/v1/debates/processLevelsInitial/debate/" + idDebate, "post", undefined, sucessoProcessar, {"x-access-token": localStorage.getItem("token")});
 }
@@ -30,10 +34,6 @@ function processarDebateFinal(idDebate){
 
 function salvarDebateUnities(debateUnities, sucessoDebateUnities){
 	ajaxRequest(apiRoot + "/v1/debateUnities", "post", debateUnities, sucessoDebateUnities, {"x-access-token": localStorage.getItem("token")});
-}
-
-function alterarDebateParaRespostas(idDebate, sucessoDebate){
-	ajaxRequest(apiRoot + "/v1/debates/updatePhaseToAnswer/" + idDebate, "put", undefined, sucessoDebate, {"x-access-token": localStorage.getItem("token")});
 }
 
 function atualizarDebateUnity(debateUnityQuestions, sucessoDebateUnity){
@@ -130,8 +130,8 @@ function buscarMapaPorId(idMapa, sucessoCarregaMapa){
 	ajaxRequest(apiRoot + "/v1/maps/" + idMapa, "get", undefined, sucessoCarregaMapa, {"x-access-token": localStorage.getItem("token")});
 }
 
-function buscarUsuariosPorNome(nome, sucessoCarregaLista){
-	ajaxRequest(apiRoot + "/v1/users/name/" + nome, "get", undefined, sucessoCarregaLista, {"x-access-token": localStorage.getItem("token")});
+function buscarUsuariosPorLogin(login, sucessoCarregaLista){
+	ajaxRequest(apiRoot + "/v1/users/username/" + login, "get", undefined, sucessoCarregaLista, {"x-access-token": localStorage.getItem("token")});
 }
 
 function buscarUsuarios(sucessoCarregaLista){
@@ -140,6 +140,10 @@ function buscarUsuarios(sucessoCarregaLista){
 
 function verificaUsuarioGrupoAdmin(userId, sucesso){
 	ajaxRequest(apiRoot + "/v1/users/" + userId + "/isOfAdministratorsGroup", "get", undefined, sucesso, {"x-access-token": localStorage.getItem("token")});
+}
+
+function alterarSenhaUsuario(userId, senha, sucesso){
+	ajaxRequest(apiRoot + "/v1/users/password/" + userId , "put", senha, sucesso, {"x-access-token": localStorage.getItem("token")});
 }
 
 function objectifyForm(formArray) {//serialize data function

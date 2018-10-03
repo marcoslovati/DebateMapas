@@ -7,40 +7,39 @@
         <link href="css/site.css" rel="stylesheet">
         <script src="js/site.js"></script>
         <script src="js/carregaMenu.js"></script>
-        <title>Debate Mapas - Criar grupo</title>
+        <title>Debate Mapas - Alterar usuário</title>
     </head>
     <body>
         <div id="menu"></div>
-        <div id="corpo" class="container">
+        <div id="corpo" class="container">            
             <div class="form-group">
-                <div class="col-md-3">
-                    <input type="text" name="nome" id="nome" tabindex="1" class="form-control" placeholder="Nome do grupo" value="">
-                </div>
-                <div class="col-md-5">
-                    <input type="text" name="descricao" id="descricao" tabindex="2" class="form-control" placeholder="Descrição" value="">
-                </div>
-                <div class="col-md-4">
-                        
-                </div>
-            </div>
-            <div style="margin-top: 60px" class="form-group">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Selecione o administrador do grupo</div>
+                    <div class="panel-heading">Selecione o usuário</div>
                     <div class="panel-body">
                         <div class="form-inline">
                             <label for="filtro-admin">Login:</label>
-                            <input type="text" name="filtro-admin" id="filtro-admin" tabindex="4" class="form-control" placeholder="Filtro administrador" value="">
+                            <input type="text" name="filtro-admin" id="filtro-admin" tabindex="4" class="form-control" placeholder="Filtro usuário" value="">
                             <button id="button-filtro" class="btn btn-default">Buscar usuário</button>
                         </div>
                         <div class="form-group">
-                            <div style="margin-top: 30px" id="lista-usuarios"></div>
+                            <table style="margin-top: 30px; width: 50%" class="table">
+                                <thead>
+                                    <tr>
+                                    <th>Login</th>
+                                    <th>Nome</th>
+                                    <th>Senha</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="lista-usuarios">
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <button id="button-salvar" class="btn btn-primary">Salvar</button>
-            </div>
+            </div>            
         </div>
     </body>
 </html>
@@ -58,8 +57,7 @@
                     var nome = item.name;
                     var login = item.username;
 
-                    var itemUsuario = "<div class='form-check'>" +
-                        "<label class='form-check-label'><input id=" + id + " type='radio' name='admin' /> Login: <span style='font-weight:normal'>" + login + " </span>Nome: <span style='font-weight:normal'>" + nome + "</span></label></div>";
+                    var itemUsuario = "<tr><td><input id='id-usuario' type='hidden' value='" + id + "'/>" + nome + "</td><td>" + login + "</td><td style='width: 60px'><input id='senha' type='text' class='form-control' value='' /></td></tr>";
                     $('#lista-usuarios').append(itemUsuario);         
                 });             
             };
@@ -68,22 +66,14 @@
         }    
     });
 
-    $("#button-salvar").click(function(){       
-        var nome = $("#nome").val();
-        var descricao = $("#descricao").val();
-        var publico = false;
-        var adminId = $('input[type=radio]:checked').attr('id');
-        var admin = null;
-        console.log(usuarios);
-        console.log(adminId);
+    $("#button-salvar").click(function(){
+        var id = $('#id-usuario').val();
+        var senha = {"password" : $('#senha').val()};
 
-        usuarios.forEach(element => {            
-            if(element._id === adminId){
-                admin = element;
-            }
-        });
+        var sucessoSenha = function(){
+            exibeMensagem("Senha alterada com sucesso");
+        };
 
-        if(admin)
-            salvarGrupo(nome, descricao, publico, admin);    
+        alterarSenhaUsuario(id, senha, sucessoSenha);    
     });
 </script>

@@ -13,34 +13,18 @@
     <body>
         <div id="menu"></div>
         <div id="corpo" class="container">
-            <div>
-                <h4 id="questionador1"></h4>
-                <div class="form-group">
-                    <!-- <input type="text" readonly id="pergunta1" tabindex="1" class="form-control"> -->
-                    <textarea id="pergunta1" class="form-control" readonly></textarea>
-                </div>
-                <div class="form-group">
-                    <!-- <input type="text" readonly id="pergunta2" tabindex="2" class="form-control"> -->
-                    <textarea id="pergunta2" class="form-control" readonly></textarea>
-                </div>
+            <div id="questoes1">
+                <h4 id="questionador1"></h4>                
             </div>
-            <div>
+            <div id="questoes2">
                 <h4 id="questionador2"></h4>
-                <div class="form-group">
-                    <!-- <input type="text" readonly id="pergunta3" tabindex="1" class="form-control"> -->
-                    <textarea id="pergunta3" class="form-control" readonly></textarea>
-                </div>
-                <div class="form-group">
-                    <!-- <input type="text" readonly id="pergunta4" tabindex="2" class="form-control"> -->
-                    <textarea id="pergunta4" class="form-control" readonly></textarea>
-                </div>
             </div>
             <div id="myDiagramDiv" style="width: 100%; height: 60%; border: 1px black solid"></div>
             <div class="form-group" style="padding-top: 20px;">
                 <div class="row">
                     <div class="col-sm-12 text-right">
                         <button class="btn btn-default" id="button-voltar">Voltar</button>
-                        <button style="margin-left: 5px; display: none" id="button-salvar" class="btn btn-primary" tabindex="2">Salvar</button>
+                        <button style="margin-left: 5px" id="button-salvar" class="btn btn-primary" tabindex="2">Salvar</button>
                     </div>
                 </div>
             </div>
@@ -188,21 +172,27 @@ myDiagram.linkTemplate =
         salvarMapaFinal(mapId, conteudo, debateUnity, sucesso);        
     });
     
+    console.log(debateUnity);
+
     $("#questionador1").html("Questionador 1: " + debateUnity.questioner1.username);
-    $("#pergunta1").val(debateUnity.question1);
-    $("#pergunta2").val(debateUnity.question2);
+
+    debateUnity.questionsQuestioner1.forEach(q => {
+      var itemQuestao = "<div class='form-group'><textarea class='form-control' readonly>" + q.text + "</textarea></div>";
+
+      $("questoes1").append(itemQuestao);
+    });
 
     $("#questionador2").html("Questionador 2: " + debateUnity.questioner2.username);
-    $("#pergunta3").val(debateUnity.question3);
-    $("#pergunta4").val(debateUnity.question4);    
+
+    debateUnity.questionsQuestioner2.forEach(q => {
+      var itemQuestao = "<div class='form-group'><textarea class='form-control' readonly>" + q.text + "</textarea></div>";
+
+      $("questoes2").append(itemQuestao);
+    });  
 
     $("#button-voltar").click(function(){
         window.location = "listaDebatesResponder.html";
     });
-
-    if(debateUnity.debate.phase == "R"){
-        $('#button-salvar').css('display', 'inline');
-    }
     
     var sucessoMapContent = function(mapContent){
         myDiagram.model = go.Model.fromJson(mapContent.content);

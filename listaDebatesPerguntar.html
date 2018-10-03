@@ -42,16 +42,15 @@
 
     var sucessoDebateUnities = function(du){
         debateUnities = du;
-        du.forEach(function(item, i) {
-            if(item.debate.phase){
-                var itemDebate = "<tr><td>" + item.debate.name + "</td>" +
-                    "<td>" + item.mapsAuthor.username + "</td>" +
-                    // "<td>" + item.questioner1.username + "</td>" + 
-                    // "<td>" + item.questioner2.username + "</td>" + 
-                    "<td><button onclick='perguntarDebateUnity(" + i + ")' class='btn btn-deafult btn-list'>Perguntar</button></td></tr>";
+        console.log(debateUnities);
+        du.forEach(function(item, i) {           
 
-                $("#table-debates>tbody").append(itemDebate);
-            }
+            var autor = item.debate.keepAuthorsAnonymous ? "<anônimo>" : item.mapsAuthor.username;
+            var itemDebate = "<tr><td>" + item.debate.name + "</td>" +
+                "<td>" + autor + "</td>" +
+                "<td><button onclick='perguntarDebateUnity(" + i + ")' class='btn btn-deafult btn-list'>Perguntar</button></td></tr>";
+
+            $("#table-debates>tbody").append(itemDebate);
         });
 
     };
