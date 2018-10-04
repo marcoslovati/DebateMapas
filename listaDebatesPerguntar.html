@@ -1,12 +1,12 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-        <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>        
+        <script src="js/jquery.min.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="js/bootstrap.min.js"></script>        
         <link href="css/site.css" rel="stylesheet">
         <script src="js/site.js"></script>
-        <script src="js/carregaMenu.js"></script>
+        <script src="js/carregaMenu.js"></script>        
         <title>Debate Mapas - Lista de debates a perguntar</title>
     </head>
     <body>
@@ -45,7 +45,7 @@
         console.log(debateUnities);
         du.forEach(function(item, i) {           
 
-            var autor = item.debate.keepAuthorsAnonymous ? "<anônimo>" : item.mapsAuthor.username;
+            var autor = item.debate.keepAuthorsAnonymous ? "(anônimo)" : item.mapsAuthor.username;
             var itemDebate = "<tr><td>" + item.debate.name + "</td>" +
                 "<td>" + autor + "</td>" +
                 "<td><button onclick='perguntarDebateUnity(" + i + ")' class='btn btn-deafult btn-list'>Perguntar</button></td></tr>";

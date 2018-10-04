@@ -1,9 +1,9 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-        <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>        
+        <script src="js/jquery.min.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="js/bootstrap.min.js"></script>        
         <link href="css/site.css" rel="stylesheet">
         <script src="js/site.js"></script>
         <script src="js/carregaMenu.js"></script>
@@ -52,20 +52,34 @@
         return a.initialDistance - b.initialDistance;
     }
 
+    $(document).on('click',".versao",function(){
+        var mapContentId = $(this).attr('id');
+        sessionStorage.setItem("mapContentId", mapContentId);
+        // window.location = "alterarMapa.html";
+        window.open(
+            'verMapa.html',
+            '_blank'
+        );
+    });
+
     $("#debate").change(function(){
         var sucessoDebateUnities = function(debateUnities){
             debateUnities.sort(ordenaPorDistancia);
             $("#table-unidades-dabate>tbody").empty();
             debateUnities.forEach(function(item, i) {
                 if(item.initialDistance || item.initialDistance === 0){
+                    var distanciaInicial = item.initialDistance.toFixed(3);
                     var distanciaFinal = item.finalDistance ? item.finalDistance.toFixed(3) : "";
                     var aproximacao = item.finalDistance ? (item.initialDistance - item.finalDistance).toFixed(3) : "";
+
+                    var linkInicial = "<a href='#' id=" + item.initialMapContent._id + " class='versao'>" + distanciaInicial + "</a>";
+                    var linkFinal = distanciaFinal !== "" ? "<a href='#' id=" + item.finalMapContent._id + " class='versao'>" + distanciaFinal + "</a>" : "";
 
                     var itemDebate = "<tr><td>" + item.mapsAuthor.username + "</td>" +
                         "<td>" + (item.questioner1 ? item.questioner1.username : "") + "</td>" +
                         "<td>" + (item.questioner2 ? item.questioner2.username : "") + "</td>" +
-                        "<td>" + item.initialDistance.toFixed(3) + "</td>" +
-                        "<td>" + distanciaFinal + "</td>" + 
+                        "<td>" + linkInicial + "</td>" +
+                        "<td>" + linkFinal + "</td>" + 
                         "<td>" + aproximacao + "</td></tr>";
 
                     $("#table-unidades-dabate>tbody").append(itemDebate);

@@ -1,9 +1,9 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-        <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>        
+        <script src="js/jquery.min.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="js/bootstrap.min.js"></script>        
         <link href="css/site.css" rel="stylesheet">
         <script src="js/site.js"></script>
         <script src="js/gojs/go.js"></script>
@@ -179,7 +179,7 @@ myDiagram.linkTemplate =
     debateUnity.questionsQuestioner1.forEach(q => {
       var itemQuestao = "<div class='form-group'><textarea class='form-control' readonly>" + q.text + "</textarea></div>";
 
-      $("questoes1").append(itemQuestao);
+      $("#questoes1").append(itemQuestao);
     });
 
     $("#questionador2").html("Questionador 2: " + debateUnity.questioner2.username);
@@ -187,7 +187,7 @@ myDiagram.linkTemplate =
     debateUnity.questionsQuestioner2.forEach(q => {
       var itemQuestao = "<div class='form-group'><textarea class='form-control' readonly>" + q.text + "</textarea></div>";
 
-      $("questoes2").append(itemQuestao);
+      $("#questoes2").append(itemQuestao);
     });  
 
     $("#button-voltar").click(function(){

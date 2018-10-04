@@ -8,22 +8,18 @@
         <script src="js/site.js"></script>
         <script src="js/gojs/go.js"></script>
         <script src="js/carregaMenu.js"></script>
-        <title>Debate Mapas - Perguntas</title>
+        <script src="js/html2canvas.min.js"></script>
+        <title>Debate Mapas - Ver mapa</title>
     </head>
     <body>
         <div id="menu"></div>
         <div id="corpo" class="container">
-            <div>
-                <h4 id="autor"></h4>
-            </div>
             <div id="myDiagramDiv" style="height: 60%; border: 1px black solid"></div>
 
             <div style="margin-top: 20px">
-                <div id="questoes"></div>
                 <div style="margin-top: 20px" class="form-group text-right">
-                    <button class="btn btn-default pull-left" id="button-adicionar">Adicionar questão</button>
-                    <button class="btn btn-default" id="button-voltar">Voltar</button>
-                    <button style="margin-left: 5px" class="btn btn-primary" id="button-salvar">Salvar</button>
+                    <button class="btn btn-default" id="button-baixar">Baixar imagem</button>
+                    <!-- <button style="margin-left: 5px" class="btn btn-primary" id="button-salvar">Salvar</button> -->
                 </div>
             </div>
         </div>
@@ -109,70 +105,40 @@
         )
       );
 
-    $("#button-adicionar").click(function(){
-        var d = new Date();
+      function saveAs(uri, filename) {
+        var link = document.createElement('a');
 
-        var itemQuestao = "<div style='min-height:60px' class='form-group'><div class='col-md-11'><textarea placeholder='Questão' class='form-control questao'>" + 
-        "</textarea></div><div class='col-md-1'><button class='btn btn-danger btn-excluir' id='button-excluir-" + d.getTime() + "'>Excluir</button></div></div>";
+        if (typeof link.download === 'string') {
+              link.href = uri;
+              link.download = filename;
 
-        $("#questoes").append(itemQuestao);
-    });
+              //Firefox requires the link to be in the body
+              document.body.appendChild(link);
 
-    $(document).on("click", ".btn-excluir", function(){
-        console.log($(this));
-        $(this)[0].parentNode.parentNode.remove();
-    });
+              //simulate click
+              link.click();
 
-    $("#button-salvar").click(function(){
-        var questions = [];
+              //remove the link when done
+              document.body.removeChild(link);
 
-        $(".questao").each(function(){
-            var texto = $(this).val();
-            console.log(texto);
-            if(texto)
-                questions.push({text: texto});
-        }); 
-        
-        if(questions.length >= 2){
-          var dados = {
-              debateUnity: debateUnity,
-              questions:questions
-          };
-
-          var sucessoDebateUnity = function(){
-              exibeMensagem("Perguntas salvas com sucesso");
-          }       
-
-          atualizarDebateUnity(dados, sucessoDebateUnity);
+        } 
+        else {
+            window.open(uri);
         }
-        else
-          exibeMensagem("Atenção: adicione ao menos duas questões!", 2);
+      }
+
+    $("#button-baixar").click(function(){
+      html2canvas(document.querySelector('#myDiagramDiv')).then(function(canvas) {
+
+      console.log(canvas);
+      saveAs(canvas.toDataURL(), 'mapa.png');
+      });
     });
-
-    $("#button-voltar").click(function(){
-        window.location = "listaDebatesPerguntar.html";
-    });
-
-    var debateUnity = JSON.parse(sessionStorage.getItem("debateUnity"));
-    var userId = localStorage.getItem("userId");
-
-    var questoes = (userId === debateUnity.questioner1._id ? debateUnity.questionsQuestioner1 : debateUnity.questionsQuestioner2);
-
-    questoes.forEach(q =>{
-        var d = new Date();
-        var itemQuestao = "<div style='min-height:60px' class='form-group'><div class='col-md-11'><textarea placeholder='Questão' class='form-control questao'>" + 
-        q.text + "</textarea></div><div class='col-md-1'><button class='btn btn-danger btn-excluir' id='button-excluir-" + d.getTime() + "'>Excluir</button></div></div>";
-
-        $("#questoes").append(itemQuestao);
-    });
-
-    var autor = debateUnity.debate.keepAuthorsAnonymous ? "(anônimo)" : debateUnity.mapsAuthor.username;
-
-    $("#autor").html("Autor do mapa: " + autor);
 
     var sucessoMapContent = function(mapContent){
         myDiagram.model = go.Model.fromJson(mapContent.content);
     };
 
-    buscarMapContent(debateUnity.initialMapContent._id, sucessoMapContent);
+    var mapContentId = sessionStorage.getItem("mapContentId");
+    buscarMapContent(mapContentId, sucessoMapContent);
 </script>

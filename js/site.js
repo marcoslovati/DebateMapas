@@ -1,9 +1,16 @@
-function exibeMensagem(mensagem){
+function exibeMensagem(mensagem, tipo){
 	$("#mensagem").html(mensagem).css("display", "block");
+
+	if(tipo === 2){
+		$("#mensagem").css("color", "red");
+	}
+	else{
+		$("#mensagem").css("color", "blue");
+	}
 
 	setTimeout(function(){ 
 		$("#mensagem").html("").css("display", "none");
-	}, 3000);
+	}, 4000);
 }
 
 var apiRoot = "http://localhost:3000";
@@ -14,6 +21,10 @@ function salvarDebate(debate, sucessoDebate){
 
 function desAtivarDebate(idDebate, sucessoDebate){
 	ajaxRequest(apiRoot + "/v1/debates/changeStatus/" + idDebate, "put", undefined, sucessoDebate, {"x-access-token": localStorage.getItem("token")});
+}
+
+function alterarAnonimatoDebate(idDebate, sucessoDebate){
+	ajaxRequest(apiRoot + "/v1/debates/changeAnonymous/" + idDebate, "put", undefined, sucessoDebate, {"x-access-token": localStorage.getItem("token")});
 }
 
 function processarNiveisDebateInicial(idDebate, sucessoProcessar){

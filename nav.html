@@ -41,7 +41,7 @@
         <span style="float:right" id="saudacao" class="navbar-text"></span>
       </div><!--/.nav-collapse -->
     </div>
-    <div style="color: blue; height: 30px;line-height: 30px; background-color: #ddd; display: none; position: relative; text-align: center" id="mensagem"></div>       
+    <div style="height: 40px;line-height: 40px; background-color: #ddd; display: none; position: relative; text-align: center" id="mensagem"></div>       
   </nav>
 
   <script>
@@ -62,10 +62,10 @@
                 $("#item-criar-grupo").remove();
                 
                 var sucessoAdminOfGroup = function(grupos){
-                if(!grupos.length > 0){
-                    $("#item-gerenciar").remove();
-                    $("#item-debates").remove();
-                }
+                  if(!grupos.length > 0){
+                      $("#item-gerenciar").remove();
+                      $("#item-debates").remove();
+                  }
                 };
 
                 if(userId){
