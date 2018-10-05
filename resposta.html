@@ -185,7 +185,7 @@ myDiagram.linkTemplate =
     $("#questionador2").html("Questionador 2: " + debateUnity.questioner2.username);
 
     debateUnity.questionsQuestioner2.forEach(q => {
-      var itemQuestao = "<div class='form-group'><textarea class='form-control' readonly>" + q.text + "</textarea></div>";
+      var itemQuestao = "<div class='form-group'><textarea class='form-control' readonly>" + (q.text != null ? q.text : "") + "</textarea></div>";
 
       $("#questoes2").append(itemQuestao);
     });  

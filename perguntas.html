@@ -160,6 +160,7 @@
 
     questoes.forEach(q =>{
         var d = new Date();
+        var texto = q.text != null ? q.text : "";
         var itemQuestao = "<div style='min-height:60px' class='form-group'><div class='col-md-11'><textarea placeholder='Questão' class='form-control questao'>" + 
         q.text + "</textarea></div><div class='col-md-1'><button class='btn btn-danger btn-excluir' id='button-excluir-" + d.getTime() + "'>Excluir</button></div></div>";
 

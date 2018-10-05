@@ -40,8 +40,10 @@
     var sucessoDebates = function (debates){
         $("#debate").empty();
         debates.forEach(element => {
-            var item = '<option value="'+ element._id +'">' + element.name + '</option>';
-            $("#debate").append(item);
+            if(element.active){
+                var item = '<option value="'+ element._id +'">' + element.name + '</option>';
+                $("#debate").append(item);
+            }
         });
 
         if(debates.length > 0)
