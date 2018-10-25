@@ -56,7 +56,8 @@
 
             var botaoDesAtivar = "<button onclick='alterarStatus(\"" + id + "\")' class='btn btn-danger'>" + (item.active ? "Desativar" : "Ativar") + "</button>";
 
-            var botaoAnonimos = "<button style='margin-right:5px' onclick='alterarAnonimato(\"" + id + "\")' class='btn btn-alert'>" + (item.keepAuthorsAnonymous ? "Identificar autores" : "Tornar anônimos") + "</button>";
+            var botaoAnonimos = "<button style='margin-right:5px' onclick='alterarAnonimato(\"" + id + "\")' class='btn btn-alert'>" + (item.keepAuthorsAnonymous ? "Identificar autores" 
+            : "Tornar anônimos") + "</button>";
 
             var itemDebate = "<tr><td>" + item.name + "</td><td>" + dataFormatada + "</td>" + 
                 "<td>" +

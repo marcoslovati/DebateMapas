@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="js/jquery.min.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="js/bootstrap.min.js"></script>        
+        <link href="css/site.css" rel="stylesheet">
+        <script src="js/site.js"></script>
+        <script src="js/carregaMenu.js"></script>
+        <title>Debate Mapas - Lista de grupos</title>
+    </head>
+    <body>
+        <div id="menu"></div>
+        <div id="corpo" class="container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="lista-grupos">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    var listaGrupos = [];
+
+    function editarGrupo(idGrupo){
+        var grupo = listaGrupos.find(g => g._id === idGrupo);
+        sessionStorage.setItem("group", JSON.stringify(grupo));
+        window.location = "grupo.html";
+    }
+
+    var sucessoCarregaLista = function (grupos){
+        listaGrupos = grupos;
+        console.log(grupos);
+        $('#lista-grupos').empty();            
+        grupos.forEach(function(item){
+            var itemGrupo = "<tr><td>" + item.name + "</td><td>" + item.description + "</td>" +
+            "<td><button onclick='editarGrupo(\"" + item._id + "\")' class='btn btn-primary'>Editar</button></td></tr>";            
+            $('#lista-grupos').append(itemGrupo);         
+        });         
+    };
+
+    var userId = localStorage.getItem("userId");
+    sessionStorage.removeItem("group");
+
+    buscarGruposPorAdmin(userId, sucessoCarregaLista);  
+</script>

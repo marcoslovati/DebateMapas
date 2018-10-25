@@ -14,8 +14,7 @@
           <li id="item-gerenciar" class="dropdown-gerenciar">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Gerenciar <span class="caret"></span></a>
             <ul class="dropdown-menu">
-                <li id="item-criar-grupo"><a href="grupo.html" >Criar grupo</a></li>
-                <li id="item-config-grupo"><a href="alteraGrupo.html" >Configurar grupo</a></li>
+                <li id="item-criar-grupo"><a href="listaGrupos.html" >Grupos</a></li>
                 <li id="item-altera-usuario"><a href="alteraUsuario.html" >Alterar usuário</a></li>
             </ul>
           </li>            
@@ -46,9 +45,7 @@
 
   <script>
   $(function() {
-        var userId = localStorage.getItem("userId");
         var userName = localStorage.getItem("userName");
-
         $("#saudacao").html("Olá, " + userName + " <a id='item-sair' href='#'>Sair</a>");
 
         $(document).on('click',"#item-sair",function(){
@@ -56,26 +53,5 @@
             sessionStorage.clear();
             window.location = "login.html";
         });
-        
-        var sucessoGrupoAdmin = function(resp){
-            if(!resp){
-                $("#item-criar-grupo").remove();
-                
-                var sucessoAdminOfGroup = function(grupos){
-                  if(!grupos.length > 0){
-                      $("#item-gerenciar").remove();
-                      $("#item-debates").remove();
-                  }
-                };
-
-                if(userId){
-                    buscarGruposPorAdmin(userId, sucessoAdminOfGroup);        
-                }
-                else
-                    window.location = 'login.html';
-                
-            };    
-        }	
-        verificaUsuarioGrupoAdmin(userId, sucessoGrupoAdmin);
     });
 </script>

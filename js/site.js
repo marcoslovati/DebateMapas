@@ -83,19 +83,12 @@ function salvarMapa(titulo, sucessoMapa){
 	ajaxRequest(apiRoot + "/v1/maps", "post", dadosMap, sucessoMapa, {"x-access-token": localStorage.getItem("token")});
 }
 
-function salvarGrupo(nome, descricao, publico, admin){
-	var dadosGrupo = {
-		"name": nome,
-		"description": descricao,
-		"public": publico,
-		"admin": admin
-	};
-
-	var sucessoGrupo = function (){
-		exibeMensagem("Grupo salvo com sucesso");
-	};
-
+function criarGrupo(dadosGrupo, sucessoGrupo){
 	ajaxRequest(apiRoot + "/v1/groups", "post", dadosGrupo, sucessoGrupo, {"x-access-token": localStorage.getItem("token")});
+}
+
+function alterarGrupo(dadosGrupo, sucessoGrupo){
+	ajaxRequest(apiRoot + "/v1/groups", "put", dadosGrupo, sucessoGrupo, {"x-access-token": localStorage.getItem("token")});
 }
 
 function salvarUsuariosGrupo(idGrupo, listaIdsUsuarios, sucessoGrupo){
@@ -141,8 +134,12 @@ function buscarMapaPorId(idMapa, sucessoCarregaMapa){
 	ajaxRequest(apiRoot + "/v1/maps/" + idMapa, "get", undefined, sucessoCarregaMapa, {"x-access-token": localStorage.getItem("token")});
 }
 
-function buscarUsuariosPorLogin(login, sucessoCarregaLista){
-	ajaxRequest(apiRoot + "/v1/users/username/" + login, "get", undefined, sucessoCarregaLista, {"x-access-token": localStorage.getItem("token")});
+function buscarUsuariosPorFiltro(strFiltro, sucessoCarregaLista){
+	ajaxRequest(apiRoot + "/v1/users/filter/" + strFiltro, "get", undefined, sucessoCarregaLista, {"x-access-token": localStorage.getItem("token")});
+}
+
+function buscarUsuariosPorGrupo(idGrupo, sucessoCarregaLista){
+	ajaxRequest(apiRoot + "/v1/users/group/" + idGrupo, "get", undefined, sucessoCarregaLista, {"x-access-token": localStorage.getItem("token")});
 }
 
 function buscarUsuarios(sucessoCarregaLista){
