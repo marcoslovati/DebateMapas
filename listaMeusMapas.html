@@ -12,7 +12,8 @@
     <body>
         <div id="menu"></div>
         <div id="corpo" class="container">
-            <h2>Mapas do usuário</h2>          
+            <h2>Meus mapas</h2>
+            <p>Lista de mapas criados pelo seu usuário</p>            
             <table id="table-mapas" class="table">
             <thead>
                 <tr>
@@ -29,11 +30,10 @@
 <script>
     $(document).on('click',".a-versao",function(){
         var mapContentId = $(this).attr('id');
+        var mapId = $(this).parent().attr('id');
         sessionStorage.setItem("mapContentId", mapContentId);
-        window.open(
-            'verMapa.html',
-            '_blank'
-        );
+        sessionStorage.setItem("mapId", mapId);
+        window.location = "alterarMapa.html";
     });
 
     function listarMeusMapas(){
@@ -62,11 +62,13 @@
             });             
         };
 
-        var idUsuario = sessionStorage.getItem("mapsUserId");
+        var idUsuario = localStorage.getItem("userId");
         buscarMapasPorAutor(idUsuario, sucessoCarregaLista);
     }
 
     listarMeusMapas();
 
+    sessionStorage.removeItem("mapId");
     sessionStorage.removeItem("mapContentId");
+    sessionStorage.removeItem("tempMapContentAlter");
 </script>

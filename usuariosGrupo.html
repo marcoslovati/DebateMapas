@@ -73,7 +73,9 @@
 
         usuarios.forEach(function(item){
             var itemUsuario = "<tr id=" + item._id + "><td>" + item.username + "</td><td>" + item.name + "</td><td>" + item.email + "</td>" +
-            "<td><button onclick='removerUsuario(\"" + item._id + "\")' class='btn btn-danger'>Remover</button></td></tr>";
+            "<td><button onclick='listarMapasUsuario(\"" + item._id + "\")' class='btn btn-primary'>Ver mapas</button>" +
+            "<button style='margin-left: 5px' onclick='removerUsuario(\"" + item._id + "\")' class='btn btn-danger'>Remover</button>" +
+            "</td></tr>";
             $('#lista-usuarios').append(itemUsuario);  
         });             
     };
@@ -114,22 +116,29 @@
             idsUsuarios.push(idUsuario);            
         });
 
-        var sucesso = function(){
-            $('input[type=checkbox]:checked').each(function(){                
-                $(this).parent().remove();
+        if(idsUsuarios.length > 0){
+            var sucesso = function(){
+                $('input[type=checkbox]:checked').each(function(){                
+                    $(this).parent().remove();
 
-                console.log($('input[type=checkbox]'));
+                    console.log($('input[type=checkbox]'));
 
-                if($('input[type=checkbox]').length === 0)
-                    $("#sec-btn-adic").css('display', 'none');
-            });
-            
-            buscarUsuariosPorGrupo(grupo._id, sucessoCarregaLista);
-            exibeMensagem("Grupo configurado com sucesso");
-        };
+                    if($('input[type=checkbox]').length === 0)
+                        $("#sec-btn-adic").css('display', 'none');
+                });
+                
+                buscarUsuariosPorGrupo(grupo._id, sucessoCarregaLista);
+                exibeMensagem("Grupo configurado com sucesso");
+            };
 
-        salvarUsuariosGrupo(grupo._id, idsUsuarios, sucesso);
+            salvarUsuariosGrupo(grupo._id, idsUsuarios, sucesso);
+        }
     });
+
+    function listarMapasUsuario(id){
+        sessionStorage.setItem("mapsUserId", id);
+        window.location = "listaMapas.html";
+    }
 
     function removerUsuario(id){
         var sucessoRemover = function(){

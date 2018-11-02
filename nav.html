@@ -12,11 +12,10 @@
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
           <li id="item-gerenciar" class="dropdown-gerenciar">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Gerenciar <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Grupos <span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li id="item-criar-grupo"><a href="#" onclick="sessionStorage.removeItem('group'); window.location='grupo.html'" >Criar grupo</a></li>
-                <li id="item-listar-grupos"><a href="listaGrupos.html" >Listar grupos</a></li>
-                <li id="item-altera-usuario"><a href="alteraUsuario.html" >Alterar usuário</a></li>
+                <li id="item-listar-grupos"><a href="listaGrupos.html" >Listar grupos</a></li>                
             </ul>
           </li>            
           <!-- <li><a href="mapa.html">Criar mapa</a></li> -->
@@ -24,7 +23,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Mapa <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a href="mapa.html">Criar mapa</a></li>
-              <li><a href="listaMapas.html">Meus mapas</a></li>              
+              <li><a href="listaMeusMapas.html">Meus mapas</a></li>              
             </ul>
           </li>
           <li><a href="listaDebatesPerguntar.html" >Perguntar</a></li>             
@@ -37,6 +36,7 @@
               <li><a href="resultado.html">Resultado</a></li>               
             </ul>
           </li>
+          <li id="item-altera-usuario"><a href="alteraUsuario.html" >Meus dados</a></li>
         </ul>
         <span style="float:right" id="saudacao" class="navbar-text"></span>
       </div><!--/.nav-collapse -->

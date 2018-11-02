@@ -48,11 +48,11 @@
                                 <select style="width: 70%" name="grupo" id="grupo" tabindex="1" class="form-control">        
                                 </select>
                             </div>
-                            <div class="col-md-3">
-                                <label for="filtro-data">Data:</label>
+                            <div class="col-md-4">
+                                <label for="filtro-data">Criados a partir de:</label>
                                 <input type="date" name="filtro-data" id="filtro-data" tabindex="1" class="form-control" placeholder="Data" value="">
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <button id="button-filtro" class="btn btn-default">Buscar Mapas</button>
                             </div>
                         </div>                
@@ -82,6 +82,7 @@
 <script>
     var grupos = [];
     var idsUsuarios = [];
+    var userId = localStorage.getItem("userId");
 
     $("#button-filtro").click(function(){
         var sucessoCarregaLista = function (mapas){
@@ -210,10 +211,9 @@
             });             
         };
 
-        buscarMapasPorAutor(sucessoCarregaLista);
-    }
 
-    var userId = localStorage.getItem("userId");
+        buscarMapasPorAutor(userId, sucessoCarregaLista);
+    }    
     
     var sucessoGrupos = function(grps){
         grupos = grps;

@@ -140,8 +140,8 @@ function buscarMapasPorGrupoEData(data, idsUsuarios, sucessoCarregaLista){
 	ajaxRequest(apiRoot + "/v1/maps/date/" + data, "post", idsUsuarios, sucessoCarregaLista, {"x-access-token": localStorage.getItem("token")});
 }
 
-function buscarMapasPorAutor(sucessoCarregaLista){
-	ajaxRequest(apiRoot + "/v1/maps/author", "get", undefined, sucessoCarregaLista, {"x-access-token": localStorage.getItem("token")});
+function buscarMapasPorAutor(userId, sucessoCarregaLista){
+	ajaxRequest(apiRoot + "/v1/maps/author/" + userId, "get", undefined, sucessoCarregaLista, {"x-access-token": localStorage.getItem("token")});
 }
 
 function buscarMapaPorId(idMapa, sucessoCarregaMapa){
