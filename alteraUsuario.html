@@ -11,69 +11,82 @@
     </head>
     <body>
         <div id="menu"></div>
-        <div id="corpo" class="container">            
+        <div id="corpo" class="container">
+            <div class="form-group" style="margin-bottom: 80px">
+                <div class="col-md-3">
+                    <label for="username">Login:</label>
+                    <input type="text" name="username" id="username" tabindex="2" class="form-control" value="" readonly>
+                </div>
+                <div class="col-md-9">
+                        <label for="name">Nome:</label>
+                        <input type="text" name="name" id="name" tabindex="1" class="form-control" value="">
+                </div>
+            </div>         
             <div class="form-group">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Selecione o usuário</div>
-                    <div class="panel-body">
-                        <div class="form-inline">
-                            <label for="filtro-admin">Login:</label>
-                            <input type="text" name="filtro-admin" id="filtro-admin" tabindex="4" class="form-control" placeholder="Filtro usuário" value="">
-                            <button id="button-filtro" class="btn btn-default">Buscar usuário</button>
-                        </div>
-                        <div class="form-group">
-                            <table style="margin-top: 30px; width: 50%" class="table">
-                                <thead>
-                                    <tr>
-                                    <th>Login</th>
-                                    <th>Nome</th>
-                                    <th>Senha</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="lista-usuarios">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                <div class="col-md-4">
+                    <label for="email">E-mail:</label>
+                    <input type="email" name="email" id="email" tabindex="3" class="form-control" value="">
+                </div>
+                <div class="col-md-4">
+                    <label for="password">Senha:</label>
+                    <input type="password" name="password" id="password" tabindex="4" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label for="confirm-password">Confirmação da senha:</label>
+                    <input type="password" name="confirm-password" id="confirm-password" tabindex="5" class="form-control">
                 </div>
             </div>
-            <div class="form-group">
-                <button id="button-salvar" class="btn btn-primary">Salvar</button>
+            <div class="form-group" style="margin-top: 160px">
+                <div class="col-md-4">
+                    <button id="button-salvar" class="btn btn-primary">Salvar</button>
+                </div>
             </div>            
         </div>
     </body>
 </html>
 
 <script>
-    var usuarios = [];
-    $("#button-filtro").click(function(){
-        var filtroAdm = $("#filtro-admin").val();
-        if(filtroAdm){
-            var sucessoCarregaLista = function (usrs){
-                usuarios = usrs;
-                $('#lista-usuarios').empty();            
-                usuarios.forEach(function(item){
-                    var id = item._id;
-                    var nome = item.name;
-                    var login = item.username;
+    var usuario = {};
 
-                    var itemUsuario = "<tr><td><input id='id-usuario' type='hidden' value='" + id + "'/>" + nome + "</td><td>" + login + "</td><td style='width: 60px'><input id='senha' type='text' class='form-control' value='' /></td></tr>";
-                    $('#lista-usuarios').append(itemUsuario);         
-                });             
-            };
+    var sucesso = function (usr){
+        usuario = usr;           
+        $("#username").val(usuario.username);
+        $("#name").val(usuario.name);
+        $("#email").val(usuario.email);
+    };
 
-            buscarUsuariosPorLogin($('#filtro-admin').val(), sucessoCarregaLista);
-        }    
-    });
+    var idUsuario = localStorage.getItem("userId");
+    buscarUsuarioPorId(idUsuario, sucesso); 
 
     $("#button-salvar").click(function(){
-        var id = $('#id-usuario').val();
-        var senha = {"password" : $('#senha').val()};
+        var nome = $("#name").val();
+        var email = $("#email").val();
+        var senha = $("#password").val();
+        var confirmacao = $("#confirm-password").val();
 
-        var sucessoSenha = function(){
-            exibeMensagem("Senha alterada com sucesso");
-        };
+        if(!nome){
+            exibeMensagem("Informe o nome", 2);
+        }
+        else if(!email){
+            exibeMensagem("Informe o email", 2);
+        }
+        else if(!senha){
+            exibeMensagem("Informe a senha", 2);
+        }
+        else if(senha != confirmacao){
+            exibeMensagem("Senha e confirmação não são iguais", 2);
+        }
+        else {
+            usuario.name = nome;
+            usuario.email = email;
+            usuario.password = senha;
+            usuario.groups = undefined;
 
-        alterarSenhaUsuario(id, senha, sucessoSenha);    
+            var sucesso = function(){
+                exibeMensagem("Usuário alterado com sucesso");
+            };
+
+            alterarUsuario(usuario, sucesso); 
+        }   
     });
 </script>

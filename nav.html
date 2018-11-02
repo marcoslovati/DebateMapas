@@ -14,7 +14,8 @@
           <li id="item-gerenciar" class="dropdown-gerenciar">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Gerenciar <span class="caret"></span></a>
             <ul class="dropdown-menu">
-                <li id="item-criar-grupo"><a href="listaGrupos.html" >Grupos</a></li>
+                <li id="item-criar-grupo"><a href="#" onclick="sessionStorage.removeItem('group'); window.location='grupo.html'" >Criar grupo</a></li>
+                <li id="item-listar-grupos"><a href="listaGrupos.html" >Listar grupos</a></li>
                 <li id="item-altera-usuario"><a href="alteraUsuario.html" >Alterar usuário</a></li>
             </ul>
           </li>            

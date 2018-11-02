@@ -1,4 +1,4 @@
-function exibeMensagem(mensagem, tipo){
+function exibeMensagem(mensagem, tipo, callback){
 	$("#mensagem").html(mensagem).css("display", "block");
 
 	if(tipo === 2){
@@ -7,13 +7,27 @@ function exibeMensagem(mensagem, tipo){
 	else{
 		$("#mensagem").css("color", "blue");
 	}
+	function prim() {
+		return new Promise(function(resolve, reject) {
+			setTimeout(function(){
+				$("#mensagem").html("").css("display", "none");
+				resolve();
+			}, 3000);
+		});
+	}
 
-	setTimeout(function(){ 
-		$("#mensagem").html("").css("display", "none");
-	}, 4000);
+	prim().then(function(){
+		console.log('chegou');
+		if(callback)
+			callback();
+	});
 }
 
 var apiRoot = "http://localhost:3000";
+
+function enviarEmail(email, sucesso, erro){
+	ajaxRequest(apiRoot + "/v1/users/email/" + email, "post", undefined, sucesso, {"x-access-token": localStorage.getItem("token")}, erro);
+}
 
 function salvarDebate(debate, sucessoDebate){
 	ajaxRequest(apiRoot + "/v1/debates", "post", debate, sucessoDebate, {"x-access-token": localStorage.getItem("token")});
@@ -88,7 +102,7 @@ function criarGrupo(dadosGrupo, sucessoGrupo){
 }
 
 function alterarGrupo(dadosGrupo, sucessoGrupo){
-	ajaxRequest(apiRoot + "/v1/groups", "put", dadosGrupo, sucessoGrupo, {"x-access-token": localStorage.getItem("token")});
+	ajaxRequest(apiRoot + "/v1/groups/" + dadosGrupo._id, "put", dadosGrupo, sucessoGrupo, {"x-access-token": localStorage.getItem("token")});
 }
 
 function salvarUsuariosGrupo(idGrupo, listaIdsUsuarios, sucessoGrupo){
@@ -146,12 +160,16 @@ function buscarUsuarios(sucessoCarregaLista){
 	ajaxRequest(apiRoot + "/v1/users", "get", undefined, sucessoCarregaLista, {"x-access-token": localStorage.getItem("token")});
 }
 
+function buscarUsuarioPorId(idUsuario, sucesso){
+	ajaxRequest(apiRoot + "/v1/users/" + idUsuario, "get", undefined, sucesso, {"x-access-token": localStorage.getItem("token")});
+}
+
 function verificaUsuarioGrupoAdmin(userId, sucesso){
 	ajaxRequest(apiRoot + "/v1/users/" + userId + "/isOfAdministratorsGroup", "get", undefined, sucesso, {"x-access-token": localStorage.getItem("token")});
 }
 
-function alterarSenhaUsuario(userId, senha, sucesso){
-	ajaxRequest(apiRoot + "/v1/users/password/" + userId , "put", senha, sucesso, {"x-access-token": localStorage.getItem("token")});
+function alterarUsuario(usuario, sucesso){
+	ajaxRequest(apiRoot + "/v1/users/" + usuario._id , "put", usuario, sucesso, {"x-access-token": localStorage.getItem("token")});
 }
 
 function objectifyForm(formArray) {//serialize data function

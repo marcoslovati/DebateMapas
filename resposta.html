@@ -171,10 +171,10 @@ myDiagram.linkTemplate =
 
         salvarMapaFinal(mapId, conteudo, debateUnity, sucesso);        
     });
-    
-    console.log(debateUnity);
 
-    $("#questionador1").html("Questionador 1: " + debateUnity.questioner1.username);
+    var questionador1 = debateUnity.debate.keepAuthorsAnonymous ? "(anônimo)" : debateUnity.questioner1.username;
+
+    $("#questionador1").html("Questionador 1: " + questionador1);
 
     debateUnity.questionsQuestioner1.forEach(q => {
       var itemQuestao = "<div class='form-group'><textarea class='form-control' readonly>" + q.text + "</textarea></div>";
@@ -182,7 +182,9 @@ myDiagram.linkTemplate =
       $("#questoes1").append(itemQuestao);
     });
 
-    $("#questionador2").html("Questionador 2: " + debateUnity.questioner2.username);
+    var questionador2 = debateUnity.debate.keepAuthorsAnonymous ? "(anônimo)" : debateUnity.questioner2.username;
+
+    $("#questionador2").html("Questionador 2: " + questionador2);
 
     debateUnity.questionsQuestioner2.forEach(q => {
       var itemQuestao = "<div class='form-group'><textarea class='form-control' readonly>" + (q.text != null ? q.text : "") + "</textarea></div>";

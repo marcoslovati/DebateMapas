@@ -74,8 +74,8 @@
                     var distanciaFinal = item.finalDistance ? item.finalDistance.toFixed(3) : "";
                     var aproximacao = item.finalDistance ? (item.initialDistance - item.finalDistance).toFixed(3) : "";
 
-                    var linkInicial = "<a href='#' id=" + item.initialMapContent._id + " class='versao'>" + distanciaInicial + "</a>";
-                    var linkFinal = distanciaFinal !== "" ? "<a href='#' id=" + item.finalMapContent._id + " class='versao'>" + distanciaFinal + "</a>" : "";
+                    var linkInicial = "<a href='#' id=" + item.initialMapContent._id + " title='Clique para ver o mapa inicial' class='versao'>" + distanciaInicial + "</a>";
+                    var linkFinal = distanciaFinal !== "" ? "<a href='#' id=" + item.finalMapContent._id + " title='Clique para ver o mapa final' class='versao'>" + distanciaFinal + "</a>" : "";
 
                     var itemDebate = "<tr><td>" + item.mapsAuthor.username + "</td>" +
                         "<td>" + (item.questioner1 ? item.questioner1.username : "") + "</td>" +

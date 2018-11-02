@@ -31,10 +31,18 @@
 <script>
     var listaGrupos = [];
 
+
+
     function editarGrupo(idGrupo){
         var grupo = listaGrupos.find(g => g._id === idGrupo);
         sessionStorage.setItem("group", JSON.stringify(grupo));
         window.location = "grupo.html";
+    }
+
+    function configurarGrupo(idGrupo){
+        var grupo = listaGrupos.find(g => g._id === idGrupo);
+        sessionStorage.setItem("group", JSON.stringify(grupo));
+        window.location = "usuariosGrupo.html";
     }
 
     var sucessoCarregaLista = function (grupos){
@@ -43,7 +51,8 @@
         $('#lista-grupos').empty();            
         grupos.forEach(function(item){
             var itemGrupo = "<tr><td>" + item.name + "</td><td>" + item.description + "</td>" +
-            "<td><button onclick='editarGrupo(\"" + item._id + "\")' class='btn btn-primary'>Editar</button></td></tr>";            
+            "<td><button onclick='editarGrupo(\"" + item._id + "\")' class='btn btn-default'>Editar</button>" +
+            "<button style='margin-left:5px' onclick='configurarGrupo(\"" + item._id + "\")' class='btn btn-primary'>Configurar</button></td></tr>";            
             $('#lista-grupos').append(itemGrupo);         
         });         
     };

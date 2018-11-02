@@ -42,9 +42,11 @@
     var sucessoDebateUnities = function(du){
         debateUnities = du;
         du.forEach(function(item, i) {
+            var questionador1 = item.debate.keepAuthorsAnonymous ? "(anônimo)" : item.questioner1.username;
+            var questionador2 = item.debate.keepAuthorsAnonymous ? "(anônimo)" : item.questioner2.username;
             var itemDebate = "<tr><td>" + item.debate.name + "</td>" +
-                "<td>" + item.questioner1.username + "</td>" + 
-                "<td>" + item.questioner2.username + "</td>" + 
+                "<td>" + questionador1 + "</td>" + 
+                "<td>" + questionador2 + "</td>" + 
                 "<td><button onclick='responderDebateUnity(" + i + ")' class='btn btn-deafult btn-list'>Responder</button></td></tr>";
 
             $("#table-debates>tbody").append(itemDebate); 

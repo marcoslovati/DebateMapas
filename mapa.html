@@ -194,6 +194,9 @@
 	    };
 
         if(!mapId){
+          var titulo = $("#titulo").val();
+
+          if(titulo){
             var sucessoMapa = function (response){
                 mapId = response.map._id;
                 // sessionStorage.setItem("mapId", mapId);
@@ -201,8 +204,12 @@
                 salvarConteudoMapa(mapId, dadosMapContent, sucessoMapContent);
             };
 
-            var titulo = $("#titulo").val();
+            
             salvarMapa(titulo, sucessoMapa);
+          }
+          else{
+            exibeMensagem("Informe o título do mapa", 2);
+          }
         }
         else{
             salvarConteudoMapa(mapId, dadosMapContent, sucessoMapContent);                      

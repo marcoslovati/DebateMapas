@@ -16,7 +16,7 @@
                 <input type="text" name="nome" id="nome" tabindex="1" class="form-control" placeholder="Assunto do debate" value="">
             </div>
             <div class="form-group">
-                <label class='label-normal'><input id="anonimo" class='form-check-input' type='checkbox' value=''> Manter autores de mapa anônimos</label>
+                <label class='label-normal'><input id="anonimo" class='form-check-input' type='checkbox' value=''> Manter autores de mapa e perguntas anônimos</label>
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">Selecione o seu mapa de referência para o debate</div>
@@ -109,8 +109,6 @@
             });             
         };
 
-
-
         var grupoId = $("#grupo").val();
         grupos.forEach(element => {
             if(grupoId === element._id){
@@ -126,47 +124,65 @@
     });
 
     $("#button-salvar").click(function(){
-        var sucessoDebateUnities = function(){
-            exibeMensagem("Debate salvo com sucesso");
-        }
 
         var anonimo = $("#anonimo").is(':checked');
-
-        var sucessoDebate = function (resposta){
-            var debateUnities = [];
-            console.log(resposta);
-
-            $('input[type=checkbox].versao:checked').each(function(){                
-                var versao = $(this).attr('id');                
-                var debateUnity = {
-                    "debate": {
-                        "_id":resposta.debate._id,
-                        "name": resposta.debate.name,
-                        "keepAuthorsAnonymous": anonimo
-                    },
-                    "initialMapContent":{
-                        "_id": versao
-                    }
-                };
-
-                debateUnities.push(debateUnity);
-            });
-
-            salvarDebateUnities(debateUnities, sucessoDebateUnities);            
-        };
-        
         var nome = $("#nome").val();
-        var versao = $('input[type=radio].versao:checked').attr('id');        
+        var versao = $('input[type=radio].versao:checked').attr('id'); 
 
-        var debate = {
-            "name":nome,
-            "referenceMapContent":{
-                "_id":versao
-            },
-            "keepAuthorsAnonymous": anonimo
-        };
+        if(!nome){
+            exibeMensagem("Informe o assunto do debate", 2);
+        }
+        else if(!versao){
+            exibeMensagem("Selecione o mapa de referência", 2);
+        }
+        else if($('input[type=checkbox].versao:checked').length <= 7){
+            exibeMensagem("Selecione ao menos oito mapas para o debate", 2)
+        }
+        else{
 
-        salvarDebate(debate, sucessoDebate);        
+            var sucessoDebate = function (resposta){
+
+                var sucessoDebateUnities = function(){
+                    var callback = function(){
+                        window.location = "listaDebates.html";
+                    }
+
+                    exibeMensagem("Debate salvo com sucesso", 1, callback);
+                }
+
+                var debateUnities = [];
+                console.log(resposta);
+
+                $('input[type=checkbox].versao:checked').each(function(){                
+                    var versao = $(this).attr('id');                
+                    var debateUnity = {
+                        "debate": {
+                            "_id":resposta.debate._id,
+                            "name": resposta.debate.name,
+                            "keepAuthorsAnonymous": anonimo
+                        },
+                        "initialMapContent":{
+                            "_id": versao
+                        }
+                    };
+
+                    debateUnities.push(debateUnity);
+                });
+
+                salvarDebateUnities(debateUnities, sucessoDebateUnities);            
+            };       
+                
+
+            var debate = {
+                "name":nome,
+                "referenceMapContent":{
+                    "_id":versao
+                },
+                "keepAuthorsAnonymous": anonimo
+            };
+
+            salvarDebate(debate, sucessoDebate);  
+        }      
     });
 
     function listarMeusMapas(){
@@ -178,7 +194,7 @@
                     var titulo = item.title;
                     var versions = item.versions;
 
-                    var itemMapa = "<tr><td>" + titulo + "</td><td id=" + id + "></td></tr>";
+                    var itemMapa = "<tr><td>" + titulo + "</td><td id=ref-" + id + "></td></tr>";
                     $('#lista-meus-mapas').append(itemMapa);
 
                     versions.forEach(function(item2) {
@@ -188,7 +204,7 @@
                             data.getHours().toString().padStart(2,'0') + ':' + data.getMinutes().toString().padStart(2,'0');
 
                         var itemVersao = "<label class='label-normal'><input style='margin-left:5px' class='form-radio-input versao' type='radio' name='radio-versao' value='' id=" + idVersao + ">" + dataFormatada + "</label>";
-                        $('#'+id).append(itemVersao);
+                        $('#ref-'+id).append(itemVersao);
                     });
                 }           
             });             

@@ -1,0 +1,146 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="js/jquery.min.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="js/bootstrap.min.js"></script>        
+        <link href="css/site.css" rel="stylesheet">
+        <script src="js/site.js"></script>
+        <script src="js/carregaMenu.js"></script>
+        <title>Debate Mapas - Usuários do grupo</title>
+    </head>
+    <body>
+        <div id="menu"></div>
+        <div id="corpo" class="container">
+            <div class="form-group">                
+                <div class="col-md-3">
+                    <label for="nome">Nome:</label>
+                    <input type="text" name="nome" id="nome" tabindex="1" class="form-control" value="" readonly>
+                </div>
+                <div class="col-md-7">
+                    <label for="descricao">Descrição:</label>
+                    <input type="text" name="descricao" id="descricao" tabindex="2" class="form-control" value="" readonly>
+                </div>
+            </div>
+
+            <div style="margin-top: 100px;">
+                <h4>Lista de usuários do grupo</h4>
+
+                <div style="margin-top: 20px;">
+                    <div class="col-md-6">
+                        <div class="form-inline">
+                            <label for="filtro-usuario">Filtre para adicionar:</label>
+                            <input type="text" name="filtro-usuario" id="filtro-usuario" tabindex="4" class="form-control" placeholder="Login, nome ou e-mail" value="">
+                            <button id="button-filtro" class="btn btn-default">Buscar usuário</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-6">
+                            <div id="lista-filtro"></div>
+                        </div>
+                        <div id="sec-btn-adic" class="col-md-6" style="display:none">
+                            <button id="button-adicionar" class="btn btn-primary">Adicionar</button>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 100px !important">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Login</th>
+                                <th>Nome</th>
+                                <th>E-mail</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-usuarios">
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
+            <button id="button-voltar" class="btn btn-primary">Voltar</button>
+        </div>
+    </body>
+</html>
+
+<script>
+    var usuarios = [];
+    var grupo = JSON.parse(sessionStorage.getItem("group"));
+
+    var sucessoCarregaLista = function (usrs){
+        usuarios = usrs;
+        $('#lista-usuarios').empty(); 
+
+        usuarios.forEach(function(item){
+            var itemUsuario = "<tr id=" + item._id + "><td>" + item.username + "</td><td>" + item.name + "</td><td>" + item.email + "</td>" +
+            "<td><button onclick='removerUsuario(\"" + item._id + "\")' class='btn btn-danger'>Remover</button></td></tr>";
+            $('#lista-usuarios').append(itemUsuario);  
+        });             
+    };
+
+    $("#button-voltar").click(function(){
+        window.location = "listaGrupos.html";
+    });
+
+    $("#button-filtro").click(function(){
+        var filtroUsuario = $("#filtro-usuario").val();
+
+        if(filtroUsuario){
+            var sucessoListaFiltro = function (usrs){
+                usuarios = usrs;
+                $('#lista-filtro').empty();            
+                usuarios.forEach(function(item){
+                    var id = item._id;
+                    var nome = item.name;
+                    var login = item.username;
+
+                    var itemUsuario = "<div class='form-check'>" +
+                        "<label id=" + id + " class='form-check-label'><input type='checkbox' /> Nome: <span style='font-weight: normal'>" + nome + "</span> Login: <span style='font-weight: normal'>" + login + "</span> </label></div>";
+                    $('#lista-filtro').append(itemUsuario);         
+                });
+
+                if(usuarios.length > 0)
+                    $("#sec-btn-adic").css('display', 'block');
+            }
+
+            buscarUsuariosPorFiltro(filtroUsuario, sucessoListaFiltro);
+        }    
+    });
+
+    $("#button-adicionar").click(function(){
+        var idsUsuarios = [];
+        $('input[type=checkbox]:checked').each(function(){                
+            var idUsuario = $(this).parent().attr('id');                
+            idsUsuarios.push(idUsuario);            
+        });
+
+        var sucesso = function(){
+            $('input[type=checkbox]:checked').each(function(){                
+                $(this).parent().remove();
+
+                console.log($('input[type=checkbox]'));
+
+                if($('input[type=checkbox]').length === 0)
+                    $("#sec-btn-adic").css('display', 'none');
+            });
+            
+            buscarUsuariosPorGrupo(grupo._id, sucessoCarregaLista);
+            exibeMensagem("Grupo configurado com sucesso");
+        };
+
+        salvarUsuariosGrupo(grupo._id, idsUsuarios, sucesso);
+    });
+
+    function removerUsuario(id){
+        var sucessoRemover = function(){
+            $("#" + id).remove();
+            exibeMensagem("Grupo configurado com sucesso");
+        }
+        removerUsuariosGrupo(grupo._id, [id], sucessoRemover);
+    }
+
+    $("#sec-usuarios").css('display', 'block');
+    $("#nome").val(grupo.name);
+    $("#descricao").val(grupo.description);
+    buscarUsuariosPorGrupo(grupo._id, sucessoCarregaLista);
+</script>

@@ -13,98 +13,28 @@
         <div id="menu"></div>
         <div id="corpo" class="container">
             <div class="form-group">                
-                <div class="col-md-3">
+                <div class="col-md-4">
+                    <label for="nome">Nome:</label>
                     <input type="text" name="nome" id="nome" tabindex="1" class="form-control" placeholder="Nome do grupo" value="">
                 </div>
-                <div class="col-md-7">
+                <div class="col-md-8">
+                    <label for="descricao">Descrição:</label>
                     <input type="text" name="descricao" id="descricao" tabindex="2" class="form-control" placeholder="Descrição" value="">
                 </div>
-                <div class="col-md-2">
-                    <button id="button-salvar" class="btn btn-primary">Salvar</button>
-                </div>
             </div>
-            <div style="margin-top: 60px; display: none" class="form-group" id="sec-usuarios">
-                <div class="form-inline">
-                    <input type="text" name="filtro-usuario" id="filtro-usuario" tabindex="4" class="form-control" placeholder="Login, nome ou e-mail" value="">
-                    <button id="button-filtro" class="btn btn-default">Buscar usuário</button>
-                </div>
-                <div id="lista-filtro"></div>
-                <div id="sec-btn-adic" style="display:none">
-                    <button id="button-adicionar" class="btn btn-primary">Adicionar</button>
-                </div>
-                
-                <div style="margin-top: 50px;">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Login</th>
-                                <th>Nome</th>
-                                <th>E-mail</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody id="lista-usuarios">
-                        </tbody>
-                    </table>
-                </div>
+            <div class="col-md-12" style="margin-top: 20px">                                     
+                <button id="button-salvar" class="btn btn-primary">Salvar</button>
+                <button id="button-voltar" style="margin-left: 5px" class="btn btn-default">Voltar</button>
             </div>
         </div>
     </body>
 </html>
 
 <script>
-    var usuarios = [];
     var grupo = JSON.parse(sessionStorage.getItem("group"));
 
-        var sucessoCarregaLista = function (usrs){
-        usuarios = usrs;
-        $('#lista-usuarios').empty(); 
-        console.log(usrs);
-        usuarios.forEach(function(item){
-            var itemUsuario = "<tr id=" + item._id + "><td>" + item.username + "</td><td>" + item.name + "</td><td>" + item.email + "</td>" +
-            "<td><button onclick='removerUsuario(\"" + item._id + "\")' class='btn btn-danger'>Remover</button></td></tr>";
-            $('#lista-usuarios').append(itemUsuario);  
-            console.log(itemUsuario);
-        });             
-    };
-
-    $("#button-filtro").click(function(){
-        var filtroUsuario = $("#filtro-usuario").val();
-
-        if(filtroUsuario){
-            var sucessoCarregaLista = function (usrs){
-                usuarios = usrs;
-                $('#lista-filtro').empty();            
-                usuarios.forEach(function(item){
-                    var id = item._id;
-                    var nome = item.name;
-                    var login = item.username;
-
-                    var itemUsuario = "<div class='form-check'>" +
-                        "<label id=" + id + " class='form-check-label'><input type='checkbox' /> Nome: " + nome + " Login: " + login + "</label></div>";
-                    $('#lista-filtro').append(itemUsuario);         
-                });
-
-                if(usuarios.length > 0)
-                    $("#sec-btn-adic").css('display', 'block');
-            }
-
-            buscarUsuariosPorFiltro(filtroUsuario, sucessoCarregaLista);
-        }    
-    });
-
-    $("#button-adicionar").click(function(){
-        var idsUsuarios = [];
-        $('input[type=checkbox]:checked').each(function(){                
-            var idUsuario = $(this).parent().attr('id');                
-            idsUsuarios.push(idUsuario);
-        });
-
-        var sucesso = function(){
-            buscarUsuariosPorGrupo(grupo._id, sucessoCarregaLista);
-        };
-
-        salvarUsuariosGrupo(grupo._id, idsUsuarios, sucesso);
+    $("#button-voltar").click(function(){
+        window.location = "listaGrupos.html";
     });
 
     $("#button-salvar").click(function(){       
@@ -112,47 +42,40 @@
         var descricao = $("#descricao").val();
         var publico = false;
 
-        var sucessoSalvar = function (grp){
-            grupo = grp;
-            sessionStorage.setItem("group", grp);
+        var sucessoSalvar = function (res){
+            grupo = res.group;
+            sessionStorage.setItem("group", JSON.stringify(grupo));
             exibeMensagem("Grupo salvo com sucesso");
-            $("#sec-usuarios").css('display', 'block');
         };
 
         if(grupo){
             grupo.name = nome;
-            grupo.descricao = descricao;
-
+            grupo.description = descricao;
+            console.log(grupo);
             alterarGrupo(grupo, sucessoSalvar);
         }
         else{
-            var dadosGrupo = {
-                "name": nome,
-                "description": descricao,
-                "public": publico
-            };
+            if(!nome){
+                exibeMensagem("Informe o nome", 2)
+            }
+            else if(!descricao){
+                exibeMensagem("Informe a descrição", 2)
+            }
+            else{
+                var dadosGrupo = {
+                    "name": nome,
+                    "description": descricao,
+                    "public": publico
+                };
 
-            criarGrupo(dadosGrupo, sucessoSalvar);
+                criarGrupo(dadosGrupo, sucessoSalvar);
+            }
         }          
     });
 
-    function removerUsuario(id){
-        var sucessoRemover = function(){
-            $("#" + id).remove();
-        }
-        if(grupo){
-            removerUsuariosGrupo(grupo._id, [id], sucessoRemover)
-        }
-        else{
-            sucessoRemover();
-        }
-    }
-
     if(grupo)
     {
-        $("#sec-usuarios").css('display', 'block');
         $("#nome").val(grupo.name);
         $("#descricao").val(grupo.description);
-        buscarUsuariosPorGrupo(grupo._id, sucessoCarregaLista);
     }    
 </script>
