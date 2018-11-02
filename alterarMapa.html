@@ -20,8 +20,11 @@
             <div class="form-group" style="padding-top: 20px;">
                 <div class="row">
                     <div class="col-sm-12 text-right">
+                        <label id="btn-importar-mapa" style="font-size: 14px" for="cmapFile" class="btn btn-default btn-sm">Importar</label>
+                        <button class="btn btn-default" onclick="exportToCMap()">Exportar</button>                        
                         <button class="btn btn-default" id="button-voltar">Voltar</button>
                         <button style="margin-left: 5px" id="button-salvar" class="btn btn-primary" tabindex="2">Salvar</button>
+                        <input id="cmapFile" style="visibility:hidden;" type="file">  
                     </div>
                 </div>
             </div>
@@ -205,3 +208,5 @@ myDiagram.linkTemplate =
         buscarMapContent(mapContentId, sucessoMapContent);    
 
 </script>
+
+<script src="js/cmaptools.js"></script>

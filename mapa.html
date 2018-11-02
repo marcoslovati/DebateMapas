@@ -7,7 +7,7 @@
         <link href="css/site.css" rel="stylesheet">
         <script src="js/site.js"></script>
         <script src="js/gojs/go.js"></script>
-        <script src="js/carregaMenu.js"></script>
+        <script src="js/carregaMenu.js"></script>        
         <title>Debate Mapas - Criar mapa</title>
     </head>
     <body>
@@ -20,8 +20,11 @@
             <div class="form-group" style="padding-top: 20px;">
                 <div class="row">
                     <div class="col-sm-12 text-right">
+                        <label id="btn-importar-mapa" style="font-size: 14px" for="cmapFile" class="btn btn-default btn-sm">Importar</label>
+                        <button class="btn btn-default" onclick="exportToCMap()">Exportar</button>
                         <button class="btn btn-default" id="button-voltar">Voltar</button>
-                        <button id="button-salvar" class="btn btn-primary" tabindex="2" disabled>Salvar</button>
+                        <button id="button-salvar" class="btn btn-primary" disabled>Salvar</button> 
+                        <input id="cmapFile" style="visibility:hidden;" type="file"> 
                     </div>
                 </div>
             </div>
@@ -222,5 +225,6 @@
     $("#button-voltar").click(function(){
         window.location = "home.html";
     });
-
 </script>
+
+<script src="js/cmaptools.js"></script>
