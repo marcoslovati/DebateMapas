@@ -39,7 +39,11 @@
         buscarDebates(sucessoDebates);
     };
 
-        var sucessoDebates = function(debates){
+    var erroProcessar = function(){
+        exibeMensagem("A distribuição não foi realizada com sucesso. Por favor, tente novamente", 2);
+    };
+
+    var sucessoDebates = function(debates){
         $("#table-debates>tbody").empty(); 
         debates.forEach(function(item) {
             var id = item._id;
@@ -49,8 +53,8 @@
 
             var botaoInicial = "<div style='display:inline; margin-right:5px' class='dropdown'><button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Definir grupos</button>" +
                 "<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton'>" +
-                "<li><a onclick='processarNiveisDebateInicial(\"" + id + "\", sucessoProcessarNiveis)' href='#'>Com base no nível</a></li>" +
-                "<li><a onclick='processarClustersDebateInicial(\"" + id + "\", sucessoProcessarClusters)' href='#'>Com base na semelhança</a></li></ul></div>";
+                "<li><a onclick='processarNiveisDebateInicial(\"" + id + "\", sucessoProcessarNiveis, erroProcessar)' href='#'>Com base no nível</a></li>" +
+                "<li><a onclick='processarClustersDebateInicial(\"" + id + "\", sucessoProcessarClusters, erroProcessar)' href='#'>Com base na semelhança</a></li></ul></div>";
 
             var botaoResultado = "<button style='margin-right:5px' onclick='processarDebateFinal(\"" + id + "\")' class='btn btn-primary'>Calcular resultado</button>";
 
