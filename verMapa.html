@@ -26,106 +26,328 @@
     </body>
 </html>
 <script>
-    var Go = go.GraphObject.make;  // for conciseness in defining templates
+let conceptNodeTemplate, relationNodeTemplate, normalLinkTemplate, orLinkTemplate, mapTemplate, selectionAdornmentTemplate;
+    const Go = go.GraphObject.make;  // for conciseness in defining templates
 
-    myDiagram =
-      Go(go.Diagram, "myDiagramDiv",  // must name or refer to the DIV HTML element
-        {
-          // start everything in the middle of the viewport
-          initialContentAlignment: go.Spot.Center,
-          // have mouse wheel events zoom in and out instead of scroll up and down
-          "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom,
-          // support double-click in background creating a new node
-          "clickCreatingTool.archetypeNodeData": { text: "new node" },
-          // enable undo & redo
-          "undoManager.isEnabled": false
-        });
+    // To simplify this code we define a function for creating a context menu button:
+    function makeButton(text, action, visiblePredicate) {
+        return Go("ContextMenuButton",
+            Go(go.TextBlock, text),
+                { click: action },
+                // don't bother with binding GraphObject.visible if there's no predicate
+                visiblePredicate ? new go.Binding("visible", "", function(o, e) { return o.diagram ? visiblePredicate(o, e) : false; }).ofObject() : {});
+    }
 
-    // define the Node template
-    myDiagram.nodeTemplate =
-      Go(go.Node, "Auto",
-        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
-        // define the node's outer shape, which will surround the TextBlock
-        Go(go.Shape, "RoundedRectangle",
-          {
-            parameter1: 20,  // the corner has a large radius
-            fill: Go(go.Brush, "Linear", { 0: "rgb(254, 201, 0)", 1: "rgb(254, 162, 0)" }),
-            stroke: null,
-            portId: "",  // this Shape is the Node's port, not the whole Node
-            fromLinkable: false, fromLinkableSelfNode: false, fromLinkableDuplicates: false,
-            toLinkable: false, toLinkableSelfNode: false, toLinkableDuplicates: false
-          }),
-        Go(go.TextBlock,
-          {
-            font: "bold 11pt helvetica, bold arial, sans-serif",
-            editable: false  // editing the text automatically updates the model data
-          },
-          new go.Binding("text").makeTwoWay())
-      );
+    function addNode(e, obj) {
+        var adornment = obj.part;
+        var diagram = e.diagram;
+        diagram.startTransaction("Add State");
 
-    // unlike the normal selection Adornment, this one includes a Button
-    myDiagram.nodeTemplate.selectionAdornmentTemplate =
-      Go(go.Adornment, "Spot",
-        Go(go.Panel, "Auto",
-          Go(go.Shape, { fill: null, stroke: "blue", strokeWidth: 2 }),
-          Go(go.Placeholder)  // a Placeholder sizes itself to the selected Node
-        )
-      ); // end Adornment
+        // get the node data for which the user clicked the button
+        var fromNode = adornment.adornedPart;
+        var fromData = fromNode.data;
+        // create a new "State" data object, positioned off to the right of the adorned Node
+        var newNode = (fromNode.category=="concept" || fromNode.category=="map")?
+            {text: "relação", loc:"", category:"relation"}:
+            {text: "conceito", loc:"", category:"concept"};
+        var p = fromNode.location.copy();
+        p.x += 120;
+        newNode.loc = go.Point.stringify(p);  // the "loc" property is a string, not a Point object
+        
+        // add the new node data to the model
+        var model = diagram.model;
+        model.addNodeData(newNode);
 
-    // replace the default Link template in the linkTemplateMap
-    myDiagram.linkTemplate =
-      Go(go.Link,  // the whole link panel
-        {
-          curve: go.Link.Bezier, adjusting: go.Link.Stretch,
-          reshapable: false, relinkableFrom: false, relinkableTo: false,
-          toShortLength: 3
-        },
-        new go.Binding("points").makeTwoWay(),
-        new go.Binding("curviness"),
-        Go(go.Shape,  // the link shape
-          { strokeWidth: 1.5 }),
-        Go(go.Shape,  // the arrowhead
-          { toArrow: "standard", stroke: null }),
-        Go(go.Panel, "Auto",
-          Go(go.Shape,  // the label background, which becomes transparent around the edges
-            {
-              fill: Go(go.Brush, "Radial",
-                      { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
-              stroke: null
-            }),
-          Go(go.TextBlock, "transition",  // the label text
-            {
-              textAlign: "center",
-              font: "9pt helvetica, arial, sans-serif",
-              margin: 4,
-              editable: false  // enable in-place editing
-            },
-            // editing the text automatically updates the model data
-            new go.Binding("text").makeTwoWay())
-        )
-      );
+        // create a link data from the old node data to the new node data
+        var nodeData = {
+            from: model.getKeyForNodeData(fromData),  // or just: fromData.id
+            to: model.getKeyForNodeData(newNode),
+            category: "normal"
+        };
+        
+        // and add the link data to the model
+        model.addLinkData(nodeData);
 
-      function saveAs(uri, filename) {
-        var link = document.createElement('a');
+        // select the new Node
+        var newrelation = diagram.findNodeForData(newNode);
+        diagram.select(newrelation);
 
-        if (typeof link.download === 'string') {
-              link.href = uri;
-              link.download = filename;
+        diagram.commitTransaction("Add State");
 
-              //Firefox requires the link to be in the body
-              document.body.appendChild(link);
+        // if the new node is off-screen, scroll the diagram to show the new node
+        diagram.scrollToRect(newrelation.actualBounds);
+    }
 
-              //simulate click
-              link.click();
-
-              //remove the link when done
-              document.body.removeChild(link);
-
-        } 
-        else {
-            window.open(uri);
+    // this function is used to highlight a Group that the selection may be dropped into
+    function highlightGroup(e, grp, show) {
+        if (!grp) return;
+        e.handled = true;
+        if (show) {
+            // cannot depend on the grp.diagram.selection in the case of external drag-and-drops;
+            // instead depend on the DraggingTool.draggedParts or .copiedParts
+            var tool = grp.diagram.toolManager.draggingTool;
+            var map = tool.draggedParts || tool.copiedParts;  // this is a Map
+            // now we can check to see if the Group will accept membership of the dragged Parts
+            if (grp.canAddMembers(map.toKeySet())) {
+            grp.isHighlighted = true;
+            return;
+            }
         }
-      }
+        grp.isHighlighted = false;
+    }
+
+    // Upon a drop onto a Group, we try to add the selection as members of the Group.
+    // Upon a drop onto the background, or onto a top-level Node, make selection top-level.
+    // If this is OK, we're done; otherwise we cancel the operation to rollback everything.
+    function finishDrop(e, grp) {
+        var ok = (grp !== null
+                ? grp.addMembers(grp.diagram.selection, true)
+                : e.diagram.commandHandler.addTopLevelParts(e.diagram.selection, true));
+        if (!ok) e.diagram.currentTool.doCancel();
+    }
+
+    // this predicate is true if both nodes have the same color
+    function validateLink(fromnode, fromport, tonode, toport) {
+        if(fromnode.data.category == "relation"){
+            if(tonode.data.category=="concept" || tonode.data.category=="map") return true;
+            else return false;
+        }else return tonode.data.category == "relation";
+        
+    }
+
+    myDiagram = 
+        Go(go.Diagram, "myDiagramDiv", // create a Diagram for the DIV HTML element
+        {
+            allowDrop: false, // from Palette
+            // what to do when a drag-drop occurs in the Diagram's background
+            mouseDrop: function(e) { finishDrop(e, null); },
+            initialContentAlignment: go.Spot.Center, // center the content
+            "undoManager.isEnabled": true,  // enable undo (CTRL+Z) & redo (CTRL+Y)
+            "clickCreatingTool.archetypeNodeData": { text: "conceito", category: "concept" }, // allow double-click in background to create a new node
+            "linkingTool.archetypeLinkData": {category: "normal"},
+            "commandHandler.archetypeGroupData": { text: "New Map", isGroup: true, category: "map" },//ctrl+G to group
+            allowDelete: false,
+            allowInsert: false
+        }
+    );
+
+    myDiagram.model.isReadOnly = true;
+
+    conceptNodeTemplate = 
+        Go(go.Node, "Auto",  // the Shape will go around the TextBlock
+            new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+            Go(go.Shape, "RoundedRectangle", 
+            {
+                portId: "", 
+                strokeWidth: 1,
+                fromLinkable: false, 
+                fromLinkableSelfNode: false, 
+                fromLinkableDuplicates: false,
+                toLinkable: false, 
+                toLinkableSelfNode: false, 
+                toLinkableDuplicates: false,
+                cursor: "pointer",
+                fill: Go(go.Brush, "Linear", {0: "rgb(254, 201, 0)", 1:"rgb(254, 162, 0)"}),
+                stroke: "black"
+            },
+                // Shape.fill is bound to Node.data.color
+                new go.Binding("fill", "color").makeTwoWay(),
+                new go.Binding("stroke", "stroke").makeTwoWay(),
+                new go.Binding("stroke", "", function(data){ return data.stroke ? data.stroke : "black"; })
+            ),
+            Go(go.TextBlock,
+                {
+                    font: "bold 12px sans-serif",
+                    stroke: '#333',
+                    margin: 6,  // make some extra space for the shape around the text
+                    isMultiline: true,  // don't allow newlines in text
+                    editable: false  // allow in-place editing by user
+                },  // some room around the text
+                // TextBlock.text is bound to Node.data.key
+                new go.Binding("text", "text").makeTwoWay(),
+                new go.Binding("stroke", "textColor").makeTwoWay()
+            )
+    );
+
+    relationNodeTemplate = 
+        Go(go.Node, "Auto",  // the Shape will go around the TextBlock
+            new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+            Go(go.Shape, "Rectangle", 
+            {
+                portId: "", 
+                strokeWidth: 1,
+                fromLinkable: false, 
+                fromLinkableSelfNode: false, 
+                fromLinkableDuplicates: false,
+                toLinkable: false, 
+                toLinkableSelfNode: false, 
+                toLinkableDuplicates: false,
+                cursor: "pointer",
+                fill: "rgba(255,255,255,0)",
+                stroke: "rgba(255,255,255,0)"
+            }),
+            Go(go.TextBlock,
+                {
+                    font: "bold 12px sans-serif",
+                    stroke: '#333',
+                    margin: 6,  // make some extra space for the shape around the text
+                    isMultiline: true,  // don't allow newlines in text
+                    editable: false
+                },  // some room around the text
+                // TextBlock.text is bound to Node.data.key
+                new go.Binding("text", "text").makeTwoWay(),
+                new go.Binding("stroke", "textColor").makeTwoWay(),
+                new go.Binding("stroke", "", function(data){ return data.textColor ? data.textColor : "#333"; })
+            )
+    );
+
+    normalLinkTemplate = 
+        Go(go.Link,
+            { 
+                toShortLength: 3, 
+                relinkableFrom: true, 
+                relinkableTo: true,
+                // curve: go.Link.Bezier,
+                reshapable: true
+            },  // allow the user to relink existing links
+            new go.Binding("points").makeTwoWay(),
+            Go(go.Shape,
+                {
+                    strokeWidth: 1 
+                },
+                new go.Binding("stroke", "color").makeTwoWay()
+            ),
+            Go(go.Shape,
+                { 
+                    toArrow: "Standard",
+                    stroke: null
+                },
+                new go.Binding("stroke", "color").makeTwoWay(),
+                new go.Binding("fill", "color").makeTwoWay()
+            )
+        );
+
+    orLinkTemplate = 
+        Go(go.Link,
+            { 
+                toShortLength: 3, 
+                relinkableFrom: true, 
+                relinkableTo: true,
+                // curve: go.Link.Bezier,
+                reshapable: true
+            },  // allow the user to relink existing links
+            new go.Binding("points").makeTwoWay(),
+            Go(go.Shape,
+                {
+                    strokeWidth: 1 
+                },
+                new go.Binding("stroke", "color").makeTwoWay()
+            ),
+            Go(go.Shape,
+                {
+                    toArrow: "Standard",
+                    stroke: null
+                },
+                new go.Binding("fill", "color").makeTwoWay()
+            ),
+            Go(go.Shape,
+                {
+                    strokeWidth: 1, 
+                    fromArrow: "BackwardSemiCircle" 
+                },
+                new go.Binding("fill", "color").makeTwoWay()
+            )
+        );
+
+    mapTemplate =
+        Go(go.Group, "Auto",
+            {
+                // highlight when dragging into the Group
+                mouseDragEnter: function(e, grp, prev) { highlightGroup(e, grp, true); },
+                mouseDragLeave: function(e, grp, next) { highlightGroup(e, grp, false); },
+                computesBoundsAfterDrag: true,
+                // when the selection is dropped into a Group, add the selected Parts into that Group;
+                // if it fails, cancel the tool, rolling back any changes
+                mouseDrop: finishDrop,
+                handlesDragDropForMembers: true
+            },
+            new go.Binding("isSubGraphExpanded", "expanded").makeTwoWay(),
+            new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+            Go(go.Shape, "RoundedRectangle",
+                {
+                    strokeWidth: 1,
+                    portId: "", 
+                    cursor: "pointer",
+                    fromLinkable: false, 
+                    fromLinkableSelfNode: false, 
+                    fromLinkableDuplicates: false,
+                    toLinkable: false, 
+                    toLinkableSelfNode: false, 
+                    toLinkableDuplicates: false,
+                    fill:  Go(go.Brush, "Linear", { 0: "rgba(224,234,252,0.5)", 1: "rgba(207,222,243,0.5)"})
+                },
+                //new go.Binding("fill", "isHighlighted", function(h) { return h ? "rgba(255,0,0,0.2)" : Go(go.Brush, "Linear", { 0: "rgba(224,234,252,0.5)", 1: "rgba(207,222,243,0.5)" }); }).ofObject(),
+                new go.Binding('fill', 'color').makeTwoWay(),
+                new go.Binding("stroke", "", function(data){ return data.stroke ? data.stroke: "black"; })
+            ),
+            Go(go.Panel, "Vertical",
+                { 
+                    defaultAlignment: go.Spot.Center, 
+                    margin: 6 
+                },
+                Go(go.Panel, "Horizontal",
+                    { 
+                        defaultAlignment: go.Spot.Top
+                    },
+                    Go("SubGraphExpanderButton"), // the SubGraphExpanderButton is a panel that functions as a button to expand or collapse the subGraph
+                    Go(go.TextBlock,
+                        {
+                            font: "bold 12px sans-serif",
+                            stroke: '#333',
+                            margin: 4,  // make some extra space for the shape around the text
+                            isMultiline: true,  // don't allow newlines in text
+                            editable: false, 
+                            alignment: go.Spot.Center
+                        },
+                        new go.Binding("text", "text").makeTwoWay(),
+                        new go.Binding("stroke", "textColor").makeTwoWay(),
+                    )
+                ),
+                Go(go.Placeholder, // create a placeholder to represent the area where the contents of the group are
+                    { 
+                        padding: new go.Margin(0, 5) 
+                    }
+                )
+            )
+        );  // end Group
+
+    myDiagram.nodeTemplateMap.add("concept", conceptNodeTemplate);
+    myDiagram.nodeTemplateMap.add("relation", relationNodeTemplate);
+    
+    myDiagram.linkTemplateMap.add("normal", normalLinkTemplate);
+    myDiagram.linkTemplateMap.add("or", orLinkTemplate);
+    
+    myDiagram.groupTemplateMap.add("map", mapTemplate);
+
+    myDiagram.toolManager.linkingTool.linkValidation = validateLink;
+    myDiagram.toolManager.relinkingTool.linkValidation = validateLink;
+
+function loadModel(loadedModel) {
+    let model = go.Model.fromJson(loadedModel);
+    model.makeUniqueKeyFunction = function() { return uuid(); };
+    model["makeUniqueLinkKeyFunction"] = function() { return uuid(); };
+    model["linkKeyProperty"] = 'key';
+    myDiagram.model = model;
+}
+
+function resetModel() {
+    let model = new go.GraphLinksModel([],[]);
+    model.makeUniqueKeyFunction = function() { return uuid(); };
+    model.makeUniqueLinkKeyFunction = function() { return uuid(); };
+    model.linkKeyProperty = 'key';
+    myDiagram.model = model;
+
+}
 
     $("#button-baixar").click(function(){
       html2canvas(document.querySelector('#myDiagramDiv')).then(function(canvas) {

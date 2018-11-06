@@ -25,6 +25,28 @@ function exibeMensagem(mensagem, tipo, callback){
 
 var apiRoot = window.location.hostname === "localhost" ? "http://localhost:3000" : "http://cmpaas.inf.ufes.br:3000";
 
+function saveAs(uri, filename) {
+	var link = document.createElement('a');
+
+	if (typeof link.download === 'string') {
+		  link.href = uri;
+		  link.download = filename;
+
+		  //Firefox requires the link to be in the body
+		  document.body.appendChild(link);
+
+		  //simulate click
+		  link.click();
+
+		  //remove the link when done
+		  document.body.removeChild(link);
+
+	} 
+	else {
+		window.open(uri);
+	}
+  }
+
 function enviarEmail(email, sucesso, erro){
 	ajaxRequest(apiRoot + "/v1/users/email/" + email, "post", undefined, sucesso, {"x-access-token": localStorage.getItem("token")}, erro);
 }
