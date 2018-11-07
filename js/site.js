@@ -23,7 +23,7 @@ function exibeMensagem(mensagem, tipo, callback){
 	});
 }
 
-var apiRoot = "http://localhost:3000";
+var apiRoot = window.location.hostname === "localhost" ? "http://localhost:3000" : "http://cmpaas.inf.ufes.br:3000";
 
 function enviarEmail(email, sucesso, erro){
 	ajaxRequest(apiRoot + "/v1/users/email/" + email, "post", undefined, sucesso, {"x-access-token": localStorage.getItem("token")}, erro);

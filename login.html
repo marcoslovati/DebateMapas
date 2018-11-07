@@ -99,6 +99,10 @@ $(function() {
 		e.preventDefault();
 	});
 
+	var apiRoot = window.location.hostname === "localhost" ? "http://localhost:3000" : "http://cmpaas.inf.ufes.br:3000";
+	$("#register-form").prop("action", apiRoot + "/v1/users");
+	$("#login-form").prop("action", apiRoot + "/v1/auth");
+
 	var erro = sessionStorage.getItem("erroLogin");
 	$("#erro").html(erro);
 
