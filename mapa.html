@@ -404,18 +404,6 @@ function resetModel() {
 
 }
 
-function getGroupIndex(arr){
-    let index = -1;
-    for(let i = 0; i < arr.length; i++){
-        if(arr[i].hasOwnProperty('isGroup')) {
-            index = i;
-            break;
-        }
-    }
-    return index;
-}
-
-
       myDiagram.addModelChangedListener(function(evt) {
         if (evt.isTransactionFinished){
           var content = myDiagram.model.toJson();

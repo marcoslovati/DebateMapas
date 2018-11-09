@@ -56,7 +56,7 @@
                 "<li><a onclick='processarNiveisDebateInicial(\"" + id + "\", sucessoProcessarNiveis, erroProcessar)' href='#'>Com base no nível</a></li>" +
                 "<li><a onclick='processarClustersDebateInicial(\"" + id + "\", sucessoProcessarClusters, erroProcessar)' href='#'>Com base na semelhança</a></li></ul></div>";
 
-            var botaoResultado = "<button style='margin-right:5px' onclick='processarDebateFinal(\"" + id + "\")' class='btn btn-primary'>Calcular resultado</button>";
+            var botaoResultado = "<button style='margin-right:5px' onclick='processarDebateFinal(\"" + id + "\", erroProcessar)' class='btn btn-primary'>Calcular resultado</button>";
 
             var botaoDesAtivar = "<button onclick='alterarStatus(\"" + id + "\")' class='btn btn-danger'>" + (item.active ? "Desativar" : "Ativar") + "</button>";
 

@@ -71,12 +71,12 @@ function processarClustersDebateInicial(idDebate, sucessoProcessar){
 	ajaxRequest(apiRoot + "/v1/debates/processClustersInitial/debate/" + idDebate, "post", undefined, sucessoProcessar, {"x-access-token": localStorage.getItem("token")});
 }
 
-function processarDebateFinal(idDebate){
+function processarDebateFinal(idDebate, erroProcessar){
 	var sucessoProcessar = function(){
 		exibeMensagem("Resultado do debate processado com sucesso");
 	};
 
-	ajaxRequest(apiRoot + "/v1/debates/processFinal/debate/" + idDebate, "post", undefined, sucessoProcessar, {"x-access-token": localStorage.getItem("token")});
+	ajaxRequest(apiRoot + "/v1/debates/processFinal/debate/" + idDebate, "post", undefined, sucessoProcessar, {"x-access-token": localStorage.getItem("token")}, erroProcessar);
 }
 
 function salvarDebateUnities(debateUnities, sucessoDebateUnities){
