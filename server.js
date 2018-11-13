@@ -2,6 +2,8 @@ var
 http = require('http'),
 path = require('path'),
 fs = require('fs'),
+os = require('os');
+var frontRoot = os.hostname() === "knowledgeportal" ? 'http://knowledgeportal.inf.ufes.br:4200' : 'http://localhost:4200';
  
 //these are the only file types we will support for now
 extensions = {
@@ -58,7 +60,7 @@ function requestHandler(req, res) {
 
 	if(req.url === "/"){
 		res.writeHead(301,
-			{Location: 'http://localhost:4200/login.html'}
+			{Location: frontRoot + '/login.html'}
 		  );
 		res.end();
 	}
