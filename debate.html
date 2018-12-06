@@ -99,11 +99,12 @@
 
                     versions.forEach(function(item2) {
                         var idVersao = item2._id;
-                        var data = new Date(item2.created);
-                        var dataFormatada = data.getDate().toString().padStart(2,'0') + '/' + (data.getMonth() + 1).toString().padStart(2,'0') + '/' + data.getFullYear() + ' ' +
-                            data.getHours().toString().padStart(2,'0') + ':' + data.getMinutes().toString().padStart(2,'0');
+                        var numeroVersao = item2.version;
+                        // var data = new Date(item2.created);
+                        // var dataFormatada = data.getDate().toString().padStart(2,'0') + '/' + (data.getMonth() + 1).toString().padStart(2,'0') + '/' + data.getFullYear() + ' ' +
+                        //     data.getHours().toString().padStart(2,'0') + ':' + data.getMinutes().toString().padStart(2,'0');
 
-                        var itemVersao = "<label class='label-normal'><input style='margin-left:5px' class='form-check-input versao' type='checkbox' value='' id=" + idVersao + ">" + dataFormatada + "</label>";
+                        var itemVersao = "<label class='label-normal'><input style='margin-left:5px' class='form-check-input versao' type='checkbox' value='' id=" + idVersao + ">Versão " + numeroVersao + "</label>";
                         $('#'+id).append(itemVersao);
                     });
                 }           
@@ -200,11 +201,12 @@
 
                     versions.forEach(function(item2) {
                         var idVersao = item2._id;
-                        var data = new Date(item2.created);
-                        var dataFormatada = data.getDate().toString().padStart(2,'0') + '/' + (data.getMonth() + 1).toString().padStart(2,'0') + '/' + data.getFullYear() + ' ' +
-                            data.getHours().toString().padStart(2,'0') + ':' + data.getMinutes().toString().padStart(2,'0');
+                        var numeroVersao = item2.version;
+                        // var data = new Date(item2.created);
+                        // var dataFormatada = data.getDate().toString().padStart(2,'0') + '/' + (data.getMonth() + 1).toString().padStart(2,'0') + '/' + data.getFullYear() + ' ' +
+                        //     data.getHours().toString().padStart(2,'0') + ':' + data.getMinutes().toString().padStart(2,'0');
 
-                        var itemVersao = "<label class='label-normal'><input style='margin-left:5px' class='form-radio-input versao' type='radio' name='radio-versao' value='' id=" + idVersao + ">" + dataFormatada + "</label>";
+                        var itemVersao = "<label class='label-normal'><input style='margin-left:5px' class='form-radio-input versao' type='radio' name='radio-versao' value='' id=" + idVersao + ">Versão " + numeroVersao + "</label>";
                         $('#ref-'+id).append(itemVersao);
                     });
                 }           

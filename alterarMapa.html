@@ -14,8 +14,13 @@
     <body>
         <div id="menu"></div>
         <div id="corpo" class="container">
-            <div class="form-group">
-                <input type="text" name="titulo" id="titulo" tabindex="1" class="form-control" value="" readonly>
+            <div class="row form-group">
+                <div class="col-md-6">
+                    <input type="text" name="titulo" id="titulo" tabindex="1" class="form-control" placeholder="Título do mapa" value="">
+                </div>
+                <div class="col-md-2">
+                    <input type="number" min="1" name="versao" id="versao" tabindex="2" class="form-control" placeholder="Versão" value="">
+                </div>
             </div>
             <div id="myDiagramDiv" style="width: 100%; height: 80%; border: 1px black solid"></div>
             <div class="form-group" style="padding-top: 20px;">
@@ -421,9 +426,22 @@ function getGroupIndex(arr){
         var content = myDiagram.model.toJson();
         var objContent = JSON.parse(content);
           sessionStorage.setItem("tempMapContentAlter", content);
-          $("#button-salvar").prop( "disabled", (objContent.nodeDataArray.length === 0) );
+          desHabilitaSalvar();
         }
     }); 
+
+    function desHabilitaSalvar(){
+        var content = myDiagram.model.toJson();
+        var objContent = JSON.parse(content);
+
+        var versao = $("#versao").val();
+
+        $("#button-salvar").prop( "disabled", (objContent.nodeDataArray.length === 0 || versao === "") );
+    }
+
+    $("#versao").change(function(){
+      desHabilitaSalvar();
+    });
 
     var mapId = sessionStorage.getItem("mapId");
     var mapContentId = sessionStorage.getItem("mapContentId");
@@ -431,14 +449,13 @@ function getGroupIndex(arr){
     $("#button-baixar").click(function(){
       html2canvas(document.querySelector('#myDiagramDiv')).then(function(canvas) {
 
-      console.log(canvas);
       saveAs(canvas.toDataURL(), 'mapa.png');
       });
     });
 
     $("#button-salvar").click(function(){
-        var sucessoMapContent = function (mapContent){
-            mapContentId = mapContent.map._id;
+        var sucessoMapContent = function (result){
+            mapContentId = result.mapContent._id;
             sessionStorage.setItem("mapContentId", mapContentId);
             sessionStorage.removeItem("tempMapContentAlter");
 
@@ -446,7 +463,8 @@ function getGroupIndex(arr){
         }
 
         var dadosMapContent = {
-		    "content": myDiagram.model.toJson()
+            "content": myDiagram.model.toJson(),
+            "version": $("#versao").val()
 	    };
         
         salvarConteudoMapa(mapId, dadosMapContent, sucessoMapContent);
@@ -458,6 +476,8 @@ function getGroupIndex(arr){
     
     var sucessoMapContent = function(mapContent){
         myDiagram.model = go.Model.fromJson(mapContent.content);
+        $("#versao").val(mapContent.version);
+        sessionStorage.setItem("version", mapContent.version)
     }; 
     
     var sucessoMap = function(map){
@@ -468,8 +488,10 @@ function getGroupIndex(arr){
 
     var tempMapContentAlter = sessionStorage.getItem("tempMapContentAlter");
 
-    if(tempMapContentAlter)
+    if(tempMapContentAlter){
         myDiagram.model = go.Model.fromJson(tempMapContentAlter);
+        $("#versao").val(sessionStorage.getItem("version"));
+    }
     else
         buscarMapContent(mapContentId, sucessoMapContent);    
 

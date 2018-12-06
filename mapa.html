@@ -14,8 +14,13 @@
     <body>
         <div id="menu"></div>
         <div id="corpo" class="container">
-            <div class="form-group">
-                <input type="text" name="titulo" id="titulo" tabindex="1" class="form-control" placeholder="Título do mapa" value="">
+            <div class="row form-group">
+                <div class="col-md-6">
+                    <input type="text" name="titulo" id="titulo" tabindex="1" class="form-control" placeholder="Título do mapa" value="">
+                </div>
+                <div class="col-md-2">
+                    <input type="number" name="versao" id="versao" tabindex="2" class="form-control" placeholder="Versão" value="1">
+                </div>
             </div>
             <div id="myDiagramDiv" style="width: 100%; height: 80%; border: 1px black solid"></div>
             <div class="form-group" style="padding-top: 20px;">
@@ -420,12 +425,18 @@ function resetModel() {
         var objContent = JSON.parse(content);
 
         var titulo = $("#titulo").val();
-        $("#button-salvar").prop( "disabled", (titulo === "" || objContent.nodeDataArray.length === 0) );
+        var versao = $("#versao").val();
+
+        $("#button-salvar").prop( "disabled", (titulo === "" || objContent.nodeDataArray.length === 0 || versao === "") );
     }
 
     var tempMapContent = sessionStorage.getItem("tempMapContent");
 
     $("#titulo").change(function(){
+      desHabilitaSalvar();
+    });
+
+    $("#versao").change(function(){
       desHabilitaSalvar();
     });
 
@@ -446,31 +457,39 @@ function resetModel() {
             sessionStorage.removeItem("tempMapContent");
         }
 
-        var dadosMapContent = {
-		    "content": myDiagram.model.toJson()
-	    };
+        var versao = $("#versao").val();
 
-        if(!mapId){
-          var titulo = $("#titulo").val();
-
-          if(titulo){
-            var sucessoMapa = function (response){
-                mapId = response.map._id;
-                // sessionStorage.setItem("mapId", mapId);
-
-                salvarConteudoMapa(mapId, dadosMapContent, sucessoMapContent);
+        if(versao){
+            var dadosMapContent = {
+                "content": myDiagram.model.toJson(),
+                "version": versao
             };
 
-            
-            salvarMapa(titulo, sucessoMapa);
-          }
-          else{
-            exibeMensagem("Informe o título do mapa", 2);
-          }
+            if(!mapId){
+            var titulo = $("#titulo").val();
+
+                if(titulo){
+                    var sucessoMapa = function (response){
+                        mapId = response.map._id;
+                        // sessionStorage.setItem("mapId", mapId);
+
+                        salvarConteudoMapa(mapId, dadosMapContent, sucessoMapContent);
+                    };
+
+                    
+                    salvarMapa(titulo, sucessoMapa);
+                }
+                else{
+                    exibeMensagem("Informe o título do mapa", 2);
+                }
+            }
+            else{
+                salvarConteudoMapa(mapId, dadosMapContent, sucessoMapContent);                      
+            }
         }
         else{
-            salvarConteudoMapa(mapId, dadosMapContent, sucessoMapContent);                      
-        } 
+            exibeMensagem("Informe a versão do mapa", 2);
+        }
             
         $("#titulo").prop( "disabled", true ); 
         $("#button-salvar").prop( "disabled", true);

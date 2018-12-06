@@ -39,7 +39,6 @@
     function listarMeusMapas(){
         var sucessoCarregaLista = function (mapas){
             $('#lista-mapas').empty();
-            console.log(mapas);
             mapas.forEach(function(item){                
                 if(item.versions.length > 0){
                     var id = item._id;
@@ -51,11 +50,12 @@
 
                     versions.forEach(function(item2) {
                         var idVersao = item2._id;
-                        var data = new Date(item2.created);
-                        var dataFormatada = data.getDate().toString().padStart(2,'0') + '/' + (data.getMonth() + 1).toString().padStart(2,'0') + '/' + data.getFullYear() + ' ' +
-                            data.getHours().toString().padStart(2,'0') + ':' + data.getMinutes().toString().padStart(2,'0');
+                        var numeroVersao = item2.version;
+                        // var data = new Date(item2.created);
+                        // var dataFormatada = data.getDate().toString().padStart(2,'0') + '/' + (data.getMonth() + 1).toString().padStart(2,'0') + '/' + data.getFullYear() + ' ' +
+                        //     data.getHours().toString().padStart(2,'0') + ':' + data.getMinutes().toString().padStart(2,'0');
 
-                        var itemVersao = "<a href='#' title='Clique para editar e salvar nova versão' style='margin-right:15px' id=" + idVersao + " class='label-normal a-versao'>" + dataFormatada + "</a>";
+                        var itemVersao = "<a href='#' title='Clique para editar' style='margin-right:15px' id=" + idVersao + " class='label-normal a-versao'>Versão " + numeroVersao + "</a>";
                         $('#'+id).append(itemVersao);
                     });
                 }           

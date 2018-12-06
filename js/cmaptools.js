@@ -202,7 +202,7 @@ function getConceptId(data, id){
   
       var pom = document.createElement('a');
   
-      var filename = "file.cxl";
+      var filename = titulo ? titulo + '.cxl' : "mapa.cxl";
       var pom = document.createElement('a');
       var bb = new Blob([xmltext], {type: 'text/plain'});
   
