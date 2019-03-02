@@ -101,3 +101,10 @@ body {
 .btn-list{
 	margin-right: 5px !important;
 }
+.label-normal{
+	font-weight: normal;
+}
+
+.label-margin-top{
+	margin-top: 30px;
+}

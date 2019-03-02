@@ -11,13 +11,20 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-          <li id="item-gerenciar" class="dropdown-gerenciar">
+          <li id="item-grupo" class="dropdown-grupo">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Grupos <span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li id="item-criar-grupo"><a href="#" onclick="sessionStorage.removeItem('group'); window.location='grupo.html'" >Criar grupo</a></li>
                 <li id="item-listar-grupos"><a href="listaGrupos.html" >Listar grupos</a></li>                
             </ul>
-          </li>            
+          </li>
+          <li id="item-atividade" class="dropdown-atividade">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Atividades <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li id="item-criar-atividade"><a href="#" onclick="sessionStorage.removeItem('activity'); window.location='atividade.html'" >Criar atividade</a></li>
+                <li id="item-listar-atividades"><a href="listaAtividades.html" >Listar atividades</a></li>                
+            </ul>
+          </li>             
           <!-- <li><a href="mapa.html">Criar mapa</a></li> -->
           <li id="item-mapa" class="dropdown-mapa">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Mapa <span class="caret"></span></a>

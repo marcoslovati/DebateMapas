@@ -1,0 +1,119 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="js/jquery.min.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="js/bootstrap.min.js"></script>        
+        <link href="css/site.css" rel="stylesheet">
+        <script src="js/site.js"></script>
+        <script src="js/carregaMenu.js"></script>
+        <title>Debate Mapas - Criar atividade</title>
+    </head>
+    <body>
+        <div id="menu"></div>
+        <div id="corpo" class="container">
+            <div class="form-group">                
+                <div class="col-md-4">
+                    <label for="nome">Nome:</label>
+                    <input type="text" name="nome" id="nome" tabindex="1" class="form-control" placeholder="Nome da atividade" value="">
+                </div>
+                <div class="col-md-8">
+                    <label for="descricao">Descrição:</label>
+                    <input type="text" name="descricao" id="descricao" tabindex="2" class="form-control" placeholder="Descrição" value="">
+                </div>
+            </div>
+            <div class="form-group">                
+                <div class="col-md-3">
+                    <label for="inicio">Início:</label>
+                    <input type="date" name="inicio" id="inicio" tabindex="3" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    <label for="termino">Término:</label>
+                    <input type="date" name="termino" id="termino" tabindex="4" class="form-control">
+                </div>
+                <div class="col-md-6">                    
+                    <label class='label-normal label-margin-top'><input id="ativo" class='form-check-input' type='checkbox' value=''> Ativo</label>                
+                </div>
+            </div>
+            <div class="col-md-12" style="margin-top: 20px">                                     
+                <button id="button-salvar" class="btn btn-primary">Salvar</button>
+                <button id="button-voltar" style="margin-left: 5px" class="btn btn-default">Voltar</button>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script>
+    var atividade = JSON.parse(sessionStorage.getItem("activity"));
+    // console.log(atividade);
+    // console.log(new Date(atividade.startDate));
+
+    $("#button-voltar").click(function(){
+        window.location = "listaAtividades.html";
+    });
+
+    $("#button-salvar").click(function(){       
+        var nome = $("#nome").val();
+        var descricao = $("#descricao").val();
+        var inicio = $('#inicio').val();
+        var termino = $('#termino').val();
+        var ativo = $("#ativo").is(":checked");
+        console.log(ativo);
+
+        var sucessoSalvar = function (res){
+            atividade = res.activity;
+            sessionStorage.setItem("activity", JSON.stringify(atividade));
+            exibeMensagem("Atividade salva com sucesso");
+        };
+
+        if(atividade){
+            atividade.name = nome;
+            atividade.description = descricao;
+            atividade.startDate = inicio;
+            atividade.endDate = termino;
+            atividade.active = ativo;
+            console.log(atividade);
+            alterarAtividade(atividade, sucessoSalvar);
+        }
+        else{
+            if(!nome){
+                exibeMensagem("Informe o nome", 2)
+            }
+            else if(!descricao){
+                exibeMensagem("Informe a descrição", 2)
+            }
+            else if(!inicio){
+                exibeMensagem("Informe a data de início", 2)
+            }
+            else if(!termino){
+                exibeMensagem("Informe a data de término", 2)
+            }
+            else if(inicio > termino){
+                exibeMensagem("A data de início deve ser anterior à data de término", 2)
+            }
+            else{
+                var dadosAtividade = {
+                    "name": nome,
+                    "description": descricao,
+                    "startDate": inicio,
+                    "endDate": termino,
+                    "active": ativo
+                };
+
+                criarAtividade(dadosAtividade, sucessoSalvar);
+            }
+        }          
+    });
+
+    if(atividade)
+    {
+        var dataInicio = atividade.startDate.substring(0,10);
+        var dataTermino = atividade.endDate.substring(0,10);
+
+        $("#nome").val(atividade.name);
+        $("#descricao").val(atividade.description);
+        $("#inicio").val(dataInicio);
+        $("#termino").val(dataTermino);
+        atividade.active ? $("#ativo").attr('checked','checked') : $("#ativo").removeAttr("checked");
+    }    
+</script>

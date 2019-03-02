@@ -1,0 +1,63 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="js/jquery.min.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="js/bootstrap.min.js"></script>        
+        <link href="css/site.css" rel="stylesheet">
+        <script src="js/site.js"></script>
+        <script src="js/carregaMenu.js"></script>
+        <title>Debate Mapas - Lista de atividades</title>
+    </head>
+    <body>
+        <div id="menu"></div>
+        <div id="corpo" class="container">
+            <h2>Meus grupos</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="lista-atividades">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    var listaAtividades = [];
+
+    function editarAtividade(idAtividade){
+        var atividade = listaAtividades.find(g => g._id === idAtividade);
+        sessionStorage.setItem("activity", JSON.stringify(atividade));
+        window.location = "atividade.html";
+    }
+
+    function configurarAtividade(idAtividade){
+        var atividade = listaAtividades.find(g => g._id === idAtividade);
+        sessionStorage.setItem("activity", JSON.stringify(atividade));
+        window.location = "gruposAtividade.html";
+    }
+
+    var sucessoCarregaLista = function (atividades){
+        listaAtividades = atividades;
+        // console.log(atividades);
+        $('#lista-atividades').empty();            
+        atividades.forEach(function(item){
+            var itemAtividade = "<tr><td>" + item.name + "</td><td>" + item.description + "</td>" +
+            "<td><button onclick='editarAtividade(\"" + item._id + "\")' class='btn btn-default'>Editar</button>" +
+            "<button style='margin-left:5px' onclick='configurarAtividade(\"" + item._id + "\")' class='btn btn-primary'>Grupos</button></td></tr>";            
+            $('#lista-atividades').append(itemAtividade);         
+        });         
+    };
+
+    var userId = localStorage.getItem("userId");
+    sessionStorage.removeItem("activity");
+
+    buscarAtividadesPorCriador(userId, sucessoCarregaLista);  
+</script>

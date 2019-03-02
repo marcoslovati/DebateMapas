@@ -111,12 +111,32 @@ function buscarGruposPorAdmin(adminId, sucessoGrupos){
 	ajaxRequest(apiRoot + "/v1/groups/admin/" + adminId, "get", undefined, sucessoGrupos, {"x-access-token": localStorage.getItem("token")});
 };
 
+function buscarAtividadesPorCriador(adminId, sucessoAtividades){
+	ajaxRequest(apiRoot + "/v1/activities", "get", undefined, sucessoAtividades, {"x-access-token": localStorage.getItem("token")});
+};
+
 function salvarMapa(titulo, sucessoMapa){
 	var dadosMap = {
 		"title": titulo
 	};
 
 	ajaxRequest(apiRoot + "/v1/maps", "post", dadosMap, sucessoMapa, {"x-access-token": localStorage.getItem("token")});
+}
+
+function criarAtividade(dadosAtividade, sucessoAtividade){
+	ajaxRequest(apiRoot + "/v1/activities", "post", dadosAtividade, sucessoAtividade, {"x-access-token": localStorage.getItem("token")});
+}
+
+function alterarAtividade(dadosAtividade, sucessoAtividade){
+	ajaxRequest(apiRoot + "/v1/activities/" + dadosAtividade._id, "put", dadosAtividade, sucessoAtividade, {"x-access-token": localStorage.getItem("token")});
+}
+
+function salvarGruposAtividade(idAtividade, listaIdsGrupos, sucessoAtividade){
+	ajaxRequest(apiRoot + "/v1/activities/" + idAtividade + "/include", "put", listaIdsGrupos, sucessoAtividade, {"x-access-token": localStorage.getItem("token")});
+}
+
+function removerGruposAtividade(idAtividade, listaIdsGrupos, sucessoAtividade){
+	ajaxRequest(apiRoot + "/v1/activities/" + idAtividade + "/remove", "put", listaIdsGrupos, sucessoAtividade, {"x-access-token": localStorage.getItem("token")});
 }
 
 function criarGrupo(dadosGrupo, sucessoGrupo){
@@ -174,8 +194,16 @@ function buscarUsuariosPorFiltro(strFiltro, sucessoCarregaLista){
 	ajaxRequest(apiRoot + "/v1/users/filter/" + strFiltro, "get", undefined, sucessoCarregaLista, {"x-access-token": localStorage.getItem("token")});
 }
 
+function buscarGruposPorFiltro(strFiltro, sucessoCarregaLista){
+	ajaxRequest(apiRoot + "/v1/groups/filter/" + strFiltro, "get", undefined, sucessoCarregaLista, {"x-access-token": localStorage.getItem("token")});
+}
+
 function buscarUsuariosPorGrupo(idGrupo, sucessoCarregaLista){
 	ajaxRequest(apiRoot + "/v1/users/group/" + idGrupo, "get", undefined, sucessoCarregaLista, {"x-access-token": localStorage.getItem("token")});
+}
+
+function buscarGruposPorAtividade(idAtividade, sucessoCarregaLista){
+	ajaxRequest(apiRoot + "/v1/groups/activity/" + idAtividade, "get", undefined, sucessoCarregaLista, {"x-access-token": localStorage.getItem("token")});
 }
 
 function buscarUsuarios(sucessoCarregaLista){
