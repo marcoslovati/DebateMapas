@@ -13,16 +13,12 @@
         <div id="menu"></div>
         <div id="corpo" class="container">
             <div class="form-group">                
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label for="nome">Nome:</label>
                     <input type="text" name="nome" id="nome" tabindex="1" class="form-control" placeholder="Nome do grupo" value="">
                 </div>
-                <div class="col-md-7">
-                    <label for="descricao">Descrição:</label>
-                    <input type="text" name="descricao" id="descricao" tabindex="2" class="form-control" placeholder="Descrição" value="">
-                </div>
-                <div class="col-md-1">
-                    <label for="ativo">Ativo<input type="checkbox"></label>                
+                <div class="col-md-6">
+                    <label class='label-normal label-margin-top'><input id="ativo" class='form-check-input' type='checkbox' value=''> Ativo</label> 
                 </div>
             </div>
             <div class="col-md-12" style="margin-top: 20px">                                     
@@ -42,8 +38,7 @@
 
     $("#button-salvar").click(function(){       
         var nome = $("#nome").val();
-        var descricao = $("#descricao").val();
-        var publico = false;
+        var ativo = $("#ativo").is(":checked");
 
         var sucessoSalvar = function (res){
             grupo = res.group;
@@ -53,22 +48,18 @@
 
         if(grupo){
             grupo.name = nome;
-            grupo.description = descricao;
-            console.log(grupo);
+            grupo.active = ativo;
+
             alterarGrupo(grupo, sucessoSalvar);
         }
         else{
             if(!nome){
                 exibeMensagem("Informe o nome", 2)
             }
-            else if(!descricao){
-                exibeMensagem("Informe a descrição", 2)
-            }
             else{
                 var dadosGrupo = {
                     "name": nome,
-                    "description": descricao,
-                    "public": publico
+                    "active": ativo
                 };
 
                 criarGrupo(dadosGrupo, sucessoSalvar);
@@ -79,6 +70,6 @@
     if(grupo)
     {
         $("#nome").val(grupo.name);
-        $("#descricao").val(grupo.description);
+        grupo.active ? $("#ativo").attr('checked','checked') : $("#ativo").removeAttr("checked");
     }    
 </script>

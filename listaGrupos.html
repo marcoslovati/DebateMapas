@@ -17,7 +17,7 @@
                 <thead>
                     <tr>
                         <th>Nome</th>
-                        <th>Descrição</th>
+                        <th>Ativo</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -31,8 +31,6 @@
 
 <script>
     var listaGrupos = [];
-
-
 
     function editarGrupo(idGrupo){
         var grupo = listaGrupos.find(g => g._id === idGrupo);
@@ -51,7 +49,7 @@
         console.log(grupos);
         $('#lista-grupos').empty();            
         grupos.forEach(function(item){
-            var itemGrupo = "<tr><td>" + item.name + "</td><td>" + item.description + "</td>" +
+            var itemGrupo = "<tr><td>" + item.name + "</td><td>" + (item.active ? "Sim" : "Não") + "</td>" +
             "<td><button onclick='editarGrupo(\"" + item._id + "\")' class='btn btn-default'>Editar</button>" +
             "<button style='margin-left:5px' onclick='configurarGrupo(\"" + item._id + "\")' class='btn btn-primary'>Usuários</button></td></tr>";            
             $('#lista-grupos').append(itemGrupo);         

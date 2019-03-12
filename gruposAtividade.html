@@ -32,7 +32,7 @@
                     <input type="date" name="termino" id="termino" tabindex="4" class="form-control" readonly>
                 </div>
                 <div class="col-md-6">                    
-                    <label class='label-normal label-margin-top'><input id="ativo" class='form-check-input' type='checkbox' value='' readonly> Ativo</label>                
+                    <label class='label-normal label-margin-top'><input id="ativo" class='form-check-input' type='checkbox' value='' disabled> Ativo</label>                
                 </div>
             </div>
 
@@ -111,7 +111,11 @@
                     $('#lista-filtro').append(itemGrupo);         
                 });
 
-                if(grupos.length > 0)
+                if(grupos.length === 0){
+                    $('#lista-filtro').append("<div>Nenhum grupo foi encontrado</div>");
+                    $("#sec-btn-adic").css('display', 'none');
+                }
+                else
                     $("#sec-btn-adic").css('display', 'block');
             }
 

@@ -13,16 +13,12 @@
         <div id="menu"></div>
         <div id="corpo" class="container">
             <div class="form-group">                
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label for="nome">Nome:</label>
                     <input type="text" name="nome" id="nome" tabindex="1" class="form-control" value="" readonly>
                 </div>
-                <div class="col-md-7">
-                    <label for="descricao">Descrição:</label>
-                    <input type="text" name="descricao" id="descricao" tabindex="2" class="form-control" value="" readonly>
-                </div>
-                <div class="col-md-1">
-                    <label for="ativo">Ativo<input type="checkbox" readonly></label>                
+                <div class="col-md-6">
+                    <label class='label-normal label-margin-top'><input id="ativo" class='form-check-input' type='checkbox' disabled> Ativo</label>            
                 </div>
             </div>
 
@@ -80,7 +76,7 @@
             "<button style='margin-left: 5px' onclick='removerUsuario(\"" + item._id + "\")' class='btn btn-danger'>Remover</button>" +
             "</td></tr>";
             $('#lista-usuarios').append(itemUsuario);  
-        });             
+        });
     };
 
     $("#button-voltar").click(function(){
@@ -93,7 +89,8 @@
         if(filtroUsuario){
             var sucessoListaFiltro = function (usrs){
                 usuarios = usrs;
-                $('#lista-filtro').empty();            
+                $('#lista-filtro').empty(); 
+
                 usuarios.forEach(function(item){
                     var id = item._id;
                     var nome = item.name;
@@ -104,7 +101,11 @@
                     $('#lista-filtro').append(itemUsuario);         
                 });
 
-                if(usuarios.length > 0)
+                if(usuarios.length === 0){
+                    $('#lista-filtro').append("<div>Nenhum usuário foi encontrado</div>");
+                    $("#sec-btn-adic").css('display', 'none');
+                }
+                else
                     $("#sec-btn-adic").css('display', 'block');
             }
 
@@ -154,5 +155,7 @@
     $("#sec-usuarios").css('display', 'block');
     $("#nome").val(grupo.name);
     $("#descricao").val(grupo.description);
+    grupo.active ? $("#ativo").attr('checked','checked') : $("#ativo").removeAttr("checked");
+
     buscarUsuariosPorGrupo(grupo._id, sucessoCarregaLista);
 </script>

@@ -12,12 +12,13 @@
     <body>
         <div id="menu"></div>
         <div id="corpo" class="container">
-            <h2>Meus grupos</h2>
+            <h2>Minhas atividades</h2>
             <table class="table">
                 <thead>
                     <tr>
                         <th>Nome</th>
                         <th>Descrição</th>
+                        <th>Ativa</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -46,10 +47,10 @@
 
     var sucessoCarregaLista = function (atividades){
         listaAtividades = atividades;
-        // console.log(atividades);
+
         $('#lista-atividades').empty();            
         atividades.forEach(function(item){
-            var itemAtividade = "<tr><td>" + item.name + "</td><td>" + item.description + "</td>" +
+            var itemAtividade = "<tr><td>" + item.name + "</td><td>" + item.description + "</td><td>" + (item.active ? "Sim" : "Não") + "</td>" +
             "<td><button onclick='editarAtividade(\"" + item._id + "\")' class='btn btn-default'>Editar</button>" +
             "<button style='margin-left:5px' onclick='configurarAtividade(\"" + item._id + "\")' class='btn btn-primary'>Grupos</button></td></tr>";            
             $('#lista-atividades').append(itemAtividade);         
