@@ -16,11 +16,19 @@
         <div id="corpo" class="container">
             <div class="row form-group">
                 <div class="col-md-6">
-                    <input type="text" name="titulo" id="titulo" tabindex="1" class="form-control" placeholder="Título do mapa" value="">
+                    <label for="titulo">Título:</label>
+                    <input type="text" name="titulo" id="titulo" tabindex="1" class="form-control" value="">
                 </div>
                 <div class="col-md-2">
-                    <input type="number" min="1" name="versao" id="versao" tabindex="2" class="form-control" placeholder="Versão" value="">
+                    <label for="versao">Versão:</label>
+                    <input type="number" name="versao" id="versao" tabindex="2" class="form-control" placeholder="Versão" value="1">
                 </div>
+                <div class="col-md-4">
+                    <label for="atividade">Atividade:</label>
+                    <select name="atividade" id="atividade" tabindex="3" class="form-control">
+                        <option value=>(Nenhuma)</option>
+                    </select>
+                </div> 
             </div>
             <div id="myDiagramDiv" style="width: 100%; height: 80%; border: 1px black solid"></div>
             <div class="form-group" style="padding-top: 20px;">
@@ -493,7 +501,17 @@ function getGroupIndex(arr){
         $("#versao").val(sessionStorage.getItem("version"));
     }
     else
-        buscarMapContent(mapContentId, sucessoMapContent);    
+        buscarMapContent(mapContentId, sucessoMapContent);
+
+    var sucessoAtividades = function (atividades){
+        atividades.forEach(function (atividade){
+            var itemAtividade = "<option value='" + atividade._id + "'>" + atividade.name + "</option>"
+            $("#atividade").append(itemAtividade);
+        });
+    }
+
+    var userId = localStorage.getItem("userId");
+    buscarAtividadesPorUsuario(userId, sucessoAtividades);
 
 </script>
 

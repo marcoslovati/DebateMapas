@@ -115,12 +115,8 @@ function buscarAtividadesPorCriador(adminId, sucessoAtividades){
 	ajaxRequest(apiRoot + "/v1/activities", "get", undefined, sucessoAtividades, {"x-access-token": localStorage.getItem("token")});
 };
 
-function salvarMapa(titulo, sucessoMapa){
-	var dadosMap = {
-		"title": titulo
-	};
-
-	ajaxRequest(apiRoot + "/v1/maps", "post", dadosMap, sucessoMapa, {"x-access-token": localStorage.getItem("token")});
+function salvarMapa(mapa, sucessoMapa){
+	ajaxRequest(apiRoot + "/v1/maps", "post", mapa, sucessoMapa, {"x-access-token": localStorage.getItem("token")});
 }
 
 function criarAtividade(dadosAtividade, sucessoAtividade){
@@ -153,6 +149,10 @@ function salvarUsuariosGrupo(idGrupo, listaIdsUsuarios, sucessoGrupo){
 
 function removerUsuariosGrupo(idGrupo, listaIdsUsuarios, sucessoGrupo){
 	ajaxRequest(apiRoot + "/v1/groups/" + idGrupo + "/remove", "put", listaIdsUsuarios, sucessoGrupo, {"x-access-token": localStorage.getItem("token")});
+}
+
+function buscarAtividadesPorUsuario(userId, sucessoAtividade){
+	ajaxRequest(apiRoot + "/v1/activities/user/" + userId, "get", undefined, sucessoAtividade, {"x-access-token": localStorage.getItem("token")});
 }
 
 function salvarMapaFinal(mapId, conteudo, debateUnity, sucessoDebateUnities){
